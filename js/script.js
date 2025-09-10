@@ -49,3 +49,72 @@ if (btnEnviarMensagem) {
         enviarMensagemWhatsApp(mensagem);
     });
 }
+
+// Light beam following mouse in hero section
+const hero = document.querySelector('.hero');
+const lightBeam = document.querySelector('.light-beam');
+
+if (hero && lightBeam) {
+    hero.addEventListener('mousemove', (e) => {
+        const rect = hero.getBoundingClientRect();
+        const x = e.clientX - rect.left - 150; // Center the beam (half of 300px)
+        const y = e.clientY - rect.top - 150;
+        lightBeam.style.transform = `translate(${x}px, ${y}px)`;
+    });
+}
+
+// Scroll animations using Intersection Observer
+const observerOptions = {
+    threshold: 0.1,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('animate');
+        }
+    });
+}, observerOptions);
+
+// Observe all sections for scroll animations
+document.querySelectorAll('section').forEach(section => {
+    observer.observe(section);
+});
+
+// Back to top button
+const backToTopBtn = document.createElement('button');
+backToTopBtn.innerHTML = '↑';
+backToTopBtn.className = 'back-to-top';
+backToTopBtn.style.cssText = `
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: #000;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s;
+    z-index: 1000;
+`;
+document.body.appendChild(backToTopBtn);
+
+backToTopBtn.addEventListener('click', () => {
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+});
+
+window.addEventListener('scroll', () => {
+    if (window.pageYOffset > 300) {
+        backToTopBtn.style.opacity = '1';
+        backToTopBtn.style.visibility = 'visible';
+    } else {
+        backToTopBtn.style.opacity = '0';
+        backToTopBtn.style.visibility = 'hidden';
+    }
+});

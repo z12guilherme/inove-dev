@@ -17,20 +17,21 @@
 <body>
     <header>
         <nav>
-            <div class="logo" style="display: flex; align-items: center; gap: 8px;">
+            <div class="logo" style="display: flex; align-items: center; gap: 8px; animation: fadeInLeft 1s ease forwards;">
                 <img src="assets/inove_dev.png" alt="Inove Dev Logo" style="height: 40px; width: auto;">
                 <span>Inove Dev</span>
             </div>
             <ul>
-                <li><a href="#home">Home</a></li>
-                <li><a href="#sobre">Sobre</a></li>
-                <li><a href="#servicos">Serviços</a></li>
-                <li><a href="#contato">Contato</a></li>
+                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.2s; opacity: 0;"><a href="#home">Home</a></li>
+                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.4s; opacity: 0;"><a href="#sobre">Sobre</a></li>
+                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.6s; opacity: 0;"><a href="#servicos">Serviços</a></li>
+                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.8s; opacity: 0;"><a href="#contato">Contato</a></li>
             </ul>
         </nav>
     </header>
 
     <section id="home" class="hero">
+        <div class="light-beam"></div>
         <div class="hero-content">
             <h1>Transformamos sua ideia em presença digital</h1>
             <p>Desenvolvemos sites modernos, rápidos e funcionais para impulsionar seu negócio.</p>
@@ -162,7 +163,6 @@
 </form>
         <div class="contact-info">
             <a href="https://wa.me/5581989035561"><i class="fab fa-whatsapp"></i> WhatsApp</a>
-            <a href="https://wa.me/5581989035561" class="btn-whatsapp"><i class="fab fa-whatsapp"></i> Enviar Mensagem no WhatsApp</a>
             <a href="#"><i class="fab fa-facebook"></i> Facebook</a>
             <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
