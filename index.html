@@ -189,5 +189,39 @@
     </footer>
 
     <script src="js/script.js"></script>
+<!-- Tawk.to Chat Widget - InoveDev -->
+<script type="text/javascript">
+var Tawk_API = Tawk_API || {};
+var Tawk_LoadStart = new Date();
+
+Tawk_API.onLoad = function() {
+    Tawk_API.setAttributes({language: 'pt'});
+    // Configurações de estilo do widget (paleta azul escura)
+    Tawk_API.setAttributes({
+        'widget-color': '#0D1B3D',       // cabeçalho azul escuro
+        'widget-text-color': '#FFFFFF',  // texto do cabeçalho
+        'button-color': '#1A2B5D',       // botão enviar
+        'button-text-color': '#FFFFFF'   // texto do botão
+    }, function(error){
+        if(error) console.log(error);
+    });
+
+    // Mensagem inicial do Base Prompt da InoveDev
+    Tawk_API.addEvent('onChatStarted', function(){
+        Tawk_API.setStatus('Olá 👋, sou o assistente virtual da InoveDev! Posso te ajudar a conhecer nossos serviços ou preparar um orçamento rápido.');
+    });
+};
+
+// Script do Tawk.to
+(function() {
+    var s1 = document.createElement("script"),
+        s0 = document.getElementsByTagName("script")[0];
+    s1.async = true;
+    s1.src = 'https://embed.tawk.to/68c6c8ac242109192a3134f0/1j547vp7a';
+    s1.charset = 'UTF-8';
+    s1.setAttribute('crossorigin', '*');
+    s0.parentNode.insertBefore(s1, s0);
+})();
+</script>
 </body>
 </html>
