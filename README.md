@@ -3,7 +3,7 @@
 Transformamos sua ideia em presença digital.  
 Este é o site institucional da **Inove Dev**, empresa especializada na criação de **sites**, **e-commerce** e **soluções digitais modernas**.
 
-🔗 **Demo Online:** [inovedev.netlify.app](https://inovedev.netlify.app/)
+🔗 **Site Online:** [inovedev.netlify.app](https://inovedev.netlify.app/)
 
 ---
 
