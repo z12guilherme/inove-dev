@@ -1,3 +1,13 @@
+// Easter Egg: Console Log Message for developers
+console.log(
+    "%cE aí, dev! 👋 Curioso para ver como as coisas funcionam por aqui?",
+    "color: #00C7B7; font-size: 20px; font-weight: bold;"
+);
+console.log(
+    "%cNosso código é feito com a mesma paixão que colocamos em nossos projetos. Dê uma olhada! 😉",
+    "font-size: 16px;"
+);
+
 // Script para envio de mensagem via WhatsApp
 
 const form = document.getElementById('contactForm');
@@ -245,3 +255,34 @@ const restartGame = () => {
 
 cells.forEach(cell => cell.addEventListener('click', handlePlayerMove));
 restartButton.addEventListener('click', restartGame);
+
+// Easter Egg: Konami Code
+const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
+let konamiIndex = 0;
+
+document.addEventListener('keyup', (e) => {
+    // Use e.key for modern browsers
+    if (e.key === konamiCode[konamiIndex]) {
+        konamiIndex++;
+        if (konamiIndex === konamiCode.length) {
+            konamiIndex = 0; // Reset for next time
+            activatePartyMode();
+        }
+    } else {
+        // Reset if the wrong key is pressed
+        konamiIndex = 0;
+    }
+});
+
+function activatePartyMode() {
+    const partyFeedback = document.createElement('div');
+    partyFeedback.textContent = '🎉 Konami Code Ativado! 🎉';
+    partyFeedback.className = 'konami-feedback';
+    document.body.appendChild(partyFeedback);
+    document.body.classList.add('party-mode');
+    
+    setTimeout(() => {
+        document.body.classList.remove('party-mode');
+        document.body.removeChild(partyFeedback);
+    }, 4000); // Party mode lasts for 4 seconds
+}
