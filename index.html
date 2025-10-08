@@ -11,6 +11,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="css/game.css">
     
 </head>
 <body>
@@ -174,7 +175,27 @@
             <a href="#"><i class="fab fa-instagram"></i> Instagram</a>
         </div>
         <div class="map">
-            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3936.011927927927!2d-36.71234568477544!3d-8.267890592345678!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7bcae1f2a1234567%3A0x123456789abcdef0!2sRUA%20SILVESTRE%20PACHECO%20LINS%2C%20100%20-%20Santo%20Antonio%2C%20Belo%20Jardim%20-%20PE%2C%2055440-000%2C%20Brazil!5e0!3m2!1sen!2sbr!4v1680000000000!5m2!1sen!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63056.30993581729!2d-36.45495874168729!3d-8.33604991199516!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x7a8173da50d1d67%3A0x81f7d54f03c2716d!2sBelo%20Jardim%20-%20PE!5e0!3m2!1spt-BR!2sbr!4v1672602950000!5m2!1spt-BR!2sbr" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+        </div>
+    </section>
+
+    <section id="game-section" class="game-section">
+        <h2>Que tal um desafio?</h2>
+        <p class="game-subtitle">Um pequeno jogo para mostrar o que o JavaScript pode fazer.</p>
+        <div class="tic-tac-toe">
+            <div id="gameStatus" class="game-status">Vez do jogador X</div>
+            <div id="gameBoard" class="game-board">
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+                <div class="cell" data-cell></div>
+            </div>
+            <button id="restartButton" class="cta-button">Reiniciar Jogo</button>
         </div>
     </section>
 

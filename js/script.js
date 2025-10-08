@@ -109,3 +109,139 @@ window.addEventListener('scroll', () => {
 // Set current year in footer
 const yearSpan = document.getElementById('currentYear');
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
+
+// Card hover glow effect
+document.querySelectorAll('.card, .service').forEach(card => {
+    card.addEventListener('mousemove', e => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        card.style.setProperty('--x', `${x}px`);
+        card.style.setProperty('--y', `${y}px`);
+    });
+});
+
+// Tic-Tac-Toe Game Logic
+const gameBoard = document.getElementById('gameBoard');
+const gameStatus = document.getElementById('gameStatus');
+const restartButton = document.getElementById('restartButton');
+const cells = document.querySelectorAll('[data-cell]');
+
+const PLAYER_X = 'X';
+const PLAYER_O = 'O'; // Bot
+let isGameActive = true;
+let currentPlayer = PLAYER_X;
+let gameState = ["", "", "", "", "", "", "", "", ""];
+
+const winningConditions = [
+    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
+    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
+    [0, 4, 8], [2, 4, 6]             // Diagonals
+];
+
+const handlePlayerMove = (e) => {
+    const clickedCell = e.target;
+    const clickedCellIndex = Array.from(cells).indexOf(clickedCell);
+
+    // Allow move only if it's player's turn, cell is empty, and game is active
+    if (currentPlayer !== PLAYER_X || gameState[clickedCellIndex] !== "" || !isGameActive) {
+        return;
+    }
+
+    updateCell(clickedCell, clickedCellIndex);
+
+    if (isGameActive) {
+        currentPlayer = PLAYER_O;
+        gameStatus.textContent = "Bot está pensando...";
+        // Disable board during bot's turn
+        gameBoard.style.pointerEvents = 'none'; 
+        setTimeout(botMove, 1000); // Bot plays after 1 second
+    }
+};
+
+const updateCell = (cell, index) => {
+    gameState[index] = currentPlayer;
+    cell.textContent = currentPlayer;
+    checkResult();
+};
+
+const checkResult = () => {
+    let roundWon = false;
+    for (let i = 0; i < winningConditions.length; i++) {
+        const [a, b, c] = winningConditions[i];
+        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
+            roundWon = true;
+            break;
+        }
+    }
+
+    if (roundWon) {
+        gameStatus.textContent = currentPlayer === PLAYER_X ? "Você venceu!" : "O Bot venceu!";
+        isGameActive = false;
+        return;
+    }
+
+    if (!gameState.includes("")) {
+        gameStatus.textContent = "Empate!";
+        isGameActive = false;
+        return;
+    }
+};
+
+const botMove = () => {
+    if (!isGameActive) return;
+
+    let move = -1;
+
+    // 1. Check for a winning move for the bot
+    for (const condition of winningConditions) {
+        const [a, b, c] = condition;
+        if (gameState[a] === PLAYER_O && gameState[b] === PLAYER_O && gameState[c] === "") move = c;
+        else if (gameState[a] === PLAYER_O && gameState[c] === PLAYER_O && gameState[b] === "") move = b;
+        else if (gameState[b] === PLAYER_O && gameState[c] === PLAYER_O && gameState[a] === "") move = a;
+        if (move !== -1) break;
+    }
+
+    // 2. Check to block the player's winning move
+    if (move === -1) {
+        for (const condition of winningConditions) {
+            const [a, b, c] = condition;
+            if (gameState[a] === PLAYER_X && gameState[b] === PLAYER_X && gameState[c] === "") move = c;
+            else if (gameState[a] === PLAYER_X && gameState[c] === PLAYER_X && gameState[b] === "") move = b;
+            else if (gameState[b] === PLAYER_X && gameState[c] === PLAYER_X && gameState[a] === "") move = a;
+            if (move !== -1) break;
+        }
+    }
+
+    // 3. If no strategic move, pick a random available cell
+    if (move === -1) {
+        const emptyCells = gameState.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
+        if (emptyCells.length > 0) {
+            const randomIndex = Math.floor(Math.random() * emptyCells.length);
+            move = emptyCells[randomIndex];
+        }
+    }
+
+    if (move !== -1) {
+        const cellToUpdate = cells[move];
+        updateCell(cellToUpdate, move);
+    }
+
+    if (isGameActive) {
+        currentPlayer = PLAYER_X;
+        gameStatus.textContent = "Sua vez";
+        gameBoard.style.pointerEvents = 'auto'; // Re-enable board
+    }
+};
+
+const restartGame = () => {
+    isGameActive = true;
+    currentPlayer = PLAYER_X;
+    gameState = ["", "", "", "", "", "", "", "", ""];
+    gameStatus.textContent = "Sua vez";
+    cells.forEach(cell => cell.textContent = "");
+    gameBoard.style.pointerEvents = 'auto';
+};
+
+cells.forEach(cell => cell.addEventListener('click', handlePlayerMove));
+restartButton.addEventListener('click', restartGame);
