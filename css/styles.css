@@ -19,7 +19,7 @@ h1, h3 {
 h2 {
     font-family: 'Montserrat', sans-serif;
     font-weight: 700;
-    color: #ddd
+    color: #0D1B2A; /* Changed for better contrast */
 }
 
 /* Header */
@@ -69,15 +69,24 @@ nav ul {
 nav ul li {
     margin-left: 2rem;
 }
+nav ul li {
+    opacity: 0; /* Start hidden for animation */
+    animation: fadeInRight 0.8s ease forwards; /* Apply animation */
+}
+nav ul li:nth-child(1) { animation-delay: 0.2s; }
+nav ul li:nth-child(2) { animation-delay: 0.4s; }
+nav ul li:nth-child(3) { animation-delay: 0.6s; }
+nav ul li:nth-child(4) { animation-delay: 0.8s; }
 
 nav ul li a {
     color: #fff;
     text-decoration: none;
     transition: color 0.3s;
+    white-space: nowrap; /* Prevent wrapping on smaller screens */
 }
 
 nav ul li a:hover {
-    color: #000000;
+    color: #00C7B7; /* Changed for better visibility on dark background */
 }
 
 /* Hero Section */
@@ -123,7 +132,7 @@ nav ul li a:hover {
     pointer-events: none;
     z-index: 0;
     transition: transform 0.1s ease-out;
-    display: none; /* Hide light beam as WhatsApp button was removed */
+    display: block; /* Changed from display: none; to make it visible */
 }
 
 .hero h1 {
@@ -186,7 +195,7 @@ section h2 {
     text-align: center;
     font-size: 2.5rem;
     margin-bottom: 3rem;
-    color: #000;
+    color: #0D1B2A; /* Unifying h2 color on light backgrounds */
 }
 
 /* Diferenciais */
@@ -204,6 +213,11 @@ section h2 {
     box-shadow: 0 5px 15px rgba(0,0,0,0.1);
     transition: transform 0.3s, box-shadow 0.3s;
 }
+
+.card:hover i {
+    animation: icon-swing 0.6s ease;
+}
+
 
 .card:hover {
     transform: translateY(-10px);
@@ -237,6 +251,7 @@ section h2 {
     width: 100%;
     height: 200px;
     object-fit: cover;
+    transition: transform 0.4s ease;
 }
 
 .overlay {
@@ -259,11 +274,11 @@ section h2 {
     opacity: 1;
 }
 
-/* Depoimentos */
-.depoimentos h2 {
-    color: #000;
+.project:hover img {
+    transform: scale(1.1);
 }
 
+/* Depoimentos */
 .depoimentos .testimonials {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
@@ -336,6 +351,11 @@ section h2 {
     transition: transform 0.3s;
 }
 
+.service:hover i {
+    animation: icon-swing 0.6s ease;
+}
+
+
 .service:hover {
     transform: translateY(-5px);
 }
@@ -404,6 +424,14 @@ section h2 {
     border: 1px solid #ddd;
     border-radius: 5px;
     font-family: 'Inter', sans-serif;
+    transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+.contato input:focus,
+.contato textarea:focus {
+    border-color: #0D1B2A;
+    box-shadow: 0 0 8px rgba(13, 27, 42, 0.3);
+    outline: none;
 }
 
 .contato textarea {
@@ -458,7 +486,7 @@ footer {
 }
 
 .footer-content .links a:hover {
-    color: #000000;
+    color: #00C7B7; /* Better hover color on dark background */
 }
 
 .footer-content .social {
@@ -473,7 +501,7 @@ footer {
 }
 
 .footer-content .social a:hover {
-    color: #000000;
+    color: #00C7B7; /* Better hover color on dark background */
 }
 
 /* Animations */
@@ -537,26 +565,40 @@ footer {
     }
 }
 
+@keyframes icon-swing {
+    20% { transform: rotate(15deg); }
+    40% { transform: rotate(-10deg); }
+    60% { transform: rotate(5deg); }
+    80% { transform: rotate(-5deg); }
+    100% { transform: rotate(0deg); }
+}
+
 /* Scroll Animations */
-.diferenciais.animate {
-    animation: fadeInLeft 1s ease-out;
+/* Staggered animation for cards and services */
+.animate .card,
+.animate .service {
+    opacity: 0;
+    transform: translateY(30px);
+    animation: fadeInUp 0.8s ease-out forwards;
 }
 
-.portfolio.animate {
-    animation: fadeInRight 1s ease-out;
+.animate .card:nth-child(1), .animate .service:nth-child(1) { animation-delay: 0.1s; }
+.animate .card:nth-child(2), .animate .service:nth-child(2) { animation-delay: 0.2s; }
+.animate .card:nth-child(3), .animate .service:nth-child(3) { animation-delay: 0.3s; }
+.animate .card:nth-child(4), .animate .service:nth-child(4) { animation-delay: 0.4s; }
+
+/* General section animations */
+.portfolio.animate,
+.sobre.animate {
+    animation: fadeInLeft 1s ease-out; /* Keep some sections animating as a whole */
 }
 
-.depoimentos.animate {
+.depoimentos.animate,
+.video-section.animate {
     animation: fadeInUp 1s ease-out;
 }
 
-.sobre.animate {
-    animation: fadeInLeft 1s ease-out;
-}
 
-.servicos.animate {
-    animation: fadeInRight 1s ease-out;
-}
 
 .contato.animate {
     animation: fadeInUp 1s ease-out;
@@ -604,7 +646,8 @@ footer {
     }
 
     nav ul {
-        display: none; /* Simple mobile menu, can be improved */
+        /* Consider implementing a proper hamburger menu for mobile */
+        /* For now, the existing flex behavior will stack items if space is limited */
     }
 
     .sobre .content {

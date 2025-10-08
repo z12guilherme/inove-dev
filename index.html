@@ -11,21 +11,20 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400&family=Montserrat:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     <link rel="stylesheet" href="css/styles.css">
-    <script src="https://unpkg.com/scrollreveal"></script>
     
 </head>
 <body>
-    <header>
+    <header class="animated-header">
         <nav>
-            <div class="logo" style="display: flex; align-items: center; gap: 8px; animation: fadeInLeft 1s ease forwards;">
+            <div class="logo">
                 <img src="assets/inove_dev.png" alt="Inove Dev Logo" style="height: 40px; width: auto;">
                 <span>Inove Dev</span>
             </div>
-            <ul>
-                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.2s; opacity: 0;"><a href="#home">Home</a></li>
-                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.4s; opacity: 0;"><a href="#sobre">Sobre</a></li>
-                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.6s; opacity: 0;"><a href="#servicos">Serviços</a></li>
-                <li style="animation: fadeInRight 0.8s ease forwards; animation-delay: 0.8s; opacity: 0;"><a href="#contato">Contato</a></li>
+            <ul class="nav-menu">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#sobre">Sobre</a></li>
+                <li><a href="#servicos">Serviços</a></li>
+                <li><a href="#contato">Contato</a></li>
             </ul>
         </nav>
     </header>
@@ -74,11 +73,19 @@
         <h2>Portfólio</h2>
         <div class="slider">
             <div class="project">
-                <img src="assets/logo.jpg" alt="Projeto 1">
+                <img src="assets/logo.jpg" alt="Projeto Empório Paraibano">
                 <div class="overlay">
                     <h3>Site Comercial</h3>
                     <p>Desenvolvimento de site para loja de Temperos</p>
                     <a href="https://emporioparaibano.netlify.app">Ver Detalhes</a>
+                </div>
+            </div>
+            <div class="project">
+                <img src="assets/gestao_atipicos.png" alt="Projeto Gestão Atípicos">
+                <div class="overlay">
+                    <h3>Gestão Atípicos</h3>
+                    <p>Sistema de gestão para casos atípicos</p>
+                    <a href="https://gestao-atipicos.vercel.app/" target="_blank">Ver Detalhes</a>
                 </div>
             </div>
         </div>
@@ -88,7 +95,7 @@
         <h2>Depoimentos</h2>
         <div class="testimonials">
             <div class="testimonial">
-                <img src="assets/foto.jpg" alt="Cliente 1">
+                <img src="https://placehold.co/80x80/0D1B2A/FFF?text=DP" alt="Foto de Daniele Oliveira">
                 <p>"Excelente trabalho! O site ficou incrível e aumentou nossas vendas."</p>
                 <cite>Daniele Oliveira, CEO Emporio Paraibano</cite>
             </div>
@@ -101,7 +108,7 @@
         <a href="https://wa.me/5581989035561" class="cta-button">Falar no WhatsApp</a>
     </section>
 
-    <section id="video" class="video-section">
+    <section id="video" class="video-section" data-sr-id="1" style="visibility: visible; opacity: 1; transform: matrix3d(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1); transition: opacity 1s ease-out 0s, transform 1s ease-out 0s;">
         <h2>Porque escolher a Inove Dev?</h2>
         <iframe width="560" height="315" src="https://www.youtube.com/embed/uc2ahFcT-ro" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen style="max-width: 100%; display: block; margin: 0 auto;"></iframe>
     </section>
@@ -184,12 +191,11 @@
                 <a href="#"><i class="fab fa-instagram"></i></a>
                 <a href="#"><i class="fab fa-linkedin"></i></a>
             </div>
-            <p>&copy; 2025 Inove Dev. Todos os direitos reservados.</p>
+            <p>&copy; <span id="currentYear"></span> Inove Dev. Todos os direitos reservados.</p>
         </div>
     </footer>
 
     <script src="js/script.js"></script>
-<!-- Tawk.to Chat Widget - InoveDev -->
 <script type="text/javascript">
 var Tawk_API = Tawk_API || {};
 var Tawk_LoadStart = new Date();

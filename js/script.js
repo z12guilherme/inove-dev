@@ -10,6 +10,10 @@ function enviarMensagemWhatsApp(mensagem) {
     window.open(whatsappUrl, '_blank');
     feedback.textContent = '✅ Mensagem preparada para WhatsApp!';
     feedback.style.color = 'green';
+    // Clear feedback after 5 seconds
+    setTimeout(() => {
+        feedback.textContent = '';
+    }, 5000);
 }
 
 // Clique no botão principal "Enviar Mensagem"
@@ -85,24 +89,7 @@ document.querySelectorAll('section').forEach(section => {
 // Back to top button
 const backToTopBtn = document.createElement('button');
 backToTopBtn.innerHTML = '↑';
-backToTopBtn.className = 'back-to-top';
-backToTopBtn.style.cssText = `
-    position: fixed;
-    bottom: 20px;
-    right: 20px;
-    background: #000;
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0;
-    visibility: hidden;
-    transition: all 0.3s;
-    z-index: 1000;
-`;
+backToTopBtn.className = 'back-to-top'; // Class already has styles in styles.css
 document.body.appendChild(backToTopBtn);
 
 backToTopBtn.addEventListener('click', () => {
@@ -118,3 +105,7 @@ window.addEventListener('scroll', () => {
         backToTopBtn.style.visibility = 'hidden';
     }
 });
+
+// Set current year in footer
+const yearSpan = document.getElementById('currentYear');
+if (yearSpan) yearSpan.textContent = new Date().getFullYear();
