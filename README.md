@@ -38,7 +38,7 @@ Copiar código
 ---
 
 ## 📸 Preview
-![preview](assets/inove_dev.png)
+![preview](assets/logo.png)
 
 ---
 
