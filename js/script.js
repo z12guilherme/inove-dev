@@ -113,130 +113,108 @@ window.addEventListener('scroll', () => {
 const yearSpan = document.getElementById('currentYear');
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
 
-// Tic-Tac-Toe Game Logic
-const gameBoard = document.getElementById('gameBoard');
-const gameStatus = document.getElementById('gameStatus');
+// Memory Game Logic
+const memoryGame = document.getElementById('memoryGame');
 const restartButton = document.getElementById('restartButton');
-const cells = document.querySelectorAll('[data-cell]');
+const movesDisplay = document.getElementById('moves');
 
-const PLAYER_X = 'X';
-const PLAYER_O = 'O'; // Bot
-let isGameActive = true;
-let currentPlayer = PLAYER_X;
-let gameState = ["", "", "", "", "", "", "", "", ""];
-
-const winningConditions = [
-    [0, 1, 2], [3, 4, 5], [6, 7, 8], // Rows
-    [0, 3, 6], [1, 4, 7], [2, 5, 8], // Columns
-    [0, 4, 8], [2, 4, 6]             // Diagonals
+const cardsData = [
+    { name: 'html', icon: 'fa-brands fa-html5' },
+    { name: 'css', icon: 'fa-brands fa-css3-alt' },
+    { name: 'js', icon: 'fa-brands fa-js' },
+    { name: 'nodejs', icon: 'fa-brands fa-node-js' },
+    { name: 'supabase', icon: 'fa-solid fa-database' },
+    { name: 'react', icon: 'fa-brands fa-react' },
+    { name: 'vite', icon: 'fa-solid fa-bolt' }
 ];
 
-const handlePlayerMove = (e) => {
-    const clickedCell = e.target;
-    const clickedCellIndex = Array.from(cells).indexOf(clickedCell);
+let cards = [];
+let hasFlippedCard = false;
+let lockBoard = false;
+let firstCard, secondCard;
+let moves = 0;
+let matches = 0;
 
-    // Allow move only if it's player's turn, cell is empty, and game is active
-    if (currentPlayer !== PLAYER_X || gameState[clickedCellIndex] !== "" || !isGameActive) {
+function initGame() {
+    memoryGame.innerHTML = '';
+    moves = 0;
+    matches = 0;
+    movesDisplay.textContent = moves;
+    
+    // Duplicate array to create pairs and shuffle
+    cards = [...cardsData, ...cardsData];
+    cards.sort(() => 0.5 - Math.random());
+
+    cards.forEach(card => {
+        const cardElement = document.createElement('div');
+        cardElement.classList.add('memory-card');
+        cardElement.dataset.framework = card.name;
+        
+        cardElement.innerHTML = `
+            <div class="front-face"><i class="${card.icon}"></i></div>
+            <div class="back-face"><i class="bi bi-question-lg"></i></div>
+        `;
+        
+        cardElement.addEventListener('click', flipCard);
+        memoryGame.appendChild(cardElement);
+    });
+}
+
+function flipCard() {
+    if (lockBoard) return;
+    if (this === firstCard) return;
+
+    this.classList.add('flip');
+
+    if (!hasFlippedCard) {
+        hasFlippedCard = true;
+        firstCard = this;
         return;
     }
 
-    updateCell(clickedCell, clickedCellIndex);
+    secondCard = this;
+    moves++;
+    movesDisplay.textContent = moves;
+    checkForMatch();
+}
 
-    if (isGameActive) {
-        currentPlayer = PLAYER_O;
-        gameStatus.textContent = "Bot está pensando...";
-        // Disable board during bot's turn
-        gameBoard.style.pointerEvents = 'none'; 
-        setTimeout(botMove, 1000); // Bot plays after 1 second
+function checkForMatch() {
+    let isMatch = firstCard.dataset.framework === secondCard.dataset.framework;
+    isMatch ? disableCards() : unflipCards();
+}
+
+function disableCards() {
+    firstCard.removeEventListener('click', flipCard);
+    secondCard.removeEventListener('click', flipCard);
+    matches++;
+    if(matches === cardsData.length) {
+        setTimeout(() => alert(`Parabéns! Você completou em ${moves} movimentos.`), 500);
     }
-};
+    resetBoard();
+}
 
-const updateCell = (cell, index) => {
-    gameState[index] = currentPlayer;
-    cell.textContent = currentPlayer;
-    checkResult();
-};
+function unflipCards() {
+    lockBoard = true;
+    setTimeout(() => {
+        firstCard.classList.remove('flip');
+        secondCard.classList.remove('flip');
+        resetBoard();
+    }, 1000);
+}
 
-const checkResult = () => {
-    let roundWon = false;
-    for (let i = 0; i < winningConditions.length; i++) {
-        const [a, b, c] = winningConditions[i];
-        if (gameState[a] && gameState[a] === gameState[b] && gameState[a] === gameState[c]) {
-            roundWon = true;
-            break;
-        }
-    }
+function resetBoard() {
+    [hasFlippedCard, lockBoard] = [false, false];
+    [firstCard, secondCard] = [null, null];
+}
 
-    if (roundWon) {
-        gameStatus.textContent = currentPlayer === PLAYER_X ? "Você venceu!" : "O Bot venceu!";
-        isGameActive = false;
-        return;
-    }
+if (restartButton) {
+    restartButton.addEventListener('click', initGame);
+}
 
-    if (!gameState.includes("")) {
-        gameStatus.textContent = "Empate!";
-        isGameActive = false;
-        return;
-    }
-};
-
-const botMove = () => {
-    if (!isGameActive) return;
-
-    let move = -1;
-
-    // 1. Check for a winning move for the bot
-    for (const condition of winningConditions) {
-        const [a, b, c] = condition;
-        if (gameState[a] === PLAYER_O && gameState[b] === PLAYER_O && gameState[c] === "") move = c;
-        else if (gameState[a] === PLAYER_O && gameState[c] === PLAYER_O && gameState[b] === "") move = b;
-        else if (gameState[b] === PLAYER_O && gameState[c] === PLAYER_O && gameState[a] === "") move = a;
-        if (move !== -1) break;
-    }
-
-    // 2. Check to block the player's winning move
-    if (move === -1) {
-        for (const condition of winningConditions) {
-            const [a, b, c] = condition;
-            if (gameState[a] === PLAYER_X && gameState[b] === PLAYER_X && gameState[c] === "") move = c;
-            else if (gameState[a] === PLAYER_X && gameState[c] === PLAYER_X && gameState[b] === "") move = b;
-            else if (gameState[b] === PLAYER_X && gameState[c] === PLAYER_X && gameState[a] === "") move = a;
-            if (move !== -1) break;
-        }
-    }
-
-    // 3. If no strategic move, pick a random available cell
-    if (move === -1) {
-        const emptyCells = gameState.map((val, idx) => val === "" ? idx : null).filter(val => val !== null);
-        if (emptyCells.length > 0) {
-            const randomIndex = Math.floor(Math.random() * emptyCells.length);
-            move = emptyCells[randomIndex];
-        }
-    }
-
-    if (move !== -1) {
-        const cellToUpdate = cells[move];
-        updateCell(cellToUpdate, move);
-    }
-
-    if (isGameActive) {
-        currentPlayer = PLAYER_X;
-        gameStatus.textContent = "Sua vez";
-        gameBoard.style.pointerEvents = 'auto'; // Re-enable board
-    }
-};
-
-const restartGame = () => {
-    isGameActive = true;
-    currentPlayer = PLAYER_X;
-    gameState = ["", "", "", "", "", "", "", "", ""];
-    gameStatus.textContent = "Sua vez";
-    cells.forEach(cell => cell.textContent = "");
-    gameBoard.style.pointerEvents = 'auto';
-};
-
-cells.forEach(cell => cell.addEventListener('click', handlePlayerMove));
-restartButton.addEventListener('click', restartGame);
+// Initialize game on load
+if (memoryGame) {
+    initGame();
+}
 
 // Easter Egg: Konami Code
 const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
