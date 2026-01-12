@@ -279,6 +279,10 @@ function startMatrixEffect() {
 
     const interval = setInterval(draw, 33);
 
+    // Áudio Secreto (Código Morse)
+    const audio = new Audio('assets/audio_morse.wav');
+    audio.play().catch(e => console.log("Áudio bloqueado pelo navegador (necessário interação):", e));
+
     // Mensagem Final
     const msg = document.createElement('div');
     msg.style.position = 'fixed';
@@ -295,7 +299,7 @@ function startMatrixEffect() {
     msg.style.background = 'rgba(0,0,0,0.8)';
     msg.style.padding = '20px';
     msg.style.border = '2px solid #0F0';
-    msg.innerHTML = 'CONGRATULATIONS,<br>YOU ARE END OF THE SECURITY GAME';
+    msg.innerHTML = 'CONGRATULATIONS,<br>YOU ARE END OF THE SECURITY GAME<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">[!] Dica: O áudio não é por acaso HAHAHA</span>';
     document.body.appendChild(msg);
 
     // Remove o efeito após 15 segundos
@@ -303,6 +307,8 @@ function startMatrixEffect() {
         clearInterval(interval);
         document.body.removeChild(canvas);
         document.body.removeChild(msg);
+        audio.pause();
+        audio.currentTime = 0;
     }, 15000);
 }
 
