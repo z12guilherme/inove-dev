@@ -32,8 +32,14 @@ inovedev/
 ├── assets/ # Imagens, logos e mídias
 └── README.md # Documentação
 
-yaml
-Copiar código
+---
+
+## 🕵️‍♂️ Protocolo Ghost (CTF)
+Este projeto não é apenas uma vitrine... é um **enigma**.
+
+Implementamos um sistema de **Capture The Flag (CTF)** escondido na aplicação. Há terminais, diretórios ocultos (`/admin`), hashes MD5 para quebrar e mensagens esteganografadas em áudio.
+
+> *Siga o coelho branco. Inspecione o elemento. Quebre a criptografia.* 🐇
 
 ---
 
