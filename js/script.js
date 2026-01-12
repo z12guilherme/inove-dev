@@ -226,7 +226,7 @@ document.addEventListener('keyup', (e) => {
         konamiIndex++;
         if (konamiIndex === konamiCode.length) {
             konamiIndex = 0; // Reset for next time
-            activatePartyMode();
+            startMatrixEffect();
         }
     } else {
         // Reset if the wrong key is pressed
@@ -234,17 +234,76 @@ document.addEventListener('keyup', (e) => {
     }
 });
 
-function activatePartyMode() {
-    const partyFeedback = document.createElement('div');
-    partyFeedback.textContent = '🎉 Konami Code Ativado! 🎉';
-    partyFeedback.className = 'konami-feedback';
-    document.body.appendChild(partyFeedback);
-    document.body.classList.add('party-mode');
+function startMatrixEffect() {
+    // Cria o canvas para o efeito Matrix
+    const canvas = document.createElement('canvas');
+    const ctx = canvas.getContext('2d');
     
+    canvas.style.position = 'fixed';
+    canvas.style.top = '0';
+    canvas.style.left = '0';
+    canvas.style.width = '100%';
+    canvas.style.height = '100%';
+    canvas.style.zIndex = '9998';
+    canvas.style.pointerEvents = 'none';
+    canvas.style.background = 'black';
+    document.body.appendChild(canvas);
+
+    canvas.width = window.innerWidth;
+    canvas.height = window.innerHeight;
+
+    const letters = '0101010101010101';
+    const fontSize = 16;
+    const columns = canvas.width / fontSize;
+    
+    const drops = [];
+    for(let i = 0; i < columns; i++) drops[i] = 1;
+
+    function draw() {
+        ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+        
+        ctx.fillStyle = '#0F0';
+        ctx.font = fontSize + 'px monospace';
+        
+        for(let i = 0; i < drops.length; i++) {
+            const text = letters.charAt(Math.floor(Math.random() * letters.length));
+            ctx.fillText(text, i * fontSize, drops[i] * fontSize);
+            
+            if(drops[i] * fontSize > canvas.height && Math.random() > 0.975)
+                drops[i] = 0;
+            
+            drops[i]++;
+        }
+    }
+
+    const interval = setInterval(draw, 33);
+
+    // Mensagem Final
+    const msg = document.createElement('div');
+    msg.style.position = 'fixed';
+    msg.style.top = '50%';
+    msg.style.left = '50%';
+    msg.style.transform = 'translate(-50%, -50%)';
+    msg.style.color = '#0F0';
+    msg.style.fontFamily = 'Courier New, monospace';
+    msg.style.fontSize = '2rem';
+    msg.style.fontWeight = 'bold';
+    msg.style.textAlign = 'center';
+    msg.style.zIndex = '9999';
+    msg.style.textShadow = '0 0 10px #00ff00';
+    msg.style.background = 'rgba(0,0,0,0.8)';
+    msg.style.padding = '20px';
+    msg.style.border = '2px solid #0F0';
+    msg.innerHTML = 'CONGRATULATIONS,<br>YOU ARE END OF THE SECURITY GAME';
+    document.body.appendChild(msg);
+
+    // Remove o efeito após 15 segundos
     setTimeout(() => {
-        document.body.classList.remove('party-mode');
-        document.body.removeChild(partyFeedback);
-    }, 4000); // Party mode lasts for 4 seconds
+        clearInterval(interval);
+        document.body.removeChild(canvas);
+        document.body.removeChild(msg);
+    }, 15000);
 }
 
 // Integração Tawk.to com Formulário de Contato
@@ -303,9 +362,8 @@ if (ctfSubmit) {
     ctfSubmit.addEventListener('click', () => {
         const attempt = ctfInput.value.toLowerCase().trim();
         if (attempt === currentChallenge.word) {
-            ctfFeedback.textContent = '> ACESSO CONCEDIDO! DIRETÓRIO DESBLOQUEADO.';
+            ctfFeedback.innerHTML = '> ACESSO CONCEDIDO!<br>> CÓDIGO SECRETO: ↑ ↑ ↓ ↓ ← → ← → B A';
             ctfFeedback.style.color = '#00ff00';
-            activatePartyMode(); // Reusa o efeito de confete
         } else {
             ctfFeedback.textContent = '> ACESSO NEGADO. SENHA INCORRETA.';
             ctfFeedback.style.color = 'red';
