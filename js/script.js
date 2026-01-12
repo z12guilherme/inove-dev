@@ -220,17 +220,21 @@ if (memoryGame) {
 const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
 let konamiIndex = 0;
 
-document.addEventListener('keyup', (e) => {
-    // Use e.key for modern browsers
-    if (e.key === konamiCode[konamiIndex]) {
+document.addEventListener('keydown', (e) => {
+    // Normaliza para minúsculo para funcionar com Caps Lock ou Shift
+    const key = e.key.toLowerCase();
+    const expected = konamiCode[konamiIndex].toLowerCase();
+
+    if (key === expected) {
         konamiIndex++;
         if (konamiIndex === konamiCode.length) {
             konamiIndex = 0; // Reset for next time
             startMatrixEffect();
         }
     } else {
-        // Reset if the wrong key is pressed
         konamiIndex = 0;
+        // Se errou mas digitou a primeira tecla (ArrowUp), já conta como início
+        if (key === 'arrowup') konamiIndex = 1;
     }
 });
 
