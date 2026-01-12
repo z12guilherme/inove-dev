@@ -561,3 +561,32 @@ section {
     color: #FFF;
     transform: scale(1.1);
 }
+
+/* Owner Section */
+.owner .content h3 {
+    font-weight: 700;
+    font-size: 28px;
+    color: #2c4964;
+    margin-bottom: 5px;
+}
+
+.owner .content h4 {
+    font-size: 18px;
+    font-weight: 600;
+    color: #00C7B7;
+    margin-bottom: 20px;
+}
+
+.owner .social-links a {
+    font-size: 24px;
+    display: inline-block;
+    background: #fff;
+    color: #2c4964;
+    line-height: 1;
+    margin-right: 15px;
+    transition: 0.3s;
+}
+
+.owner .social-links a:hover {
+    color: #00C7B7;
+}
