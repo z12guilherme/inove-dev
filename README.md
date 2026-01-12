@@ -34,12 +34,14 @@ inovedev/
 
 ---
 
-## 🕵️‍♂️ Protocolo Ghost (CTF)
-Este projeto não é apenas uma vitrine... é um **enigma**.
+## 🕵️‍♂️ Protocolo Ghost (CTF Challenge)
+Este projeto vai além de uma simples landing page. Ele esconde um **Capture The Flag (CTF)** completo para desenvolvedores curiosos.
 
-Implementamos um sistema de **Capture The Flag (CTF)** escondido na aplicação. Há terminais, diretórios ocultos (`/admin`), hashes MD5 para quebrar e mensagens esteganografadas em áudio.
+### 🧩 O Desafio
+O sistema possui camadas de segurança que precisam ser quebradas sequencialmente:
+> *Nada é o que parece. O barulho não é apenas ruído. As imagens não são apenas pixels.* 🐇
 
-> *Siga o coelho branco. Inspecione o elemento. Quebre a criptografia.* 🐇
+**Você consegue chegar ao final e ver a Matrix?**
 
 ---
 
