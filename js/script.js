@@ -64,19 +64,6 @@ if (btnEnviarMensagem) {
     });
 }
 
-// Light beam following mouse in hero section
-const hero = document.querySelector('.hero');
-const lightBeam = document.querySelector('.light-beam');
-
-if (hero && lightBeam) {
-    hero.addEventListener('mousemove', (e) => {
-        const rect = hero.getBoundingClientRect();
-        const x = e.clientX - rect.left - 150; // Center the beam (half of 300px)
-        const y = e.clientY - rect.top - 150;
-        lightBeam.style.transform = `translate(${x}px, ${y}px)`;
-    });
-}
-
 // Scroll animations using Intersection Observer
 const observerOptions = {
     threshold: 0.1,
@@ -119,17 +106,6 @@ window.addEventListener('scroll', () => {
 // Set current year in footer
 const yearSpan = document.getElementById('currentYear');
 if (yearSpan) yearSpan.textContent = new Date().getFullYear();
-
-// Card hover glow effect
-document.querySelectorAll('.card, .service').forEach(card => {
-    card.addEventListener('mousemove', e => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        card.style.setProperty('--x', `${x}px`);
-        card.style.setProperty('--y', `${y}px`);
-    });
-});
 
 // Tic-Tac-Toe Game Logic
 const gameBoard = document.getElementById('gameBoard');
