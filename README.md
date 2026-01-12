@@ -38,6 +38,12 @@ inovedev/
 Este projeto não é apenas uma vitrine... é um **enigma**.
 
 ### 🧩 O Desafio
+Prepare-se para testar suas habilidades em:
+- **Hash MD5** (Criptografia)
+- **Esteganografia** (Análise de Imagens)
+- **OSINT** (Investigação em Fontes Abertas)
+- **Segredos de Interface** (Keyboard Inputs)
+
 > *Nada é o que parece. O barulho não é apenas ruído. As imagens não são apenas pixels.* 🐇
 
 **Você consegue chegar ao final e ver a Matrix?**
