@@ -41,6 +41,21 @@
                     <button id="ctf-submit">LOGIN</button>
                 </div>
                 <div id="ctf-feedback" class="feedback"></div>
+
+                <!-- Nível 2: Esteganografia (Inicialmente Oculto) -->
+                <div id="level-2-container" style="display: none; margin-top: 20px; border-top: 1px dashed #333; padding-top: 20px;">
+                    <p class="output">> NÍVEL 1: OK.</p>
+                    <p class="output">> INICIANDO NÍVEL 2...</p>
+                    <p class="output">> ALVO: <span class="highlight">Identidade Visual (logo.png)</span></p>
+                    <p class="output">> DICA: <span id="stego-hint" class="info">Extraia as coordenadas. A senha está escrita nas colinas.</span></p>
+                    
+                    <div class="input-line">
+                        <span class="prompt">stego_key:</span>
+                        <input type="text" id="stego-input" placeholder="key..." autocomplete="off">
+                        <button id="stego-submit">DECRYPT</button>
+                    </div>
+                    <div id="stego-feedback" class="feedback"></div>
+                </div>
             </div>
         </div>
 

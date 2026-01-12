@@ -216,25 +216,24 @@ if (memoryGame) {
     initGame();
 }
 
-// Easter Egg: Konami Code
-const konamiCode = ['ArrowUp', 'ArrowUp', 'ArrowDown', 'ArrowDown', 'ArrowLeft', 'ArrowRight', 'ArrowLeft', 'ArrowRight', 'b', 'a'];
-let konamiIndex = 0;
+// Easter Egg: Secret Code (Hollywood)
+const secretCode = 'hollywood';
+let secretIndex = 0;
 
 document.addEventListener('keydown', (e) => {
-    // Normaliza para minúsculo para funcionar com Caps Lock ou Shift
     const key = e.key.toLowerCase();
-    const expected = konamiCode[konamiIndex].toLowerCase();
+    const expected = secretCode[secretIndex];
 
     if (key === expected) {
-        konamiIndex++;
-        if (konamiIndex === konamiCode.length) {
-            konamiIndex = 0; // Reset for next time
+        secretIndex++;
+        if (secretIndex === secretCode.length) {
+            secretIndex = 0; // Reset for next time
             startMatrixEffect();
         }
     } else {
-        konamiIndex = 0;
-        // Se errou mas digitou a primeira tecla (ArrowUp), já conta como início
-        if (key === 'arrowup') konamiIndex = 1;
+        secretIndex = 0;
+        // Se errou mas digitou a primeira letra, já conta como início
+        if (key === secretCode[0]) secretIndex = 1;
     }
 });
 
@@ -303,7 +302,7 @@ function startMatrixEffect() {
     msg.style.background = 'rgba(0,0,0,0.8)';
     msg.style.padding = '20px';
     msg.style.border = '2px solid #0F0';
-    msg.innerHTML = 'CONGRATULATIONS,<br>YOU ARE END OF THE SECURITY GAME<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">[!] Dica: O áudio não é por acaso HAHAHA</span>';
+    msg.innerHTML = 'CONGRATULATIONS,<br>YOU HAVE REACHED THE END<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">[!] Transmissão Final: "As imagens guardam segredos"</span>';
     document.body.appendChild(msg);
 
     // Remove o efeito após 15 segundos
@@ -348,8 +347,16 @@ const ctfInput = document.getElementById('ctf-input');
 const ctfSubmit = document.getElementById('ctf-submit');
 const ctfFeedback = document.getElementById('ctf-feedback');
 
+// Elementos do Nível 2 (Esteganografia)
+const level2Container = document.getElementById('level-2-container');
+const stegoInput = document.getElementById('stego-input');
+const stegoSubmit = document.getElementById('stego-submit');
+const stegoFeedback = document.getElementById('stego-feedback');
+
 // Desafio fixo: Pentest (Hash MD5: 46ea1712d4b13b55b3f680cc5b8b54e8)
 const currentChallenge = { word: 'pentest', hash: '46ea1712d4b13b55b3f680cc5b8b54e8' };
+// Desafio Nível 2: Palavra escondida na imagem via Esteganografia
+const stegoChallenge = { word: 'hollywood' };
 
 function initCTF() {
     if (!ctfHashDisplay) return;
@@ -372,14 +379,49 @@ if (ctfSubmit) {
     ctfSubmit.addEventListener('click', () => {
         const attempt = ctfInput.value.toLowerCase().trim();
         if (attempt === currentChallenge.word) {
-            ctfFeedback.innerHTML = '> ACESSO CONCEDIDO!<br>> CÓDIGO SECRETO: ↑ ↑ ↓ ↓ ← → ← → B A';
+            ctfFeedback.innerHTML = '> HASH DECRIPTADO COM SUCESSO.<br>> DESBLOQUEANDO NÍVEL 2...';
             ctfFeedback.style.color = '#00ff00';
+            
+            // Desabilita o input do nível 1
+            ctfInput.disabled = true;
+            ctfSubmit.disabled = true;
+
+            // Revela o nível 2 após um breve delay para efeito dramático
+            setTimeout(() => {
+                level2Container.style.display = 'block';
+                stegoInput.focus();
+            }, 1000);
+
         } else {
             ctfFeedback.textContent = '> ACESSO NEGADO. SENHA INCORRETA.';
             ctfFeedback.style.color = 'red';
         }
     });
     
+    // Lógica do Nível 2
+    if (stegoSubmit) {
+        stegoSubmit.addEventListener('click', () => {
+            const attempt = stegoInput.value.toLowerCase().trim();
+            if (attempt === stegoChallenge.word) {
+                stegoFeedback.innerHTML = '> LOCALIZAÇÃO CONFIRMADA.<br>> ACESSO ROOT CONCEDIDO!<br>> EXECUTANDO PROTOCOLO FINAL...';
+                stegoFeedback.style.color = '#00ff00';
+                stegoFeedback.classList.add('cursor'); // Efeito piscante
+
+                // Zera o desafio automaticamente (Efeito Matrix)
+                setTimeout(() => {
+                    startMatrixEffect();
+                }, 2000);
+            } else {
+                stegoFeedback.textContent = '> CHAVE DECRIPTOGRAFIA INVÁLIDA.';
+                stegoFeedback.style.color = 'red';
+            }
+        });
+
+        stegoInput.addEventListener('keypress', (e) => {
+            if (e.key === 'Enter') stegoSubmit.click();
+        });
+    }
+
     // Permite apertar Enter no input
     ctfInput.addEventListener('keypress', (e) => {
         if (e.key === 'Enter') ctfSubmit.click();
