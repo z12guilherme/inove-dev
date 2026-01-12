@@ -284,7 +284,7 @@ function startMatrixEffect() {
     const interval = setInterval(draw, 33);
 
     // Áudio Secreto (Código Morse)
-    const audio = new Audio('assets/audio_morse.wav');
+    const audio = new Audio('assets/SecretFile.wav');
     audio.play().catch(e => console.log("Áudio bloqueado pelo navegador (necessário interação):", e));
 
     // Mensagem Final

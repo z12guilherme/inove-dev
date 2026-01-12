@@ -3,4 +3,4 @@ Allow: /
 
 # Área Restrita (CTF Challenge)
 Disallow: /admin.html
-Disallow: /assets/audio_morse.wav
+Disallow: /assets/SecretFile.wav
