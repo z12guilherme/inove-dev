@@ -302,7 +302,7 @@ function startMatrixEffect() {
     msg.style.background = 'rgba(0,0,0,0.8)';
     msg.style.padding = '20px';
     msg.style.border = '2px solid #0F0';
-    msg.innerHTML = 'CONGRATULATIONS,<br>YOU HAVE REACHED THE END<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">[!] Transmissão Final: "As imagens guardam segredos"</span>';
+    msg.innerHTML = 'CONGRATULATIONS,<br>YOU HAVE REACHED THE END<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">Parabéns, você chegou ao fim do desafio, envie uma mensagem para o dono com a palavra mais usada no site e receba sua recompensa</span>';
     document.body.appendChild(msg);
 
     // Remove o efeito após 15 segundos
@@ -355,8 +355,8 @@ const stegoFeedback = document.getElementById('stego-feedback');
 
 // Desafio fixo: Pentest (Hash MD5: 46ea1712d4b13b55b3f680cc5b8b54e8)
 const currentChallenge = { word: 'pentest', hash: '46ea1712d4b13b55b3f680cc5b8b54e8' };
-// Desafio Nível 2: Palavra escondida na imagem via Esteganografia
-const stegoChallenge = { word: 'hollywood' };
+// Desafio Nível 2: Decodificação de Código Morse
+const stegoChallenge = { word: 'as imagens guardam segredos' };
 
 function initCTF() {
     if (!ctfHashDisplay) return;
@@ -379,7 +379,7 @@ if (ctfSubmit) {
     ctfSubmit.addEventListener('click', () => {
         const attempt = ctfInput.value.toLowerCase().trim();
         if (attempt === currentChallenge.word) {
-            ctfFeedback.innerHTML = '> HASH DECRIPTADO COM SUCESSO.<br>> DESBLOQUEANDO NÍVEL 2...';
+            ctfFeedback.innerHTML = '> HASH DECRIPTADO COM SUCESSO.<br>> <span class="cursor">O BARULHO NÃO FOI VOCÊ...</span>';
             ctfFeedback.style.color = '#00ff00';
             
             // Desabilita o input do nível 1
@@ -389,6 +389,11 @@ if (ctfSubmit) {
             // Revela o nível 2 após um breve delay para efeito dramático
             setTimeout(() => {
                 level2Container.style.display = 'block';
+                
+                // Toca o áudio oculto (usuário deve achar no Network)
+                const audio = new Audio('assets/SecretFile.wav');
+                audio.play().catch(e => console.warn("Interação necessária para áudio"));
+                
                 stegoInput.focus();
             }, 1000);
 
@@ -403,14 +408,13 @@ if (ctfSubmit) {
         stegoSubmit.addEventListener('click', () => {
             const attempt = stegoInput.value.toLowerCase().trim();
             if (attempt === stegoChallenge.word) {
-                stegoFeedback.innerHTML = '> LOCALIZAÇÃO CONFIRMADA.<br>> ACESSO ROOT CONCEDIDO!<br>> EXECUTANDO PROTOCOLO FINAL...';
+                stegoFeedback.innerHTML = '> MENSAGEM CONFIRMADA.<br>> DICA: <span style="color:#fff">A mensagem está bem clara.</span>';
                 stegoFeedback.style.color = '#00ff00';
-                stegoFeedback.classList.add('cursor'); // Efeito piscante
-
-                // Zera o desafio automaticamente (Efeito Matrix)
-                setTimeout(() => {
-                    startMatrixEffect();
-                }, 2000);
+                
+                // Trava o input pois o usuário passou desta fase
+                stegoInput.disabled = true;
+                stegoSubmit.disabled = true;
+                
             } else {
                 stegoFeedback.textContent = '> CHAVE DECRIPTOGRAFIA INVÁLIDA.';
                 stegoFeedback.style.color = 'red';
