@@ -632,3 +632,115 @@ section {
     font-weight: 600;
     color: #2c4964;
 }
+
+/* CTF Terminal Section */
+.ctf-section {
+    background-color: #f9f9fa;
+}
+
+.terminal-window {
+    background-color: #1e1e1e;
+    border-radius: 8px;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+    overflow: hidden;
+    font-family: 'Courier New', Courier, monospace;
+    text-align: left;
+}
+
+.terminal-header {
+    background-color: #2d2d2d;
+    padding: 10px 15px;
+    display: flex;
+    align-items: center;
+    border-bottom: 1px solid #333;
+}
+
+.terminal-header .buttons span {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    margin-right: 6px;
+}
+
+.terminal-header .buttons .red { background-color: #ff5f56; }
+.terminal-header .buttons .yellow { background-color: #ffbd2e; }
+.terminal-header .buttons .green { background-color: #27c93f; }
+
+.terminal-header .title {
+    margin-left: 15px;
+    color: #999;
+    font-size: 14px;
+}
+
+.terminal-body {
+    padding: 20px;
+    color: #00ff00; /* Hacker Green */
+}
+
+.terminal-body .output {
+    margin-bottom: 10px;
+    font-size: 14px;
+}
+
+.terminal-body .highlight {
+    color: #ffbd2e;
+    font-weight: bold;
+}
+
+.terminal-body .info {
+    color: #00C7B7;
+    margin-top: 15px;
+    font-style: italic;
+}
+
+.input-line {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+    border-top: 1px solid #333;
+    padding-top: 15px;
+}
+
+.input-line .prompt {
+    color: #00ff00;
+    margin-right: 10px;
+}
+
+.input-line input {
+    background: transparent;
+    border: none;
+    color: #fff;
+    font-family: inherit;
+    flex-grow: 1;
+    outline: none;
+}
+
+.input-line button {
+    background: #00C7B7;
+    border: none;
+    color: #000;
+    padding: 5px 15px;
+    font-weight: bold;
+    cursor: pointer;
+    font-family: inherit;
+}
+
+.input-line button:hover {
+    background: #00a699;
+}
+
+.feedback {
+    margin-top: 15px;
+    min-height: 20px;
+    font-weight: bold;
+}
+
+.cursor {
+    animation: blink 1s step-end infinite;
+}
+
+@keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0; }
+}

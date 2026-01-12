@@ -249,24 +249,74 @@ function activatePartyMode() {
 
 // Integração Tawk.to com Formulário de Contato
 // Se o usuário preencher o formulário, atualizamos o nome no chat automaticamente
-const nomeInput = form.querySelector('input[name="nome"]');
-const emailInput = form.querySelector('input[name="email"]');
+if (form) {
+    const nomeInput = form.querySelector('input[name="nome"]');
+    const emailInput = form.querySelector('input[name="email"]');
 
-function updateTawkUser() {
-    if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
-        const nome = nomeInput.value.trim();
-        const email = emailInput.value.trim();
-        
-        if (nome || email) {
-            Tawk_API.setAttributes({
-                name: nome,
-                email: email
-            }, function(error){});
+    const updateTawkUser = function() {
+        if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
+            const nome = nomeInput.value.trim();
+            const email = emailInput.value.trim();
+            
+            if (nome || email) {
+                Tawk_API.setAttributes({
+                    name: nome,
+                    email: email
+                }, function(error){});
+            }
         }
+    };
+
+    if (nomeInput && emailInput) {
+        nomeInput.addEventListener('blur', updateTawkUser);
+        emailInput.addEventListener('blur', updateTawkUser);
     }
 }
 
-if (nomeInput && emailInput) {
-    nomeInput.addEventListener('blur', updateTawkUser);
-    emailInput.addEventListener('blur', updateTawkUser);
+// CTF Challenge Logic
+const ctfHashDisplay = document.getElementById('ctf-hash');
+const ctfInput = document.getElementById('ctf-input');
+const ctfSubmit = document.getElementById('ctf-submit');
+const ctfFeedback = document.getElementById('ctf-feedback');
+
+// Desafio fixo: Pentest (Hash MD5: 46ea1712d4b13b55b3f680cc5b8b54e8)
+const currentChallenge = { word: 'pentest', hash: '46ea1712d4b13b55b3f680cc5b8b54e8' };
+
+function initCTF() {
+    if (!ctfHashDisplay) return;
+    
+    // Exibe dica na tela
+    ctfHashDisplay.textContent = "VERIFIQUE O CONSOLE (F12)";
+    
+    // Exibe o hash no console como Easter Egg
+    console.log(
+        "%cParabéns DEV, o que você conseguiu foi apenas isso: 46ea1712d4b13b55b3f680cc5b8b54e8",
+        "color: #00C7B7; font-size: 16px; font-weight: bold; background: #0D1B2A; padding: 10px; border-radius: 5px;"
+    );
+
+    ctfInput.value = '';
+    ctfFeedback.textContent = '';
+    ctfFeedback.style.color = '';
+}
+
+if (ctfSubmit) {
+    ctfSubmit.addEventListener('click', () => {
+        const attempt = ctfInput.value.toLowerCase().trim();
+        if (attempt === currentChallenge.word) {
+            ctfFeedback.textContent = '> ACESSO CONCEDIDO! DIRETÓRIO DESBLOQUEADO.';
+            ctfFeedback.style.color = '#00ff00';
+            activatePartyMode(); // Reusa o efeito de confete
+        } else {
+            ctfFeedback.textContent = '> ACESSO NEGADO. SENHA INCORRETA.';
+            ctfFeedback.style.color = 'red';
+        }
+    });
+    
+    // Permite apertar Enter no input
+    ctfInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') ctfSubmit.click();
+    });
+
+    // Inicia o desafio
+    initCTF();
 }
