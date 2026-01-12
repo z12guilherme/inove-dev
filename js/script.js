@@ -74,6 +74,12 @@ const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
             entry.target.classList.add('animate');
+            
+            // Tawk.to: Informar à IA em qual seção o usuário está (Contexto para o Base Prompt)
+            if (window.Tawk_API && typeof Tawk_API.addEvent === 'function') {
+                const sectionName = entry.target.getAttribute('id') || 'geral';
+                Tawk_API.addEvent('vendo_secao', { secao: sectionName }, function(error){});
+            }
         }
     });
 }, observerOptions);
@@ -261,4 +267,28 @@ function activatePartyMode() {
         document.body.classList.remove('party-mode');
         document.body.removeChild(partyFeedback);
     }, 4000); // Party mode lasts for 4 seconds
+}
+
+// Integração Tawk.to com Formulário de Contato
+// Se o usuário preencher o formulário, atualizamos o nome no chat automaticamente
+const nomeInput = form.querySelector('input[name="nome"]');
+const emailInput = form.querySelector('input[name="email"]');
+
+function updateTawkUser() {
+    if (window.Tawk_API && typeof Tawk_API.setAttributes === 'function') {
+        const nome = nomeInput.value.trim();
+        const email = emailInput.value.trim();
+        
+        if (nome || email) {
+            Tawk_API.setAttributes({
+                name: nome,
+                email: email
+            }, function(error){});
+        }
+    }
+}
+
+if (nomeInput && emailInput) {
+    nomeInput.addEventListener('blur', updateTawkUser);
+    emailInput.addEventListener('blur', updateTawkUser);
 }
