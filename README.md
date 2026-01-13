@@ -34,6 +34,15 @@ inovedev/
 
 ---
 
+## 🤖 Inove AI Studio (Novo)
+Uma funcionalidade inovadora que utiliza Inteligência Artificial para criar protótipos de sites em segundos.
+
+- **Cérebro (Texto & Estrutura):** Integração com **Perplexity API** (Llama 3/Sonar) para gerar copy persuasiva, paleta de cores e design system.
+- **Visual (Imagens):** Integração com **Pollinations.ai** (Modelo Flux) para gerar imagens realistas e exclusivas baseadas no nicho do cliente.
+- **Magic Deploy:** O usuário descreve o negócio e recebe uma Landing Page funcional e personalizada em tempo real.
+
+---
+
 ## 🕵️‍♂️ Protocolo Ghost
 Este projeto não é apenas uma vitrine... é um **enigma**.
 
