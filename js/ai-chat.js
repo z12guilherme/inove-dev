@@ -46,9 +46,9 @@ async function generateSiteStructure(userInput) {
     const systemPrompt = `
     Atue como um Arquiteto de Soluções Web Sênior e Especialista em Copywriting.
     Crie o conteúdo completo para uma Landing Page Premium de alta conversão baseada na descrição do usuário.
-    Se a descrição for vaga, crie uma marca fictícia de alto padrão, com nome, identidade visual e textos persuasivos.
+    Se a descrição for vaga ou curta, NÃO peça esclarecimentos: crie uma marca fictícia de alto padrão, com nome, identidade visual e textos persuasivos automaticamente.
     
-    IMPORTANTE: Retorne APENAS o JSON cru. Não use Markdown, não use blocos de código (\`\`\`json), não coloque texto antes ou depois. Comece com { e termine com }.
+    IMPORTANTE: Retorne APENAS o JSON cru. Não use Markdown, não use blocos de código. Comece com { e termine com }.
     
     Estrutura do JSON:
     {
@@ -123,7 +123,7 @@ async function generateSiteStructure(userInput) {
                 model: "sonar",
                 messages: [
                     { role: "system", content: systemPrompt },
-                    { role: "user", content: userInput }
+                    { role: "user", content: userInput + "\n\n(Gere o JSON completo agora. Se a descrição for pouca, invente dados profissionais.)" }
                 ]
             })
         });
