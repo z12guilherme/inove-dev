@@ -97,10 +97,10 @@ async function generateSiteStructure(userInput) {
             "phone": "(11) 99999-9999",
             "cta_text": "Solicitar Orçamento"
         },
-        "imagePrompts": {
-            "hero": "Descrição visual em INGLÊS para o background (ex: cinematic photo of a modern law firm office, warm lighting, 8k)",
-            "about": "Descrição visual em INGLÊS para a seção sobre (ex: professional team meeting in a modern office, diverse group, realistic)",
-            "feature": "Descrição visual em INGLÊS para a seção de destaque (ex: close up detail of legal documents and a pen, high resolution)"
+        "imageKeywords": {
+            "hero": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real de banco de imagens para o fundo (ex: office,business)",
+            "about": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real para a seção sobre (ex: team,working)",
+            "feature": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real para o destaque (ex: detail,technology)"
         }
     }
     `;

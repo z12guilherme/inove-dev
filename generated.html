@@ -70,6 +70,7 @@
             border-radius: 10px; z-index: 9999;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.1);
+            max-width: 300px;
         }
     </style>
 </head>
@@ -199,6 +200,7 @@
 
     <div class="ai-badge">
         <small>Gerado por Inove AI</small><br>
+        <p class="mb-2" style="font-size: 11px; opacity: 0.7; line-height: 1.3;">Nota: As imagens são selecionadas automaticamente baseadas no tema.</p>
         <a href="https://wa.me/5581989035561" class="btn btn-success btn-sm mt-2 w-100">Contratar Site Real</a>
     </div>
 
@@ -303,22 +305,26 @@
             document.getElementById('contactCTA').textContent = data.contact.cta_text;
             document.getElementById('contactCTA').href = `https://wa.me/?text=Olá, vim pelo site ${data.brandName}`;
 
-            // Imagens Inteligentes (Pollinations com Prompts em Inglês)
+            // Imagens Inteligentes (Busca via LoremFlickr com Keywords da IA)
             const heroBg = document.getElementById('hero');
             
-            // Usa os prompts da IA ou cria um genérico em inglês
-            const heroPrompt = data.imagePrompts?.hero || `cinematic photo of ${data.niche} business environment, 8k, realistic`;
-            const aboutPrompt = data.imagePrompts?.about || `professional team working at ${data.niche}, office shot, high quality`;
-            const featurePrompt = data.imagePrompts?.feature || `detail shot of ${data.niche} product or service, macro, professional lighting`;
+            // Fallback keywords caso a IA não retorne
+            const heroKey = data.imageKeywords?.hero || 'business,office';
+            const aboutKey = data.imageKeywords?.about || 'team,work';
+            const featureKey = data.imageKeywords?.feature || 'technology,detail';
             
             const seed = Math.floor(Math.random() * 1000);
             
-            // URLs da Pollinations.ai com modelo Flux (Alta qualidade)
-            const heroUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(heroPrompt)}?width=1920&height=1080&nologo=true&model=flux&seed=${seed}`;
-            const aboutUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(aboutPrompt)}?width=800&height=600&nologo=true&model=flux&seed=${seed}`;
-            const featureUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(featurePrompt)}?width=800&height=800&nologo=true&model=flux&seed=${seed}`;
+            // Função para formatar keywords corretamente para o LoremFlickr (não codificar as vírgulas)
+            const formatUrl = (keys) => keys.split(',').map(k => encodeURIComponent(k.trim())).join(',');
             
-            // Fallback de segurança (Imagem genérica se falhar)
+            // URLs do LoremFlickr (Busca em banco de imagens reais)
+            // O '/all' ajuda a buscar em todo o acervo creative commons, evitando gatos
+            const heroUrl = `https://loremflickr.com/1920/1080/${formatUrl(heroKey)}/all?random=${seed}`;
+            const aboutUrl = `https://loremflickr.com/800/600/${formatUrl(aboutKey)}/all?random=${seed}`;
+            const featureUrl = `https://loremflickr.com/800/800/${formatUrl(featureKey)}/all?random=${seed}`;
+            
+            // Fallback de segurança
             const fallbackImg = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80';
 
             heroBg.style.backgroundImage = `url('${heroUrl}')`;
