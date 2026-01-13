@@ -303,28 +303,33 @@
             document.getElementById('contactCTA').textContent = data.contact.cta_text;
             document.getElementById('contactCTA').href = `https://wa.me/?text=Olá, vim pelo site ${data.brandName}`;
 
-            // Imagens Inteligentes (LoremFlickr com Keywords da IA)
+            // Imagens Inteligentes (Pollinations com Prompts em Inglês)
             const heroBg = document.getElementById('hero');
             
-            // Usa keywords da IA ou o nicho como fallback
-            // Adicionamos 'business' ou 'work' para evitar gatos caso a keyword seja muito específica
-            const heroKey = data.imageKeywords?.hero ? `${data.imageKeywords.hero},business` : `${data.niche},business`;
-            const aboutKey = data.imageKeywords?.about ? `${data.imageKeywords.about},team` : `${data.niche},team`;
-            const featureKey = data.imageKeywords?.feature ? `${data.imageKeywords.feature},detail` : `${data.niche},work`;
+            // Usa os prompts da IA ou cria um genérico em inglês
+            const heroPrompt = data.imagePrompts?.hero || `cinematic photo of ${data.niche} business environment, 8k, realistic`;
+            const aboutPrompt = data.imagePrompts?.about || `professional team working at ${data.niche}, office shot, high quality`;
+            const featurePrompt = data.imagePrompts?.feature || `detail shot of ${data.niche} product or service, macro, professional lighting`;
             
             const seed = Math.floor(Math.random() * 1000);
             
-            // Função para formatar keywords corretamente para o LoremFlickr (não codificar as vírgulas)
-            const formatUrl = (keys) => keys.split(',').map(k => encodeURIComponent(k.trim())).join(',');
+            // URLs da Pollinations.ai com modelo Flux (Alta qualidade)
+            const heroUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(heroPrompt)}?width=1920&height=1080&nologo=true&model=flux&seed=${seed}`;
+            const aboutUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(aboutPrompt)}?width=800&height=600&nologo=true&model=flux&seed=${seed}`;
+            const featureUrl = `https://image.pollinations.ai/prompt/${encodeURIComponent(featurePrompt)}?width=800&height=800&nologo=true&model=flux&seed=${seed}`;
             
-            // URLs do LoremFlickr (Estável e sem robôs)
-            const heroUrl = `https://loremflickr.com/1920/1080/${formatUrl(heroKey)}?random=${seed}`;
-            const aboutUrl = `https://loremflickr.com/800/600/${formatUrl(aboutKey)}?random=${seed}`;
-            const featureUrl = `https://loremflickr.com/800/800/${formatUrl(featureKey)}?random=${seed}`;
+            // Fallback de segurança (Imagem genérica se falhar)
+            const fallbackImg = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80';
 
             heroBg.style.backgroundImage = `url('${heroUrl}')`;
-            document.getElementById('aboutImg').src = aboutUrl;
-            document.getElementById('featureImg').src = featureUrl;
+            
+            const aboutImg = document.getElementById('aboutImg');
+            aboutImg.src = aboutUrl;
+            aboutImg.onerror = () => { aboutImg.src = fallbackImg; };
+            
+            const featureImg = document.getElementById('featureImg');
+            featureImg.src = featureUrl;
+            featureImg.onerror = () => { featureImg.src = fallbackImg; };
         });
     </script>
 </body>

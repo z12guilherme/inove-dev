@@ -1,0 +1,5 @@
+# Ignorar arquivos de sistema
+.DS_Store
+
+# Ignorar chaves de API e segredos
+js/config.js
