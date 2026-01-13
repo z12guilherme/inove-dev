@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artigo - InoveDev</title>
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/logo.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="../css/styles.css">
+    <style>
+        /* Estilos específicos do Blog (Mesmos do blog.html) */
+        .blog .entry {
+            background: #fff;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+        }
+        .blog .entry-img {
+            margin: -30px -30px 20px -30px;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+            max-height: 500px;
+        }
+        .blog .entry-img img { width: 100%; object-fit: cover; }
+        .blog .entry-title {
+            font-size: 28px;
+            font-weight: bold;
+            margin-bottom: 20px;
+            color: #2c4964;
+        }
+        .blog .entry-content p { margin-bottom: 20px; line-height: 1.8; color: #444; }
+        .blog .entry-content h3 { color: #2c4964; font-weight: 600; margin-top: 30px; margin-bottom: 15px; }
+        .blog .entry-footer {
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+            margin-top: 20px;
+        }
+        .sidebar {
+            padding: 30px;
+            margin: 0 0 60px 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+        }
+        .sidebar-title { font-size: 20px; font-weight: 700; margin-bottom: 20px; color: #2c4964; }
+        .whatsapp-float {
+            position: fixed; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF;
+            border-radius: 50px; width: 60px; height: 60px;
+            font-size: 30px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 2px 2px 3px #999; z-index: 1000; text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header" class="fixed-top d-flex align-items-center">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="logo">
+                <h1><a href="index.html"><img src="../assets/logo.png" alt="InoveDev" class="img-fluid me-2" style="max-height: 40px;">InoveDev</a></h1>
+            </div>
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link" href="index.html">Home</a></li>
+                    <li><a class="nav-link active" href="blog.html">Blog</a></li>
+                    <li><a class="nav-link" href="index.html#contact">Contato</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" style="margin-top: 80px;">
+        <!-- Breadcrumbs -->
+        <section class="breadcrumbs" style="background: #f9f9fa; padding: 15px 0;">
+            <div class="container">
+                <ol class="breadcrumb mb-0">
+                    <li class="breadcrumb-item"><a href="index.html">Home</a></li>
+                    <li class="breadcrumb-item"><a href="blog.html">Blog</a></li>
+                    <li class="breadcrumb-item active" id="breadcrumb-title">Artigo</li>
+                </ol>
+            </div>
+        </section>
+
+        <!-- Blog Single Section -->
+        <section id="blog" class="blog py-5">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-8 entries">
+                        <article class="entry" id="article-container">
+                            <!-- Conteúdo será carregado via JS -->
+                            <div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>
+                        </article>
+                        
+                        <div class="text-center mt-4">
+                            <a href="blog.html" class="btn btn-outline-primary">← Voltar para o Blog</a>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="sidebar">
+                            <h3 class="sidebar-title">Posts Recentes</h3>
+                            <div class="sidebar-item recent-posts">
+                                <div class="post-item clearfix mb-3">
+                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=1" class="text-dark text-decoration-none">5 Motivos para ter um site...</a></h4>
+                                </div>
+                                <div class="post-item clearfix mb-3">
+                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=2" class="text-dark text-decoration-none">O que é SEO?</a></h4>
+                                </div>
+                                <div class="post-item clearfix">
+                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=5" class="text-dark text-decoration-none">Velocidade de Carregamento</a></h4>
+                                </div>
+                            </div>
+                            <h3 class="sidebar-title">Tags</h3>
+                            <div class="sidebar-item tags">
+                                <ul>
+                                    <li><a href="#" class="badge bg-light text-dark border">Web</a></li>
+                                    <li><a href="#" class="badge bg-light text-dark border">Negócios</a></li>
+                                    <li><a href="#" class="badge bg-light text-dark border">Marketing</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" style="background: #f1f7fd;">
+        <div class="container py-4 text-center">
+            <div class="copyright">&copy; Copyright <strong><span>InoveDev</span></strong>. Todos os direitos reservados</div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp -->
+    <a href="https://wa.me/5581989035561" class="whatsapp-float" target="_blank"><i class="bi bi-whatsapp"></i></a>
+
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="../js/script.js"></script>
+
+    <script>
+        // Dados dos Artigos
+        const articles = {
+            1: {
+                title: "5 Motivos para ter um site profissional em 2024",
+                date: "Jan 1, 2026",
+                author: "Marcos G.",
+                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="lead">Ter uma presença digital forte não é mais um diferencial, é uma necessidade. Se sua empresa não está na internet, ela praticamente não existe para uma grande parcela dos seus clientes.</p>
+                    <h3>1. Credibilidade e Profissionalismo</h3>
+                    <p>Um site bem estruturado transmite confiança. Redes sociais são ótimas, mas um domínio próprio (suaempresa.com.br) mostra que você leva seu negócio a sério.</p>
+                    <h3>2. Aberto 24 horas por dia</h3>
+                    <p>Diferente de um escritório físico, seu site nunca fecha. Clientes podem conhecer seus serviços e solicitar orçamentos no domingo à noite ou feriados.</p>
+                    <h3>3. Controle da sua Marca</h3>
+                    <p>Nas redes sociais, você está sujeito a mudanças de algoritmo. No seu site, você dita as regras, o design e como o conteúdo é apresentado.</p>
+                    <h3>4. Ser encontrado no Google (SEO)</h3>
+                    <p>A maioria das jornadas de compra começa com uma pesquisa. Com um site otimizado (veja nosso artigo sobre <a href='blog-post.html?id=2'>SEO</a>), você aparece para quem já está procurando o que você vende.</p>
+                    <h3>5. Centralização do Marketing</h3>
+                    <p>Seu site é o destino final de todas as suas campanhas, seja do Instagram, Facebook Ads ou cartão de visita. É lá que a conversão acontece.</p>
+                `
+            },
+            2: {
+                title: "O que é SEO e por que ele é importante?",
+                date: "Jan 4, 2026",
+                author: "Equipe Inove",
+                image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="lead">SEO (Search Engine Optimization) é a arte de fazer seu site ser amado pelo Google. Não adianta ter o site mais bonito do mundo se ninguém consegue encontrá-lo.</p>
+                    <h3>Como funciona?</h3>
+                    <p>O Google usa robôs para ler todos os sites da internet. O SEO ajuda esses robôs a entenderem sobre o que é o seu conteúdo e a mostrá-lo para as pessoas certas.</p>
+                    <h3>Pilares do SEO</h3>
+                    <ul>
+                        <li><strong>Conteúdo de Qualidade:</strong> Textos que respondem às dúvidas dos usuários.</li>
+                        <li><strong>Palavras-chave:</strong> Termos que seus clientes usam na busca.</li>
+                        <li><strong>Performance:</strong> Sites rápidos (falamos disso no artigo sobre <a href='blog-post.html?id=5'>Velocidade</a>) rankeiam melhor.</li>
+                    </ul>
+                    <h3>Resultado a Longo Prazo</h3>
+                    <p>Diferente de anúncios pagos, o tráfego orgânico vindo do SEO é gratuito e sustentável a longo prazo. É um investimento no patrimônio digital da sua empresa.</p>
+                `
+            },
+            3: {
+                title: "Transformação Digital: Por onde começar?",
+                date: "Jan 7, 2026",
+                author: "Marcos G.",
+                image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="lead">A transformação digital vai muito além de ter um site ou usar o WhatsApp. Envolve mudar a cultura da empresa e utilizar a tecnologia para melhorar processos.</p>
+                    <h3>Não é só tecnologia, é cultura</h3>
+                    <p>Comprar softwares caros não resolve se a equipe não souber usar. A transformação começa na mentalidade de buscar eficiência através de dados.</p>
+                    <h3>Passos Iniciais</h3>
+                    <ol>
+                        <li>Digitalize documentos e processos manuais.</li>
+                        <li>Adote ferramentas de comunicação interna (Slack, Teams).</li>
+                        <li>Tenha um CRM para gerenciar clientes.</li>
+                        <li>Esteja presente online (Site e Redes Sociais).</li>
+                    </ol>
+                    <p>Pequenas empresas podem começar automatizando o atendimento ou criando uma loja virtual (veja nosso comparativo sobre <a href='blog-post.html?id=4'>E-commerce</a>).</p>
+                `
+            },
+            4: {
+                title: "E-commerce vs Marketplace: Qual o melhor?",
+                date: "Jan 10, 2026",
+                author: "Equipe Inove",
+                image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="lead">Essa é a dúvida de ouro para quem vende produtos: criar sua própria loja virtual ou vender no Mercado Livre, Shopee e Amazon?</p>
+                    <h3>Marketplace: O Shopping Center</h3>
+                    <p><strong>Vantagens:</strong> Já tem milhões de clientes passando por lá. É fácil de começar.<br>
+                    <strong>Desvantagens:</strong> Taxas altas, concorrência por preço na mesma página e você não é dono do cliente.</p>
+                    <h3>E-commerce Próprio: Sua Loja de Rua</h3>
+                    <p><strong>Vantagens:</strong> Sem taxas de comissão por venda, controle total da marca, fidelização do cliente.<br>
+                    <strong>Desvantagens:</strong> Você precisa gerar seu próprio tráfego (marketing).</p>
+                    <h3>O Veredito</h3>
+                    <p>O ideal é a <strong>estratégia Omnichannel</strong>: use os marketplaces para ganhar volume e atrair clientes novos, mas tente levá-los para seu site próprio para compras futuras.</p>
+                `
+            },
+            5: {
+                title: "A importância da velocidade de carregamento",
+                date: "Jan 13, 2026",
+                author: "Marcos G.",
+                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
+                content: `
+                    <p class="lead">Você sabia que 53% dos usuários mobile abandonam um site se ele demorar mais de 3 segundos para carregar? A velocidade é dinheiro.</p>
+                    <h3>Core Web Vitals</h3>
+                    <p>O Google agora usa métricas de velocidade como fator de rankeamento. Se seu site é lento, ele aparece menos nas buscas.</p>
+                    <h3>Impacto na Conversão</h3>
+                    <p>A cada segundo de atraso no carregamento, a conversão cai em média 7%. Em um e-commerce, isso pode significar milhares de reais perdidos.</p>
+                    <h3>Como melhorar?</h3>
+                    <ul>
+                        <li>Otimize o tamanho das imagens.</li>
+                        <li>Use um código limpo e moderno.</li>
+                        <li>Contrate uma hospedagem de qualidade.</li>
+                    </ul>
+                    <p>Na <strong>InoveDev</strong>, todos os nossos projetos são focados em alta performance.</p>
+                `
+            }
+        };
+
+        // Lógica para carregar o artigo
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            const container = document.getElementById('article-container');
+            const breadcrumb = document.getElementById('breadcrumb-title');
+
+            if (id && articles[id]) {
+                const post = articles[id];
+                
+                // Atualiza Título da Página
+                document.title = post.title + " - InoveDev";
+                breadcrumb.textContent = post.title;
+
+                // Renderiza Conteúdo
+                container.innerHTML = `
+                    <div class="entry-img">
+                        <img src="${post.image}" alt="${post.title}" class="img-fluid">
+                    </div>
+                    <h2 class="entry-title">${post.title}</h2>
+                    <div class="entry-meta">
+                        <ul>
+                            <li class="d-flex align-items-center"><i class="bi bi-person"></i> ${post.author}</li>
+                            <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <time>${post.date}</time></li>
+                        </ul>
+                    </div>
+                    <div class="entry-content">
+                        ${post.content}
+                    </div>
+                    <div class="entry-footer">
+                        <p class="text-muted">Gostou deste artigo? Compartilhe ou entre em contato para saber mais!</p>
+                        <a href="https://wa.me/5581989035561?text=Li o artigo sobre ${encodeURIComponent(post.title)} e gostaria de tirar uma dúvida." class="btn btn-success btn-sm"><i class="bi bi-whatsapp"></i> Falar com Especialista</a>
+                    </div>
+                `;
+            } else {
+                container.innerHTML = `
+                    <div class="alert alert-warning">
+                        <h3>Artigo não encontrado</h3>
+                        <p>O artigo que você está procurando não existe ou foi removido.</p>
+                        <a href="blog.html" class="btn btn-primary">Voltar para o Blog</a>
+                    </div>
+                `;
+            }
+        });
+    </script>
+</body>
+</html>
