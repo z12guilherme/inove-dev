@@ -1,5 +1,5 @@
-// Chave da API Perplexity
-const API_KEY = "SUA_CHAVE_API_AQUI";
+// Importa a chave do arquivo de configuração (que está ignorado pelo Git)
+import { API_KEY } from './config.js';
 
 const chatWindow = document.getElementById('aiChatWindow');
 const input = document.getElementById('aiInput');
