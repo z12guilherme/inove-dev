@@ -107,6 +107,11 @@ async function generateSiteStructure(userInput) {
     }
     `;
 
+    if (!API_KEY || API_KEY === '') {
+        addMessage("⚠️ <strong>Configuração Necessária:</strong><br>Você precisa adicionar sua chave de API no arquivo <code>js/config.js</code> para que eu possa funcionar.<br>Abra o arquivo e coloque sua chave.", 'bot');
+        return;
+    }
+
     try {
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
@@ -131,13 +136,15 @@ async function generateSiteStructure(userInput) {
         const data = await response.json();
         let text = data.choices[0].message.content;
         
+        console.log("🤖 Resposta Bruta da IA:", text); // Log para debug: Veja no Console (F12) o que a IA retornou
+
         // Limpeza extra para garantir JSON válido
-        text = text.replace(/```json/g, '').replace(/```/g, '').trim();
+        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
         const start = text.indexOf('{');
         const end = text.lastIndexOf('}');
         
         if (start === -1 || end === -1) {
-            throw new Error("A resposta da IA não contém um JSON válido.");
+            throw new Error(`A resposta da IA não contém um JSON válido. Recebido: ${text.substring(0, 50)}...`);
         }
         
         text = text.substring(start, end + 1);
