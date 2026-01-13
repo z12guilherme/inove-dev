@@ -27,7 +27,7 @@
 - [x] Criar Template: Landing Page de Alta Conversão
 - [x] Criar Template: Médico/Saúde (Portfólio Profissional)
 - [x] Criar Template: Restaurante/Gastronomia
-- [ ] Criar Template: E-commerce Simples
+- [x] Criar Template: E-commerce Simples
 - [ ] Integrar analytics (Google Analytics)
 
 ## Dependências e Setup
