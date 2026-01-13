@@ -221,6 +221,7 @@ const secretCode = 'hollywood';
 let secretIndex = 0;
 
 document.addEventListener('keydown', (e) => {
+    if (!e.key) return;
     const key = e.key.toLowerCase();
     const expected = secretCode[secretIndex];
 
