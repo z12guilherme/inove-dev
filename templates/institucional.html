@@ -5,89 +5,20 @@
   <meta charset="utf-8">
   <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-  <title>Inove Corp - Soluções Corporativas</title>
-  <meta content="" name="description">
-  <meta content="" name="keywords">
+  <title>Almeida & Castilho - Advocacia e Consultoria Jurídica</title>
+  <meta content="Escritório de advocacia especializado em oferecer soluções jurídicas com excelência, confiança e tradição." name="description">
+  <meta content="advocacia, direito, advogado, consultoria jurídica, empresarial, família, tributário" name="keywords">
 
   <!-- Google Fonts -->
-  <link href="https://fonts.googleapis.com/css?family=Open+Sans:300,300i,400,400i,600,600i,700,700i|Raleway:300,300i,400,400i,500,500i,600,600i,700,700i|Poppins:300,300i,400,400i,500,500i,600,600i,700,700i" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=EB+Garamond:wght@400;500;600;700&family=Lato:wght@400;700&display=swap" rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
   
   <!-- Template Main CSS File -->
-  <style>
-    /* General */
-    body { font-family: "Open Sans", sans-serif; color: #444444; }
-    a { color: #1acc8d; text-decoration: none; }
-    a:hover { color: #34e5a6; text-decoration: none; }
-    h1, h2, h3, h4, h5, h6 { font-family: "Raleway", sans-serif; }
+  <link href="../css/advocacia.css" rel="stylesheet">
 
-    /* Header */
-    #header { transition: all 0.5s; z-index: 997; transition: all 0.5s; padding: 15px 0; background: #fff; box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1); }
-    #header .logo h1 { font-size: 30px; margin: 0; padding: 0; line-height: 1; font-weight: 700; letter-spacing: 1px; }
-    #header .logo h1 a, #header .logo h1 a:hover { color: #222222; text-decoration: none; }
-    
-    /* Nav Menu */
-    .navbar { padding: 0; }
-    .navbar ul { margin: 0; padding: 0; display: flex; list-style: none; align-items: center; }
-    .navbar li { position: relative; }
-    .navbar a, .navbar a:focus { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 10px 30px; font-size: 15px; font-weight: 600; color: #555555; white-space: nowrap; transition: 0.3s; }
-    .navbar a:hover, .navbar .active, .navbar .active:focus, .navbar li:hover > a { color: #1acc8d; }
-    .navbar .getstarted, .navbar .getstarted:focus { background: #1acc8d; padding: 8px 25px; margin-left: 30px; border-radius: 50px; color: #fff; }
-    .navbar .getstarted:hover, .navbar .getstarted:focus:hover { color: #fff; background: #34e5a6; }
-
-    /* Hero Section */
-    #hero { width: 100%; height: 100vh; background: url('../assets/corp.jpg') top center; background-size: cover; position: relative; margin: 0; }
-    #hero:before { content: ""; background: rgba(0, 0, 0, 0.6); position: absolute; bottom: 0; top: 0; left: 0; right: 0; }
-    #hero .container { position: relative; z-index: 2; text-align: center; }
-    #hero h1 { margin: 0; font-size: 48px; font-weight: 700; line-height: 56px; color: #fff; }
-    #hero h2 { color: #eee; margin: 15px 0 30px 0; font-size: 24px; }
-    #hero .btn-get-started { font-family: "Raleway", sans-serif; font-weight: 500; font-size: 16px; letter-spacing: 1px; display: inline-block; padding: 10px 28px; border-radius: 50px; transition: 0.5s; margin-top: 30px; color: #fff; background: #1acc8d; }
-    #hero .btn-get-started:hover { background: #34e5a6; }
-    /* #hero .animated { animation: up-down 2s ease-in-out infinite alternate-reverse both; } */
-    @media (max-width: 991px) { #hero { height: 100vh; padding: 0; } }
-    @media (max-width: 768px) { #hero h1 { font-size: 28px; line-height: 36px; } #hero h2 { font-size: 18px; line-height: 24px; } }
-    /* @keyframes up-down { 0% { transform: translateY(10px); } 100% { transform: translateY(-10px); } } */
-
-    /* Sections General */
-    section { padding: 60px 0; overflow: hidden; }
-    .section-title { text-align: center; padding-bottom: 30px; }
-    .section-title h2 { font-size: 32px; font-weight: bold; text-transform: uppercase; margin-bottom: 20px; padding-bottom: 20px; position: relative; color: #222222; }
-    .section-title h2::after { content: ''; position: absolute; display: block; width: 50px; height: 3px; background: #1acc8d; bottom: 0; left: calc(50% - 25px); }
-    .section-title p { margin-bottom: 0; }
-
-    /* About */
-    .about .content h3 { font-weight: 600; font-size: 26px; }
-    .about .content ul { list-style: none; padding: 0; }
-    .about .content ul li { padding-bottom: 10px; }
-    .about .content ul i { font-size: 20px; padding-right: 4px; color: #1acc8d; }
-
-    /* Services */
-    .services .icon-box { padding: 30px; position: relative; overflow: hidden; background: #fff; box-shadow: 0 0 29px 0 rgba(68, 88, 144, 0.12); transition: all 0.3s ease-in-out; border-radius: 8px; z-index: 1; }
-    .services .icon-box::before { content: ''; position: absolute; background: #e1f0fa; right: -60px; top: -40px; width: 100px; height: 100px; border-radius: 50px; transition: all 0.3s; z-index: -1; }
-    .services .icon-box:hover::before { background: #1acc8d; right: 0; top: 0; width: 100%; height: 100%; border-radius: 0px; }
-    .services .icon { margin: 0 auto 20px auto; padding-top: 10px; display: inline-block; text-align: center; border-radius: 50%; width: 60px; height: 60px; background: #1acc8d; transition: all 0.3s ease-in-out; }
-    .services .icon i { font-size: 36px; line-height: 1; color: #fff; }
-    .services .title { font-weight: 700; margin-bottom: 15px; font-size: 18px; }
-    .services .title a { color: #111; }
-    .services .description { font-size: 15px; line-height: 28px; margin-bottom: 0; }
-    .services .icon-box:hover .title a, .services .icon-box:hover .description, .services .icon-box:hover .icon i { color: #fff; }
-    .services .icon-box:hover .icon { background: #fff; }
-    .services .icon-box:hover .icon i { color: #1acc8d; }
-
-    /* Footer */
-    #footer { background: #0b212d; color: #fff; font-size: 14px; padding: 30px 0; text-align: center; }
-    #footer h3 { font-size: 36px; font-weight: 700; color: #fff; position: relative; font-family: "Poppins", sans-serif; padding: 0; margin: 0 0 15px 0; }
-    #footer p { font-size: 15; font-style: italic; padding: 0; margin: 0 0 40px 0; }
-    #footer .social-links { margin: 0 0 40px 0; }
-    #footer .social-links a { font-size: 18px; display: inline-block; background: #1acc8d; color: #fff; line-height: 1; padding: 8px 0; margin-right: 4px; border-radius: 50%; text-align: center; width: 36px; height: 36px; transition: 0.3s; }
-    #footer .social-links a:hover { background: #34e5a6; color: #fff; text-decoration: none; }
-    
-    /* Demo Banner */
-    .demo-banner { background: #ffc107; color: #000; text-align: center; padding: 5px; font-size: 0.9rem; position: fixed; bottom: 0; width: 100%; z-index: 2000; }
-  </style>
 </head>
 
 <body>
@@ -97,18 +28,17 @@
     <div class="container d-flex align-items-center justify-content-between">
 
       <div class="logo">
-        <h1><a href="../index.html">Inove Corp</a></h1>
+        <h1><a href="institucional.html">Almeida & Castilho</a></h1>
       </div>
 
       <nav id="navbar" class="navbar">
         <ul>
           <li><a class="nav-link scrollto active" href="#hero">Início</a></li>
-          <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
-          <li><a class="nav-link scrollto" href="#services">Serviços</a></li>
-          <li><a class="nav-link scrollto" href="#portfolio">Portfólio</a></li>
-          <li><a class="nav-link scrollto" href="#team">Equipe</a></li>
+          <li><a class="nav-link scrollto" href="#about">O Escritório</a></li>
+          <li><a class="nav-link scrollto" href="#services">Áreas de Atuação</a></li>
+          <li><a class="nav-link scrollto" href="#team">Nossos Advogados</a></li>
           <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
-          <li><a class="getstarted scrollto" href="#contact">Orçamento</a></li>
+          <li><a class="getstarted scrollto" href="#contact">Fale Conosco</a></li>
         </ul>
         <i class="bi bi-list mobile-nav-toggle"></i>
       </nav><!-- .navbar -->
@@ -117,42 +47,39 @@
   </header><!-- End Header -->
 
   <!-- ======= Hero Section ======= -->
-  <section id="hero" class="d-flex align-items-center">
+  <section id="hero">
     <div class="container">
-      <div class="row justify-content-center">
-        <div class="col-lg-8 d-flex flex-column justify-content-center text-center">
-          <h1>Transforme seu Negócio com Tecnologia</h1>
-          <h2>Consultoria estratégica e desenvolvimento de software para alavancar seus resultados.</h2>
-          <div class="d-flex justify-content-center">
-            <a href="#about" class="btn-get-started scrollto">Conheça a Empresa</a>
-          </div>
-        </div>
-      </div>
+        <h1>Assessoria Jurídica de Excelência e Confiança</h1>
+        <h2>Tradição e modernidade na busca por soluções legais para seus desafios.</h2>
+        <a href="#about" class="btn-get-started scrollto">Conheça Nossa História</a>
     </div>
   </section><!-- End Hero -->
 
   <main id="main">
 
     <!-- ======= About Section ======= -->
-    <section id="about" class="about">
+    <section id="about" class="about section-bg">
       <div class="container">
-
-        <div class="row">
-          <div class="col-lg-6 d-flex align-items-center justify-content-center about-img">
-            <img src="assets/sobre.jpg" class="img-fluid" alt="" onerror="this.src='https://placehold.co/600x400/eee/333?text=About+Image'">
+        <div class="section-title">
+          <h2>Nosso Escritório</h2>
+          <p>Fundado em 1995, o escritório Almeida & Castilho une a solidez da tradição com uma visão inovadora do Direito.</p>
+        </div>
+        <div class="row align-items-center">
+          <div class="col-lg-6">
+            <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=1050&q=80" class="img-fluid about-img" alt="Sala de reuniões de um escritório de advocacia">
           </div>
           <div class="col-lg-6 pt-4 pt-lg-0 content">
-            <h3>Liderança em Inovação e Estratégia</h3>
+            <h3>Compromisso, Ética e Resultados</h3>
             <p class="fst-italic">
-              Desde 2015, ajudamos empresas a alcançarem seu potencial máximo através da transformação digital.
+              Nossa filosofia de trabalho se baseia em um profundo conhecimento técnico e em um relacionamento de proximidade e confiança com cada cliente.
             </p>
             <ul>
-              <li><i class="bi bi-check-circle"></i> Análise de dados para tomada de decisão.</li>
-              <li><i class="bi bi-check-circle"></i> Desenvolvimento de soluções sob medida.</li>
-              <li><i class="bi bi-check-circle"></i> Equipe multidisciplinar e experiente.</li>
+              <li><i class="bi bi-gavel"></i> Atuação pautada pela ética e pela busca incansável pela justiça.</li>
+              <li><i class="bi bi-people-fill"></i> Atendimento personalizado para entender e atender às suas necessidades específicas.</li>
+              <li><i class="bi bi-graph-up-arrow"></i> Foco em resultados e na defesa intransigente dos interesses dos nossos clientes.</li>
             </ul>
             <p>
-              Nossa missão é simplificar processos complexos e entregar valor real para nossos clientes, garantindo crescimento sustentável e vantagem competitiva no mercado.
+             Acreditamos que cada caso é único. Por isso, dedicamos nossa máxima atenção para construir estratégias jurídicas robustas e eficazes, visando sempre a melhor solução.
             </p>
           </div>
         </div>
@@ -160,110 +87,104 @@
       </div>
     </section><!-- End About Section -->
 
-    <!-- ======= Services Section ======= -->
+    <!-- ======= Services Section (Áreas de Atuação) ======= -->
     <section id="services" class="services">
       <div class="container">
 
         <div class="section-title">
-          <h2>Serviços</h2>
-          <p>Oferecemos um leque completo de soluções para atender às necessidades da sua empresa, do planejamento à execução.</p>
+          <h2>Áreas de Atuação</h2>
+          <p>Oferecemos assessoria jurídica especializada em diversas áreas do Direito, com uma equipe de advogados experientes e dedicados.</p>
         </div>
 
         <div class="row">
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-4">
             <div class="icon-box">
-              <div class="icon"><i class="bi bi-laptop"></i></div>
-              <h4><a href="">Desenvolvimento Web</a></h4>
-              <p>Sites institucionais, e-commerces e sistemas web robustos e escaláveis.</p>
+              <div class="icon"><i class="bi bi-building"></i></div>
+              <h4><a href="#">Direito Empresarial</a></h4>
+              <p>Consultoria completa para empresas, desde a constituição societária até a gestão de contratos e litígios complexos.</p>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-4">
             <div class="icon-box">
-              <div class="icon"><i class="bi bi-bar-chart"></i></div>
-              <h4><a href="">Consultoria Digital</a></h4>
-              <p>Diagnóstico completo da sua presença online e estratégias de crescimento.</p>
+              <div class="icon"><i class="bi bi-heart-half"></i></div>
+              <h4><a href="#">Direito de Família</a></h4>
+              <p>Atuação sensível e técnica em casos de divórcio, partilha de bens, guarda de filhos e planejamento sucessório.</p>
             </div>
           </div>
 
-          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch mb-4">
             <div class="icon-box">
-              <div class="icon"><i class="bi bi-megaphone"></i></div>
-              <h4><a href="">Marketing Estratégico</a></h4>
-              <p>Gestão de tráfego, SEO e branding para posicionar sua marca no topo.</p>
+              <div class="icon"><i class="bi bi-file-earmark-spreadsheet"></i></div>
+              <h4><a href="#">Direito Tributário</a></h4>
+              <p>Assessoria para pessoas físicas e jurídicas na gestão de tributos, planejamento fiscal e defesa em processos administrativos e judiciais.</p>
             </div>
           </div>
-
         </div>
 
       </div>
     </section><!-- End Services Section -->
 
-    <!-- ======= Portfolio Section (Novo) ======= -->
-    <section id="portfolio" class="portfolio section-bg" style="background-color: #f7fbfe;">
+    <!-- ======= Team Section ======= -->
+    <section id="team" class="team section-bg">
       <div class="container">
-        <div class="section-title">
-          <h2>Portfólio</h2>
-          <p>Conheça alguns de nossos projetos recentes e casos de sucesso.</p>
-        </div>
-        <div class="row">
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <img src="https://placehold.co/600x400/1acc8d/ffffff?text=E-commerce" class="card-img-top" alt="Projeto 1">
-              <div class="card-body text-center">
-                <h5 class="card-title fw-bold">Loja Virtual Moda</h5>
-                <p class="card-text text-muted">Plataforma completa de vendas.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <img src="https://placehold.co/600x400/1acc8d/ffffff?text=App+Delivery" class="card-img-top" alt="Projeto 2">
-              <div class="card-body text-center">
-                <h5 class="card-title fw-bold">App de Delivery</h5>
-                <p class="card-text text-muted">Aplicativo móvel para restaurante.</p>
-              </div>
-            </div>
-          </div>
-          <div class="col-lg-4 col-md-6 mb-4">
-            <div class="card h-100 border-0 shadow-sm">
-              <img src="https://placehold.co/600x400/1acc8d/ffffff?text=Sistema+ERP" class="card-img-top" alt="Projeto 3">
-              <div class="card-body text-center">
-                <h5 class="card-title fw-bold">Sistema de Gestão</h5>
-                <p class="card-text text-muted">Painel administrativo corporativo.</p>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- ======= Team Section (Novo) ======= -->
-    <section id="team" class="team">
-      <div class="container">
         <div class="section-title">
-          <h2>Nossa Equipe</h2>
-          <p>Profissionais dedicados e apaixonados pelo que fazem.</p>
+          <h2>Nossos Advogados</h2>
+          <p>Profissionais com vasta experiência e profundo conhecimento técnico para representar seus interesses.</p>
         </div>
-        <div class="row justify-content-center text-center">
-          <div class="col-lg-3 col-md-6 mb-4">
-            <img src="https://placehold.co/150x150/333/fff?text=CEO" class="rounded-circle mb-3" alt="CEO">
-            <h5 class="fw-bold">Carlos Mendes</h5>
-            <span class="text-muted">CEO & Fundador</span>
+
+        <div class="row">
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="member">
+              <div class="member-img">
+                <img src="https://i.pravatar.cc/500?img=60" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Dr. Ricardo Almeida</h4>
+                <span>Sócio Fundador | Direito Empresarial</span>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4">
-            <img src="https://placehold.co/150x150/333/fff?text=CTO" class="rounded-circle mb-3" alt="CTO">
-            <h5 class="fw-bold">Ana Paula</h5>
-            <span class="text-muted">Diretora de Tecnologia</span>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="member">
+              <div class="member-img">
+                <img src="https://i.pravatar.cc/500?img=33" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Dra. Beatriz Castilho</h4>
+                <span>Sócia | Direito de Família e Sucessões</span>
+              </div>
+            </div>
           </div>
-          <div class="col-lg-3 col-md-6 mb-4">
-            <img src="https://placehold.co/150x150/333/fff?text=Design" class="rounded-circle mb-3" alt="Designer">
-            <h5 class="fw-bold">Roberto Lima</h5>
-            <span class="text-muted">Lead Designer</span>
+
+          <div class="col-lg-4 col-md-6 d-flex align-items-stretch">
+            <div class="member">
+              <div class="member-img">
+                <img src="https://i.pravatar.cc/500?img=68" class="img-fluid" alt="">
+                <div class="social">
+                  <a href=""><i class="bi bi-twitter"></i></a>
+                  <a href=""><i class="bi bi-linkedin"></i></a>
+                </div>
+              </div>
+              <div class="member-info">
+                <h4>Dr. Fernando Matos</h4>
+                <span>Advogado Associado | Direito Tributário</span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
-    </section>
+    </section><!-- End Team Section -->
 
     <!-- ======= Contact Section ======= -->
     <section id="contact" class="contact">
@@ -271,37 +192,29 @@
 
         <div class="section-title">
           <h2>Contato</h2>
-          <p>Entre em contato conosco para solicitar um orçamento ou tirar dúvidas. Estamos prontos para atender você.</p>
+          <p>Estamos à sua disposição. Envie-nos uma mensagem para agendar uma consulta ou esclarecer suas dúvidas.</p>
         </div>
 
         <div class="row">
-          <div class="col-lg-6">
-            <div class="row">
-              <div class="col-md-12">
-                <div class="info-box">
-                  <i class="bi bi-map"></i>
-                  <h3>Nosso Endereço</h3>
-                  <p>Av. Paulista, 1000 - Bela Vista, São Paulo - SP</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box mt-4">
-                  <i class="bi bi-envelope"></i>
-                  <h3>Email</h3>
-                  <p>contato@inovecorp.com.br<br>vendas@inovecorp.com.br</p>
-                </div>
-              </div>
-              <div class="col-md-6">
-                <div class="info-box mt-4">
-                  <i class="bi bi-telephone"></i>
-                  <h3>Ligue</h3>
-                  <p>+55 11 99999-9999<br>+55 11 3333-3333</p>
-                </div>
-              </div>
+          <div class="col-lg-5">
+            <div class="info-box mb-4">
+              <i class="bi bi-geo-alt"></i>
+              <h3>Endereço</h3>
+              <p>Avenida Paulista, 171, 4º Andar, São Paulo, SP</p>
+            </div>
+             <div class="info-box mb-4">
+              <i class="bi bi-envelope"></i>
+              <h3>Email</h3>
+              <p>contato@almeidacastilho.com</p>
+            </div>
+             <div class="info-box mb-4">
+              <i class="bi bi-phone"></i>
+              <h3>Telefone</h3>
+              <p>+55 11 3333-4444</p>
             </div>
           </div>
 
-          <div class="col-lg-6 mt-4 mt-lg-0">
+          <div class="col-lg-7 mt-4 mt-lg-0">
             <form action="#" method="post" role="form" class="php-email-form">
               <div class="row">
                 <div class="col-md-6 form-group">
@@ -315,14 +228,15 @@
                 <input type="text" class="form-control" name="subject" id="subject" placeholder="Assunto" required>
               </div>
               <div class="form-group mt-3">
-                <textarea class="form-control" name="message" rows="5" placeholder="Mensagem" required></textarea>
+                <textarea class="form-control" name="message" rows="5" placeholder="Sua Mensagem" required></textarea>
               </div>
-              <div class="text-center mt-3"><button type="submit" class="btn btn-success">Enviar Mensagem</button></div>
+              <div class="my-3">
+                <!-- Loading and error messages can go here -->
+              </div>
+              <div class="text-center"><button type="submit">Enviar Mensagem</button></div>
             </form>
           </div>
-
         </div>
-
       </div>
     </section><!-- End Contact Section -->
 
@@ -331,8 +245,8 @@
   <!-- ======= Footer ======= -->
   <footer id="footer">
     <div class="container">
-      <h3>Inove Corp</h3>
-      <p>Inovando para o futuro, hoje. Transforme sua empresa com nossas soluções digitais.</p>
+      <h3>Almeida & Castilho</h3>
+      <p>Justiça, Tradição e Inovação a serviço dos seus direitos.</p>
       <div class="social-links">
         <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
         <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
@@ -340,17 +254,18 @@
         <a href="#" class="linkedin"><i class="bi bi-linkedin"></i></a>
       </div>
       <div class="copyright">
-        &copy; Copyright <strong><span>Inove Corp</span></strong>. Todos os direitos reservados
+        &copy; Copyright <strong><span>Almeida & Castilho Advocacia</span></strong>. Todos os direitos reservados.
       </div>
     </div>
   </footer><!-- End Footer -->
 
   <div class="demo-banner">
-      ⚠️ Este é um modelo de demonstração da <strong>Inove Dev</strong> baseado no template Strive.
+      <strong>Inove Dev:</strong> Modelo de Advocacia.
   </div>
 
   <!-- Vendor JS Files -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
+
 </html>
