@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+
+  <title>Sabor & Arte - Modelo Restaurante</title>
+  <meta content="" name="description">
+  <meta content="" name="keywords">
+
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css?family=Poppins:300,300i,400,400i,600,600i,700,700i|Satisfy|Comic+Neue:300,300i,400,400i,700,700i" rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css" rel="stylesheet">
+
+  <style>
+    /* General */
+    body { font-family: "Poppins", sans-serif; color: #444; background: #fff; }
+    h1, h2, h3, h4, h5, h6 { font-family: "Satisfy", sans-serif; }
+    a { text-decoration: none; color: #ffb03b; }
+    a:hover { color: #ffc56e; }
+
+    /* Header */
+    #header { background: rgba(0, 0, 0, 0.85); height: 70px; padding: 15px 0; z-index: 997; transition: all 0.5s; }
+    #header .logo h1 { font-size: 28px; margin: 0; padding: 0; line-height: 1; font-weight: 400; letter-spacing: 1px; }
+    #header .logo h1 a { color: #fff; text-decoration: none; }
+    #header .logo h1 a span { color: #ffb03b; }
+
+    /* Navbar */
+    .navbar { padding: 0; }
+    .navbar ul { margin: 0; padding: 0; display: flex; list-style: none; align-items: center; }
+    .navbar li { position: relative; }
+    .navbar a { display: flex; align-items: center; justify-content: space-between; padding: 10px 0 10px 30px; font-size: 15px; font-weight: 500; color: #fff; white-space: nowrap; transition: 0.3s; }
+    .navbar a:hover, .navbar .active, .navbar li:hover > a { color: #ffb03b; }
+    .book-a-table-btn { margin: 0 0 0 15px; border: 2px solid #ffb03b; color: #fff; border-radius: 50px; padding: 8px 25px; text-transform: uppercase; font-size: 13px; font-weight: 500; letter-spacing: 1px; transition: 0.3s; }
+    .book-a-table-btn:hover { background: #ffb03b; color: #fff; }
+
+    /* Hero */
+    #hero { width: 100%; height: 100vh; background: url('https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80') top center; background-size: cover; position: relative; padding: 0; }
+    #hero:before { content: ""; background: rgba(0, 0, 0, 0.5); position: absolute; bottom: 0; top: 0; left: 0; right: 0; }
+    #hero .container { position: relative; padding-top: 110px; text-align: center; }
+    #hero h2 { color: #eee; margin-bottom: 10px; font-size: 48px; font-weight: 700; font-family: "Satisfy", sans-serif; }
+    #hero h2 span { color: #ffb03b; }
+    #hero p { color: #eee; margin-bottom: 30px; font-size: 24px; font-family: "Comic Neue", sans-serif; }
+    #hero .btn-menu { font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; padding: 12px 30px; border-radius: 50px; transition: 0.5s; line-height: 1; margin: 0 10px; color: #fff; border: 2px solid #ffb03b; }
+    #hero .btn-menu:hover { background: #ffb03b; color: #fff; }
+    #hero .btn-book { font-weight: 600; font-size: 13px; letter-spacing: 1px; text-transform: uppercase; display: inline-block; padding: 12px 30px; border-radius: 50px; transition: 0.5s; line-height: 1; margin: 0 10px; color: #fff; background: #ffb03b; border: 2px solid #ffb03b; }
+
+    /* Sections */
+    section { padding: 60px 0; }
+    .section-title { text-align: center; padding-bottom: 30px; }
+    .section-title h2 { margin: 15px 0 0 0; font-size: 32px; font-weight: 700; color: #5f5950; }
+    .section-title h2 span { color: #ffb03b; }
+    .section-title p { margin: 15px auto 0 auto; font-weight: 300; }
+
+    /* Menu */
+    .menu #menu-flters { padding: 0; margin: 0 auto 0 auto; list-style: none; text-align: center; border-radius: 50px; }
+    .menu #menu-flters li { cursor: pointer; display: inline-block; padding: 8px 16px 10px 16px; font-size: 14px; font-weight: 500; line-height: 1; color: #444; margin: 0 3px 10px 3px; transition: all ease-in-out 0.3s; background: #fff; border: 2px solid #fff; border-radius: 50px; }
+    .menu #menu-flters li:hover, .menu #menu-flters li.filter-active { color: #ffb03b; border-color: #ffb03b; }
+    .menu .menu-item { margin-top: 50px; }
+    .menu .menu-img { width: 70px; border-radius: 50%; float: left; border: 5px solid rgba(255, 255, 255, 0.2); }
+    .menu .menu-content { margin-left: 85px; overflow: hidden; display: flex; justify-content: space-between; position: relative; }
+    .menu .menu-content::after { content: "......................................................................"; position: absolute; left: 20px; right: 0; top: -4px; z-index: 1; color: #dad8d4; font-family: sans-serif; }
+    .menu .menu-content a { padding-right: 10px; background: #fff; position: relative; z-index: 3; font-weight: 700; color: #ffb03b; }
+    .menu .menu-content span { background: #fff; position: relative; z-index: 3; padding: 0 10px; font-weight: 600; }
+    .menu .menu-ingredients { margin-left: 85px; font-style: italic; font-size: 14px; font-family: "Comic Neue", sans-serif; color: #948c81; }
+
+    /* Gallery */
+    .gallery .gallery-item { overflow: hidden; border-right: 3px solid #fff; border-bottom: 3px solid #fff; }
+    .gallery .gallery-item img { transition: all ease-in-out 0.4s; }
+    .gallery .gallery-item:hover img { transform: scale(1.1); }
+
+    /* Footer */
+    #footer { background: #35322d; color: #fff; font-size: 14px; text-align: center; padding: 30px 0; }
+    #footer h3 { font-size: 36px; font-weight: 700; color: #ffb03b; position: relative; font-family: "Satisfy", sans-serif; padding: 0; margin: 0 0 15px 0; }
+    #footer .social-links a { font-size: 18px; display: inline-block; background: #46423b; color: #fff; line-height: 1; padding: 8px 0; margin-right: 4px; border-radius: 50%; text-align: center; width: 36px; height: 36px; transition: 0.3s; }
+    #footer .social-links a:hover { background: #ffb03b; }
+
+    .demo-banner { background: #ffc107; color: #000; text-align: center; padding: 5px; font-size: 0.9rem; position: fixed; bottom: 0; width: 100%; z-index: 2000; }
+  </style>
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header id="header" class="d-flex align-items-center fixed-top">
+    <div class="container d-flex align-items-center justify-content-between">
+      <div class="logo">
+        <h1><a href="../index.html">Sabor<span>&</span>Arte</a></h1>
+      </div>
+      <nav id="navbar" class="navbar">
+        <ul>
+          <li><a class="nav-link scrollto active" href="#hero">Início</a></li>
+          <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
+          <li><a class="nav-link scrollto" href="#menu">Cardápio</a></li>
+          <li><a class="nav-link scrollto" href="#gallery">Galeria</a></li>
+          <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
+        </ul>
+        <i class="bi bi-list mobile-nav-toggle"></i>
+      </nav>
+      <a href="#book-a-table" class="book-a-table-btn scrollto d-none d-lg-flex">Reservar Mesa</a>
+    </div>
+  </header>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-container">
+      <div class="container">
+        <h2 class="animate__animated animate__fadeInDown"><span>Delicioso</span> Restaurante</h2>
+        <p class="animate__animated animate__fadeInUp">Experiência gastronômica única com os melhores ingredientes da região.</p>
+        <div>
+          <a href="#menu" class="btn-menu animate__animated animate__fadeInUp scrollto">Ver Cardápio</a>
+          <a href="#book-a-table" class="btn-book animate__animated animate__fadeInUp scrollto">Reservar Mesa</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <main id="main">
+
+    <!-- About -->
+    <section id="about" class="about">
+      <div class="container">
+        <div class="row">
+          <div class="col-lg-5 align-items-stretch video-box" style='background-image: url("https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80"); min-height: 400px; background-size: cover; border-radius: 10px;'>
+          </div>
+          <div class="col-lg-7 d-flex flex-column justify-content-center align-items-stretch ps-lg-5">
+            <div class="section-title">
+              <h2>Sobre <span>Nós</span></h2>
+              <p>Fundado em 2010, o Sabor & Arte nasceu da paixão por cozinhar e servir bem. Nosso ambiente acolhedor é perfeito para jantares românticos, reuniões de família e encontros com amigos.</p>
+            </div>
+            <p class="fst-italic">
+              Nossa cozinha é liderada por chefs renomados que valorizam o sabor autêntico de cada ingrediente.
+            </p>
+            <ul>
+              <li><i class="bi bi-check-circle text-warning"></i> Ingredientes orgânicos e frescos.</li>
+              <li><i class="bi bi-check-circle text-warning"></i> Carta de vinhos selecionada.</li>
+              <li><i class="bi bi-check-circle text-warning"></i> Ambiente climatizado e música ao vivo.</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Menu -->
+    <section id="menu" class="menu section-bg">
+      <div class="container">
+        <div class="section-title">
+          <h2>Confira nosso <span>Cardápio</span></h2>
+        </div>
+
+        <div class="row menu-container">
+          <div class="col-lg-6 menu-item">
+            <div class="menu-content">
+              <a href="#">Lagosta Grelhada</a><span>R$ 129,00</span>
+            </div>
+            <div class="menu-ingredients">Lagosta fresca, manteiga de ervas, acompanhada de risoto de limão siciliano.</div>
+          </div>
+
+          <div class="col-lg-6 menu-item">
+            <div class="menu-content">
+              <a href="#">Filé Mignon ao Molho Madeira</a><span>R$ 89,00</span>
+            </div>
+            <div class="menu-ingredients">Medalhões de filé, molho madeira artesanal, purê de batata trufado.</div>
+          </div>
+
+          <div class="col-lg-6 menu-item">
+            <div class="menu-content">
+              <a href="#">Salada Caesar</a><span>R$ 45,00</span>
+            </div>
+            <div class="menu-ingredients">Alface romana, croutons, parmesão e molho especial da casa.</div>
+          </div>
+
+          <div class="col-lg-6 menu-item">
+            <div class="menu-content">
+              <a href="#">Tiramisu Clássico</a><span>R$ 32,00</span>
+            </div>
+            <div class="menu-ingredients">Sobremesa italiana com mascarpone, café e cacau.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Chefs Section (Novo) -->
+    <section id="chefs" class="chefs">
+      <div class="container">
+        <div class="section-title">
+          <h2>Nossos <span>Chefs</span></h2>
+          <p>Talentos que transformam ingredientes em arte.</p>
+        </div>
+        <div class="row justify-content-center text-center">
+          <div class="col-lg-4 col-md-6">
+            <div class="member">
+              <img src="https://placehold.co/300x300/ffb03b/fff?text=Chef+1" class="img-fluid rounded-circle mb-3" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+              <h4>Walter White</h4>
+              <span class="text-muted">Chef Executivo</span>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6 mt-4 mt-md-0">
+            <div class="member">
+              <img src="https://placehold.co/300x300/ffb03b/fff?text=Chef+2" class="img-fluid rounded-circle mb-3" alt="" style="width: 200px; height: 200px; object-fit: cover;">
+              <h4>Sarah Jhonson</h4>
+              <span class="text-muted">Confeiteira</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Gallery -->
+    <section id="gallery" class="gallery">
+      <div class="container-fluid">
+        <div class="section-title">
+          <h2>Algumas fotos do <span>Restaurante</span></h2>
+        </div>
+        <div class="row g-0">
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="#" class="gallery-lightbox">
+                <img src="https://images.unsplash.com/photo-1514362545857-3bc16c4c7d1b?auto=format&fit=crop&w=600&q=80" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="#" class="gallery-lightbox">
+                <img src="https://images.unsplash.com/photo-1552566626-52f8b828add9?auto=format&fit=crop&w=600&q=80" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="#" class="gallery-lightbox">
+                <img src="https://images.unsplash.com/photo-1550966871-3ed3c47e2ce2?auto=format&fit=crop&w=600&q=80" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-3 col-md-4">
+            <div class="gallery-item">
+              <a href="#" class="gallery-lightbox">
+                <img src="https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=600&q=80" alt="" class="img-fluid">
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Footer -->
+  <footer id="footer">
+    <div class="container">
+      <h3>Sabor & Arte</h3>
+      <p>O melhor da gastronomia para você.</p>
+      <div class="social-links">
+        <a href="#" class="twitter"><i class="bi bi-twitter"></i></a>
+        <a href="#" class="facebook"><i class="bi bi-facebook"></i></a>
+        <a href="#" class="instagram"><i class="bi bi-instagram"></i></a>
+      </div>
+      <div class="copyright">
+        &copy; Copyright <strong><span>Sabor & Arte</span></strong>. Todos os direitos reservados
+      </div>
+    </div>
+  </footer>
+
+  <div class="demo-banner">
+      ⚠️ Modelo Restaurante - <strong>Inove Dev</strong>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

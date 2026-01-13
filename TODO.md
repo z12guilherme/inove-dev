@@ -6,6 +6,7 @@
 - [ ] Expandir portfolio com mais projetos e filtros
 - [x] Adicionar botão "Voltar ao Topo"
 - [ ] Melhorar responsividade (menu mobile, grid adjustments)
+- [x] Criar página/seção de "Modelos" (Templates) para demonstração
 
 ## Fase 2: Melhorias de Funcionalidade (Prioridade Alta)
 - [ ] Avançar formulário de contato (validação, CAPTCHA, envio por email via EmailJS)
@@ -23,6 +24,10 @@
 ## Fase 4: Conteúdo e Engajamento (Prioridade Baixa)
 - [ ] Fortalecer CTAs com landing pages
 - [ ] Adicionar mais conteúdo (casos de sucesso, processo de trabalho)
+- [x] Criar Template: Landing Page de Alta Conversão
+- [x] Criar Template: Médico/Saúde (Portfólio Profissional)
+- [x] Criar Template: Restaurante/Gastronomia
+- [ ] Criar Template: E-commerce Simples
 - [ ] Integrar analytics (Google Analytics)
 
 ## Dependências e Setup
