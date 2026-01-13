@@ -489,17 +489,17 @@
                         <form id="contactForm" action="https://formspree.io/f/SEU_CODIGO_AQUI" method="POST" class="php-email-form">
                             <div class="row">
                                 <div class="col-md-6 form-group">
-                                    <input type="text" name="nome" class="form-control" id="name" placeholder="Seu Nome" required>
+                                    <input type="text" name="from_name" class="form-control" id="name" placeholder="Seu Nome" required>
                                 </div>
                                 <div class="col-md-6 form-group mt-3 mt-md-0">
-                                    <input type="email" class="form-control" name="email" id="email" placeholder="Seu Email" required>
+                                    <input type="email" class="form-control" name="reply_to" id="email" placeholder="Seu Email" required>
                                 </div>
                             </div>
                             <div class="form-group mt-3">
-                                <input type="text" class="form-control" name="telefone" id="subject" placeholder="Telefone" required>
+                                <input type="text" class="form-control" name="phone_number" id="subject" placeholder="Telefone" required>
                             </div>
                             <div class="form-group mt-3">
-                                <textarea class="form-control" name="mensagem" rows="5" placeholder="Mensagem" required></textarea>
+                                <textarea class="form-control" name="message" rows="5" placeholder="Mensagem" required></textarea>
                             </div>
                             <div class="my-3">
                                 <div id="formFeedback"></div>
@@ -588,6 +588,15 @@
     
     <!-- Gemini AI Integration -->
     <script type="module" src="js/ai-chat.js"></script>
+
+    <!-- EmailJS SDK -->
+    <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@3/dist/email.min.js"></script>
+    <script type="text/javascript">
+        (function() {
+            // Substitua "SUA_PUBLIC_KEY" pela chave que você pegar no painel do EmailJS
+            emailjs.init("W28HqX1E8-pkJKLCZ");
+        })();
+    </script>
     
     <!-- Tawk.to Script -->
 <script type="text/javascript">

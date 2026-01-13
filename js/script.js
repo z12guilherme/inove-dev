@@ -31,10 +31,10 @@ if (btnEnviar) {
     btnEnviar.addEventListener('click', function (e) {
         e.preventDefault();
 
-        const nome = form.nome.value.trim();
-        const email = form.email.value.trim();
-        const telefone = form.telefone.value.trim();
-        const mensagem = form.mensagem.value.trim();
+        const nome = form.from_name.value.trim();
+        const email = form.reply_to.value.trim();
+        const telefone = form.phone_number.value.trim();
+        const mensagem = form.message.value.trim();
 
         // Validação de campos obrigatórios
         if (!nome || !email || !mensagem) {
@@ -43,14 +43,37 @@ if (btnEnviar) {
             return;
         }
 
-        const whatsappMessage = `📌 Assunto: Contato
-👤 Nome: ${nome}
-✉️ Email: ${email}
-📞 Telefone: ${telefone || "Não informado"}
-💬 Mensagem: ${mensagem}`;
+        // Feedback visual
+        feedback.textContent = '⏳ Enviando mensagem...';
+        feedback.style.color = 'blue';
+        btnEnviar.disabled = true;
+        btnEnviar.textContent = 'Enviando...';
 
-        enviarMensagemWhatsApp(whatsappMessage);
-        form.reset();
+        // Envio via EmailJS
+        // Substitua 'service_id' e 'template_id' pelos seus IDs do EmailJS
+        emailjs.sendForm('service_avp4pa9', 'guii', this.closest('form'))
+            .then(() => {
+                feedback.textContent = '✅ Mensagem enviada com sucesso! Entraremos em contato em breve.';
+                feedback.style.color = 'green';
+                form.reset();
+            }, (err) => {
+                console.error('Erro EmailJS:', err);
+                feedback.textContent = '❌ Erro ao enviar e-mail. Redirecionando para WhatsApp...';
+                feedback.style.color = 'orange';
+                
+                // Fallback: Se o e-mail falhar, manda pro WhatsApp
+                setTimeout(() => {
+                    const whatsappMessage = `📌 Assunto: Contato (Fallback)\n👤 Nome: ${nome}\n✉️ Email: ${email}\n📞 Telefone: ${telefone || "Não informado"}\n💬 Mensagem: ${mensagem}`;
+                    enviarMensagemWhatsApp(whatsappMessage);
+                }, 1500);
+            })
+            .finally(() => {
+                btnEnviar.disabled = false;
+                btnEnviar.textContent = 'Enviar Mensagem';
+                
+                // Limpa feedback após 5s
+                setTimeout(() => { feedback.textContent = ''; }, 5000);
+            });
     });
 }
 
@@ -328,10 +351,14 @@ if (form) {
             const email = emailInput.value.trim();
             
             if (nome || email) {
-                Tawk_API.setAttributes({
-                    name: nome,
-                    email: email
-                }, function(error){});
+                try {
+                    Tawk_API.setAttributes({
+                        name: nome,
+                        email: email
+                    }, function(error){});
+                } catch (e) {
+                    console.warn("Tawk.to update error:", e);
+                }
             }
         }
     };

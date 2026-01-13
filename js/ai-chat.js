@@ -48,7 +48,9 @@ async function generateSiteStructure(userInput) {
     Crie o conteúdo completo para uma Landing Page Premium de alta conversão baseada na descrição do usuário.
     Se a descrição for vaga, crie uma marca fictícia de alto padrão, com nome, identidade visual e textos persuasivos.
     
-    Retorne APENAS um objeto JSON válido com a seguinte estrutura detalhada:
+    IMPORTANTE: Retorne APENAS o JSON cru. Não use Markdown, não use blocos de código (\`\`\`json), não coloque texto antes ou depois. Comece com { e termine com }.
+    
+    Estrutura do JSON:
     {
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
@@ -133,9 +135,12 @@ async function generateSiteStructure(userInput) {
         text = text.replace(/```json/g, '').replace(/```/g, '').trim();
         const start = text.indexOf('{');
         const end = text.lastIndexOf('}');
-        if (start !== -1 && end !== -1) {
-            text = text.substring(start, end + 1);
+        
+        if (start === -1 || end === -1) {
+            throw new Error("A resposta da IA não contém um JSON válido.");
         }
+        
+        text = text.substring(start, end + 1);
         
         const siteData = JSON.parse(text);
         
