@@ -12,6 +12,7 @@ Este é o site institucional da **Inove Dev**, empresa especializada na criaçã
 ![CSS3](https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white)
 ![JavaScript](https://img.shields.io/badge/JavaScript-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)
 ![Netlify](https://img.shields.io/badge/Netlify-00C7B7?style=for-the-badge&logo=netlify&logoColor=white)
+![EmailJS](https://img.shields.io/badge/EmailJS-F7A23B?style=for-the-badge&logo=gmail&logoColor=white)
 
 - **HTML5** → Estrutura semântica  
 - **CSS3** → Estilização responsiva e animações  
@@ -19,6 +20,7 @@ Este é o site institucional da **Inove Dev**, empresa especializada na criaçã
 - **ScrollReveal.js** → Animações de entrada  
 - **Font Awesome** → Ícones vetoriais  
 - **Netlify** → Deploy e hospedagem  
+- **EmailJS** → Envio de formulários sem backend
 
 ---
 
@@ -38,7 +40,7 @@ inovedev/
 Uma funcionalidade inovadora que utiliza Inteligência Artificial para criar protótipos de sites em segundos.
 
 - **Cérebro (Texto & Estrutura):** Integração com **Perplexity API** (Llama 3/Sonar) para gerar copy persuasiva, paleta de cores e design system.
-- **Visual (Imagens):** Integração com **Pollinations.ai** (Modelo Flux) para gerar imagens realistas e exclusivas baseadas no nicho do cliente.
+- **Visual (Imagens):** Integração com **LoremFlickr** para buscar imagens reais e contextuais baseadas em palavras-chave inteligentes selecionadas pela IA.
 - **Magic Deploy:** O usuário descreve o negócio e recebe uma Landing Page funcional e personalizada em tempo real.
 
 ---

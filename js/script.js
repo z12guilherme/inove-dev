@@ -31,6 +31,18 @@ if (btnEnviar) {
     btnEnviar.addEventListener('click', function (e) {
         e.preventDefault();
 
+        // --- SEGURANÇA: Rate Limiting (Anti-Spam) ---
+        const lastSent = localStorage.getItem('lastEmailSent');
+        const cooldown = 60000; // Tempo de espera em milissegundos (60 segundos)
+        const now = Date.now();
+
+        if (lastSent && (now - lastSent < cooldown)) {
+            const remaining = Math.ceil((cooldown - (now - lastSent)) / 1000);
+            feedback.textContent = `🛡️ Segurança: Aguarde ${remaining} segundos para enviar outra mensagem.`;
+            feedback.style.color = 'orange';
+            return;
+        }
+
         const nome = form.from_name.value.trim();
         const email = form.reply_to.value.trim();
         const telefone = form.phone_number.value.trim();
@@ -56,6 +68,9 @@ if (btnEnviar) {
                 feedback.textContent = '✅ Mensagem enviada com sucesso! Entraremos em contato em breve.';
                 feedback.style.color = 'green';
                 form.reset();
+                
+                // Registra o momento do envio para bloquear novas tentativas imediatas
+                localStorage.setItem('lastEmailSent', Date.now());
             }, (err) => {
                 console.error('Erro EmailJS:', err);
                 feedback.textContent = '❌ Erro ao enviar e-mail. Redirecionando para WhatsApp...';
@@ -84,6 +99,18 @@ if (btnEnviarMensagem) {
 
         const mensagem = form.mensagem.value.trim() || "Olá! Gostaria de mais informações.";
         enviarMensagemWhatsApp(mensagem);
+    });
+}
+
+// Mobile Navigation Toggle
+const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
+const navbar = document.querySelector('#navbar');
+
+if (mobileNavToggle) {
+    mobileNavToggle.addEventListener('click', function(e) {
+        navbar.classList.toggle('navbar-mobile');
+        this.classList.toggle('bi-list');
+        this.classList.toggle('bi-x');
     });
 }
 
@@ -307,7 +334,7 @@ function startMatrixEffect() {
     const interval = setInterval(draw, 33);
 
     // Áudio Secreto (Código Morse)
-    const audio = new Audio('assets/SecretFile.wav');
+    const audio = new Audio('../assets/SecretFile.wav');
     audio.play().catch(e => console.log("Áudio bloqueado pelo navegador (necessário interação):", e));
 
     // Mensagem Final
@@ -419,7 +446,7 @@ if (ctfSubmit) {
                 level2Container.style.display = 'block';
                 
                 // Toca o áudio oculto (usuário deve achar no Network)
-                const audio = new Audio('assets/SecretFile.wav');
+                const audio = new Audio('../assets/SecretFile.wav');
                 audio.play().catch(e => console.warn("Interação necessária para áudio"));
                 
                 stegoInput.focus();

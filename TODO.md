@@ -9,8 +9,8 @@
 - [x] Criar página/seção de "Modelos" (Templates) para demonstração
 
 ## Fase 2: Melhorias de Funcionalidade (Prioridade Alta)
-- [ ] Avançar formulário de contato (validação, CAPTCHA, envio por email via EmailJS)
-- [ ] Adicionar seção de blog simples (página blog.html com posts)
+- [x] Avançar formulário de contato (validação, envio por email via EmailJS)
+- [x] Adicionar seção de blog simples (página blog.html com posts)
 - [ ] Integrar botões de redes sociais
 - [ ] Adicionar widget de chat/WhatsApp integrado
 - [ ] Criar seção FAQ (página faq.html)
