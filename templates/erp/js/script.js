@@ -51,23 +51,34 @@ document.addEventListener('DOMContentLoaded', () => {
         let revenue = 0;
         let clients = new Set();
         const salesByMonth = new Array(12).fill(0); // Jan-Dez
+        
+        console.log("Calculando estatísticas para " + orders.length + " pedidos...");
 
         orders.forEach(order => {
-            // Parse Valor (R$ 1.200,00 -> 1200.00)
-            const valStr = order.value.replace('R$', '').trim().replace(/\./g, '').replace(',', '.');
+            if (!order.value) return; // Pula se não tiver valor
+
+            // Parse Valor Robusto (Remove tudo que não é dígito, vírgula ou ponto)
+            // Ex: "R$ 1.200,00" -> "1200.00"
+            let valStr = order.value.toString().replace(/[^\d,.-]/g, ''); 
+            // Se tiver vírgula, assume que é decimal (padrão BR) e remove pontos de milhar
+            if (valStr.includes(',')) {
+                valStr = valStr.replace(/\./g, '').replace(',', '.');
+            }
             const val = parseFloat(valStr) || 0;
             
-            // Apenas soma se estiver Concluído
-            if (order.status === 'Concluído') {
+            // Apenas soma se estiver Concluído (Verifica se contém "Conclu" para evitar erros de acentuação)
+            // Normaliza para minúsculo para garantir
+            const status = (order.status || '').toLowerCase();
+            if (status.includes('conclu')) {
                 revenue += val;
 
                 // Parse Data para o Gráfico (Ex: "12 jan. 2024")
                 // Normaliza: remove "de", remove pontos e passa para minúsculo
-                const cleanDate = order.date.toLowerCase().replace(/ de /g, ' ').replace(/\./g, '');
+                const cleanDate = (order.date || '').toLowerCase().replace(/ de /g, ' ').replace(/\./g, '').trim();
                 const parts = cleanDate.split(' ');
                 
-                if (parts.length >= 2) {
-                    const monthStr = parts[1]; // Agora deve ser "jan", "fev", etc.
+                if (parts.length >= 2 && parts[1]) {
+                    const monthStr = parts[1].substring(0, 3); // Pega as 3 primeiras letras (jan, fev...)
                     const monthMap = { 'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11 };
                     if (monthMap.hasOwnProperty(monthStr)) {
                         salesByMonth[monthMap[monthStr]] += val;
@@ -81,13 +92,21 @@ document.addEventListener('DOMContentLoaded', () => {
         const totalOrders = orders.length;
         const avgTicket = totalOrders > 0 ? revenue / totalOrders : 0;
 
+        console.log("Receita Total Calculada: ", revenue);
+        console.log("Atualizando elementos do Dashboard...");
+
         // Atualiza Cards
         const elRevenue = document.getElementById('totalRevenue');
         const elOrders = document.getElementById('totalOrders');
         const elClients = document.getElementById('totalClients');
         const elTicket = document.getElementById('avgTicket');
 
-        if(elRevenue) elRevenue.textContent = revenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if(elRevenue) {
+            elRevenue.textContent = revenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        } else {
+            console.warn("Elemento 'totalRevenue' não encontrado nesta página.");
+        }
+        
         if(elOrders) elOrders.textContent = totalOrders;
         if(elClients) elClients.textContent = clients.size;
         if(elTicket) elTicket.textContent = avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
@@ -171,6 +190,71 @@ document.addEventListener('DOMContentLoaded', () => {
         { id: '#ORD-004', client: 'Jane Cooper', date: '15 mar. 2024', value: 'R$ 2.400,00', status: 'Concluído' }
     ];
 
+    function updateDashboardStats() {
+        const orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
+        
+        let revenue = 0;
+        let clients = new Set();
+        const salesByMonth = new Array(12).fill(0); // Jan-Dez
+        
+        console.log("Calculando estatísticas para " + orders.length + " pedidos...");
+
+        orders.forEach(order => {
+            if (!order.value) return; 
+
+            // Parse Valor Robusto
+            let valStr = order.value.toString().replace(/[^\d,.-]/g, ''); 
+            if (valStr.includes(',')) {
+                valStr = valStr.replace(/\./g, '').replace(',', '.');
+            }
+            const val = parseFloat(valStr) || 0;
+            
+            // Apenas soma se estiver Concluído
+            const status = (order.status || '').toLowerCase();
+            if (status.includes('conclu')) {
+                revenue += val;
+
+                // Parse Data para o Gráfico
+                const cleanDate = (order.date || '').toLowerCase().replace(/ de /g, ' ').replace(/\./g, '').trim();
+                const parts = cleanDate.split(' ');
+                
+                if (parts.length >= 2 && parts[1]) {
+                    const monthStr = parts[1].substring(0, 3);
+                    const monthMap = { 'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11 };
+                    if (monthMap.hasOwnProperty(monthStr)) {
+                        salesByMonth[monthMap[monthStr]] += val;
+                    }
+                }
+            }
+            
+            if(order.client) clients.add(order.client);
+        });
+
+        const totalOrders = orders.length;
+        const avgTicket = totalOrders > 0 ? revenue / totalOrders : 0;
+
+        // Atualiza Cards
+        const elRevenue = document.getElementById('totalRevenue');
+        const elOrders = document.getElementById('totalOrders');
+        const elClients = document.getElementById('totalClients');
+        const elTicket = document.getElementById('avgTicket');
+
+        if(elRevenue) elRevenue.textContent = revenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if(elOrders) elOrders.textContent = totalOrders;
+        if(elClients) elClients.textContent = clients.size;
+        if(elTicket) elTicket.textContent = avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Atualiza Gráfico de Vendas
+        const chartCanvas = document.getElementById('salesChart');
+        if (chartCanvas) {
+            const chartInstance = Chart.getChart(chartCanvas);
+            if (chartInstance) {
+                chartInstance.data.datasets[0].data = salesByMonth;
+                chartInstance.update();
+            }
+        }
+    }
+
     function loadOrders() {
         let storedOrders = JSON.parse(localStorage.getItem('erp_orders'));
         if (!storedOrders || storedOrders.length === 0) {
@@ -229,18 +313,27 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNewOrder.addEventListener('click', () => {
             const clientName = prompt("Nome do Cliente para o novo pedido:");
             if (clientName) {
+                // Sugere um valor aleatório, mas permite o usuário alterar
+                const randomValue = (Math.random() * 500 + 50).toFixed(2).replace('.', ',');
+                const valueInput = prompt("Valor do Pedido (R$):", randomValue);
+                const finalValue = valueInput ? `R$ ${valueInput}` : `R$ ${randomValue}`;
+
                 const newOrder = {
                     id: '#ORD-' + Math.floor(Math.random() * 9000 + 1000),
                     client: clientName,
                     date: new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'short', year: 'numeric' }),
-                    value: 'R$ ' + (Math.random() * 500 + 50).toFixed(2).replace('.', ','),
+                    value: finalValue,
                     status: 'Pendente'
                 };
                 
-                const orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
+                // Lê, Adiciona e Salva no LocalStorage com garantia
+                let orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
                 orders.push(newOrder);
                 localStorage.setItem('erp_orders', JSON.stringify(orders));
                 
+                console.log("Pedido salvo com sucesso:", newOrder);
+                console.log("Total de pedidos no LocalStorage:", orders.length);
+
                 renderOrderRow(newOrder);
                 updateDashboardStats(); // Atualiza stats ao adicionar
             }
@@ -277,15 +370,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const productsTableBody = document.getElementById('productsTableBody');
     const btnNewProduct = document.getElementById('btnNewProduct');
 
+    // Definindo produtos padrão fora da função para serem acessíveis globalmente
+    const defaultProducts = [
+        { id: 1, name: 'Notebook Dell', category: 'Eletrônicos', price: 'R$ 3.500', stock: 12 },
+        { id: 2, name: 'Mouse Sem Fio', category: 'Acessórios', price: 'R$ 85,00', stock: 45 },
+        { id: 3, name: 'Teclado Mecânico', category: 'Acessórios', price: 'R$ 250,00', stock: 8 }
+    ];
+
     function loadProducts() {
-        if (!productsTableBody) return;
-        const defaultProducts = [
-            { id: 1, name: 'Notebook Dell', category: 'Eletrônicos', price: 'R$ 3.500', stock: 12 },
-            { id: 2, name: 'Mouse Sem Fio', category: 'Acessórios', price: 'R$ 85,00', stock: 45 },
-            { id: 3, name: 'Teclado Mecânico', category: 'Acessórios', price: 'R$ 250,00', stock: 8 }
-        ];
-        const products = JSON.parse(localStorage.getItem('erp_products')) || defaultProducts;
+        // Inicializa o localStorage com dados padrão se estiver vazio
+        let products = JSON.parse(localStorage.getItem('erp_products'));
+        if (!products || products.length === 0) {
+            products = defaultProducts;
+            localStorage.setItem('erp_products', JSON.stringify(products));
+        }
         
+        if (!productsTableBody) return;
+
         productsTableBody.innerHTML = '';
         products.forEach(p => renderProductRow(p));
     }
@@ -307,7 +408,10 @@ document.addEventListener('DOMContentLoaded', () => {
         btnNewProduct.addEventListener('click', () => {
             const name = prompt("Nome do Produto:");
             if(name) {
-                const products = JSON.parse(localStorage.getItem('erp_products')) || [];
+                // Garante que pega a lista atualizada ou inicia com padrão
+                let products = JSON.parse(localStorage.getItem('erp_products'));
+                if (!products) products = defaultProducts;
+
                 products.push({ id: Date.now(), name: name, category: 'Geral', price: 'R$ 0,00', stock: 0 });
                 localStorage.setItem('erp_products', JSON.stringify(products));
                 loadProducts();
@@ -317,7 +421,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
     window.deleteProduct = function(id) {
         if(confirm("Excluir este produto?")) {
-            let products = JSON.parse(localStorage.getItem('erp_products')) || [];
+            let products = JSON.parse(localStorage.getItem('erp_products'));
+            if (!products) products = defaultProducts;
+
             products = products.filter(p => p.id !== id);
             localStorage.setItem('erp_products', JSON.stringify(products));
             loadProducts();
