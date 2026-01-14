@@ -353,7 +353,7 @@ function startMatrixEffect() {
     msg.style.background = 'rgba(0,0,0,0.8)';
     msg.style.padding = '20px';
     msg.style.border = '2px solid #0F0';
-    msg.innerHTML = 'CONGRATULATIONS,<br>YOU HAVE REACHED THE END<br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">Parabéns, você chegou ao fim do desafio, envie uma mensagem para o dono com a palavra mais usada no site e receba sua recompensa</span>';
+    msg.innerHTML = 'VOCÊ ACHOU QUE TINHA ACABADO?<br><br><span style="font-size: 1.5rem; color: #fff;">O VERDADEIRO DESAFIO COMEÇA AGORA.</span><br><br><span style="font-size: 1.2rem; color: #00C7B7; text-shadow: none; font-family: monospace; display: block; margin-top: 15px;">Volte ao terminal e execute:<br><span style="color: #ff0000; font-weight: bold; font-size: 1.5rem;">protocol_ghost</span></span>';
     document.body.appendChild(msg);
 
     // Remove o efeito após 15 segundos
@@ -412,6 +412,10 @@ const stegoFeedback = document.getElementById('stego-feedback');
 const currentChallenge = { word: 'pentest', hash: '46ea1712d4b13b55b3f680cc5b8b54e8' };
 // Desafio Nível 2: Decodificação de Código Morse
 const stegoChallenge = { word: 'as imagens guardam segredos' };
+// Desafio Nível 3 (HARD): Protocol Ghost
+const ghostTrigger = 'protocol_ghost';
+const ghostSolution = 'a ordem vem do caos';
+const ghostHash = "$2b$10$M.E.D.R.O.O.S.A.C.O.D.M.E.V.A";
 
 function initCTF() {
     if (!ctfHashDisplay) return;
@@ -433,6 +437,13 @@ function initCTF() {
 if (ctfSubmit) {
     ctfSubmit.addEventListener('click', () => {
         const attempt = ctfInput.value.toLowerCase().trim();
+        
+        // --- TRIGGER HARD MODE ---
+        if (attempt === ghostTrigger) {
+            initGhostMode();
+            return;
+        }
+
         if (attempt === currentChallenge.word) {
             ctfFeedback.innerHTML = '> HASH DECRIPTADO COM SUCESSO.<br>> <span class="cursor">O BARULHO NÃO FOI VOCÊ...</span>';
             ctfFeedback.style.color = '#00ff00';
@@ -488,4 +499,114 @@ if (ctfSubmit) {
 
     // Inicia o desafio
     initCTF();
+}
+
+// --- PROTOCOL GHOST: LOGIC ---
+function initGhostMode() {
+    // 1. Criar Overlay
+    const overlay = document.createElement('div');
+    overlay.className = 'ghost-overlay';
+    
+    // 2. Estrutura do Hash (Letra por letra para animação)
+    // $2b$10$M.E.D.R.O.O.S.A.C.O.D.M.E.V.A
+    // Vamos marcar o que é ruído e o que é letra
+    const hashHTML = `
+        <span class="ghost-char noise">$</span>
+        <span class="ghost-char noise">2</span>
+        <span class="ghost-char noise">b</span>
+        <span class="ghost-char noise">$</span>
+        <span class="ghost-char noise">1</span>
+        <span class="ghost-char noise">0</span>
+        <span class="ghost-char noise">$</span>
+        <span class="ghost-char" data-char="M">M</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="E">E</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="D">D</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="R">R</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="O">O</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="O">O</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="S">S</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="A">A</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="C">C</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="O">O</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="D">D</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="M">M</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="E">E</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="V">V</span><span class="ghost-char noise">.</span>
+        <span class="ghost-char" data-char="A">A</span>
+    `;
+
+    overlay.innerHTML = `
+        <div class="ghost-title">A ARTE PODE SER PRISÃO OU LIBERDADE</div>
+        <div class="ghost-hash-container" id="ghostHash">${hashHTML}</div>
+        
+        <div class="ghost-gallery">
+            <div class="ghost-frame">
+                <a href="assets/monalisa.jpg" download><img src="assets/monalisa.jpg" alt="Mona Lisa"></a>
+                <div class="ghost-label">Mona Lisa</div>
+            </div>
+            <div class="ghost-frame">
+                <a href="assets/adam.jpg" download><img src="assets/adam.jpg" alt="A Criação de Adão"></a>
+                <div class="ghost-label">A Criação de Adão</div>
+            </div>
+            <div class="ghost-frame">
+                <a href="assets/athens.jpg" download><img src="assets/athens.jpg" alt="Escola de Atenas"></a>
+                <div class="ghost-label">Escola de Atenas</div>
+            </div>
+        </div>
+
+        <input type="text" class="ghost-input" placeholder="Qual é a sua escolha?" autocomplete="off">
+        <div class="ghost-final-message">VOCÊ NÃO ESCAPOU DA PRISÃO.<br><br><span style="font-size:1.5rem">VOCÊ PERCEBEU QUE ELA NUNCA EXISTIU.</span></div>
+    `;
+
+    document.body.appendChild(overlay);
+
+    // Áudio Loop (Morse)
+    const audio = new Audio('assets/hard_mode_morse.wav');
+    audio.loop = true;
+    audio.volume = 0.3;
+    
+    // Fade In
+    setTimeout(() => {
+        overlay.classList.add('active');
+        audio.play().catch(e => console.log("Clique para tocar áudio"));
+    }, 100);
+
+    // Lógica de Validação
+    const input = overlay.querySelector('.ghost-input');
+    input.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            if (input.value.toLowerCase().trim() === ghostSolution) {
+                // VITÓRIA
+                input.style.display = 'none';
+                document.querySelector('.ghost-gallery').style.display = 'none';
+                
+                // 1. Fade out noise
+                document.querySelectorAll('.ghost-char.noise').forEach(el => {
+                    el.classList.add('fade-out');
+                });
+
+                // 2. Animação de rearranjo (Simulada via Cross-fade para simplicidade e elegância)
+                setTimeout(() => {
+                    const hashContainer = document.getElementById('ghostHash');
+                    hashContainer.style.transition = 'opacity 1s';
+                    hashContainer.style.opacity = '0';
+                    
+                    setTimeout(() => {
+                        hashContainer.innerHTML = 'A ORDEM VEM DO CAOS';
+                        hashContainer.style.fontFamily = 'Times New Roman, serif';
+                        hashContainer.style.opacity = '1';
+                        
+                        // 3. Mensagem Final
+                        setTimeout(() => {
+                            document.querySelector('.ghost-final-message').style.opacity = '1';
+                        }, 2000);
+                    }, 1000);
+                }, 1500);
+            } else {
+                // Erro visual
+                input.style.borderBottomColor = 'red';
+                setTimeout(() => input.style.borderBottomColor = '#333', 500);
+            }
+        }
+    });
 }

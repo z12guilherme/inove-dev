@@ -40,5 +40,18 @@ Este arquivo contém a solução passo a passo para o desafio CTF (Capture The F
 2. **Solução:** Digite no teclado a palavra **`hollywood`** (como se fosse um cheat code de jogo).
 3. O "Efeito Matrix" é ativado, o áudio final toca e a mensagem de vitória aparece.
 
+## 👻 Passo 6: Protocolo Ghost (Hard Mode)
+1. Após ativar o "Efeito Matrix" (Passo 5), uma mensagem instrui a digitar `protocol_ghost` no terminal.
+2. **Ação:** Volte ao terminal (`/admin.html`) e digite `protocol_ghost`.
+3. Uma nova interface escura aparece com um "Hash" e 3 quadros.
+   - Hash exibido: `$2b$10$M.E.D.R.O.O.S.A.C.O.D.M.E.V.A`
+4. **Análise:**
+   - O áudio de fundo (Morse) dita as letras do hash, indicando que elas são a chave.
+   - As imagens contêm dicas esteganográficas (se baixadas e analisadas) sugerindo que é um anagrama.
+   - Removendo os caracteres de "ruído" ($2b$10$ e pontos), sobram as letras: **M E D R O O S A C O D M E V A**.
+5. **Solução:** Reorganize as letras para formar a frase filosófica.
+   - Frase Final: **`A ORDEM VEM DO CAOS`**
+6. Digite a frase na tela do enigma para ver a conclusão.
+
 ---
 **Parabéns, você chegou ao fim da toca do coelho! 🐇**
