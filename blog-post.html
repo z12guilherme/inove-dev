@@ -112,17 +112,16 @@
                     <!-- Sidebar -->
                     <div class="col-lg-4">
                         <div class="sidebar">
+                            <h3 class="sidebar-title">Buscar</h3>
+                            <div class="sidebar-item search-form">
+                                <form action="blog.html" method="GET">
+                                    <input type="text" name="search" class="form-control" placeholder="Pesquisar...">
+                                    <button type="submit" class="btn btn-primary mt-2 w-100"><i class="bi bi-search"></i> Buscar</button>
+                                </form>
+                            </div>
                             <h3 class="sidebar-title">Posts Recentes</h3>
-                            <div class="sidebar-item recent-posts">
-                                <div class="post-item clearfix mb-3">
-                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=1" class="text-dark text-decoration-none">5 Motivos para ter um site...</a></h4>
-                                </div>
-                                <div class="post-item clearfix mb-3">
-                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=2" class="text-dark text-decoration-none">O que é SEO?</a></h4>
-                                </div>
-                                <div class="post-item clearfix">
-                                    <h4 style="font-size: 16px;"><a href="blog-post.html?id=5" class="text-dark text-decoration-none">Velocidade de Carregamento</a></h4>
-                                </div>
+                            <div class="sidebar-item recent-posts" id="recentPosts">
+                                <!-- Carregado via JS -->
                             </div>
                             <h3 class="sidebar-title">Tags</h3>
                             <div class="sidebar-item tags">
@@ -319,6 +318,24 @@
                         <a href="https://wa.me/5581989035561?text=Li o artigo sobre ${encodeURIComponent(post.title)} e gostaria de tirar uma dúvida." class="btn btn-success btn-sm"><i class="bi bi-whatsapp"></i> Falar com Especialista</a>
                     </div>
                 `;
+
+                // Carregar Posts Recentes (Sidebar)
+                const recentContainer = document.getElementById('recentPosts');
+                const otherIds = Object.keys(articles).filter(k => k !== id).slice(0, 4); // Pega 4 outros posts
+                
+                otherIds.forEach(otherId => {
+                    const otherPost = articles[otherId];
+                    recentContainer.innerHTML += `
+                        <div class="post-item clearfix mb-3">
+                            <img src="${otherPost.image}" alt="" class="float-start me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                            <h4 style="font-size: 15px; margin-bottom: 5px;">
+                                <a href="blog-post.html?id=${otherId}" class="text-dark text-decoration-none fw-bold">${otherPost.title}</a>
+                            </h4>
+                            <time class="text-muted small">${otherPost.date}</time>
+                        </div>
+                    `;
+                });
+
             } else {
                 container.innerHTML = `
                     <div class="alert alert-warning">
