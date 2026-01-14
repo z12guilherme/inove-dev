@@ -323,15 +323,30 @@
             AOS.init({ once: true, offset: 100 });
             
             console.log("Inove AI: Versão do Gerador v2.1 - Imagens via Pollinations");
+            
+            // --- SCRIPT ANTI-ROBÔ (NUCLEAR) ---
+            // Verifica a cada 1 segundo se alguma imagem quebrada ou do LoremFlickr apareceu e a substitui
+            setInterval(() => {
+                document.querySelectorAll('img').forEach(img => {
+                    if (img.src.includes('loremflickr') || img.src.includes('we-have-moved')) {
+                        img.src = 'https://placehold.co/600x400?text=Imagem+Atualizada';
+                    }
+                });
+            }, 1000);
 
             // Função Helper para gerar URLs de Imagem Robustas (Pollinations AI)
             const getImageUrl = (prompt, width, height) => {
-                const safePrompt = prompt ? encodeURIComponent(prompt) : 'abstract,technology';
+                // Limpeza extra: Se o prompt vier com URL (erro antigo), removemos
+                let cleanPrompt = prompt ? prompt.replace(/https?:\/\/[^\s]+/, '') : '';
+                cleanPrompt = cleanPrompt.trim() || 'technology, abstract';
+                
+                const safePrompt = encodeURIComponent(cleanPrompt);
                 const seed = Math.floor(Math.random() * 1000);
                 return `https://image.pollinations.ai/prompt/${safePrompt}?width=${width}&height=${height}&nologo=true&private=true&seed=${seed}&model=flux`;
             };
 
-            const data = JSON.parse(localStorage.getItem('aiWebsiteData'));
+            // MUDANÇA DE VERSÃO: Lê da nova chave v3 para ignorar dados antigos com o robô
+            const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
 
             if (!data) {
                 alert("Nenhum dado de site encontrado. Volte e gere novamente.");

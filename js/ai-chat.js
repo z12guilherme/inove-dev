@@ -196,7 +196,7 @@ async function generateSiteStructure(userInput) {
         }
         
         // Salva no LocalStorage para a página gerada usar
-        localStorage.setItem('aiWebsiteData', JSON.stringify(siteData));
+        localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
 
         const timestamp = new Date().getTime(); // Cria um código único para evitar cache
         addMessage(`
