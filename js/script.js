@@ -560,6 +560,9 @@ function initGhostMode() {
 
     document.body.appendChild(overlay);
 
+    // Mensagem provocativa no console (Easter Egg)
+    console.log("%c🔊 Você está ouvindo ou apenas enxergando? O que os olhos veem, o ouvido confirma.", "color: #ff0000; background: #000; font-size: 14px; padding: 10px; border: 1px solid #ff0000;");
+
     // Áudio Loop (Morse)
     const audio = new Audio('assets/hard_mode_morse.wav');
     audio.loop = true;

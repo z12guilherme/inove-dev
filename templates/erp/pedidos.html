@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pedidos - Nexus ERP</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        /* Estilos inline simplificados para brevidade, idealmente estariam em um CSS compartilhado */
+        :root { --sidebar-width: 260px; --header-height: 60px; --primary-color: #4361ee; --bg-color: #f3f4f6; --text-color: #1f2937; --sidebar-bg: #ffffff; --border-color: #e5e7eb; }
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
+        body.dark-mode { --bg-color: #111827; --text-color: #f3f4f6; --sidebar-bg: #1f2937; --border-color: #374151; }
+        body.dark-mode .top-header, body.dark-mode .table-card { background-color: var(--sidebar-bg); border-color: var(--border-color); }
+        body.dark-mode .table { color: var(--text-color); }
+        body.dark-mode .table thead th { background-color: #374151; color: #9ca3af; border-color: var(--border-color); }
+        body.dark-mode .table tbody td { border-color: var(--border-color); }
+        
+        .sidebar { width: var(--sidebar-width); height: 100vh; position: fixed; top: 0; left: 0; background: var(--sidebar-bg); border-right: 1px solid var(--border-color); z-index: 1000; display: flex; flex-direction: column; transition: 0.3s; }
+        .sidebar-header { height: var(--header-height); display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid var(--border-color); }
+        .logo { font-weight: 700; font-size: 1.25rem; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
+        .nav-links { padding: 20px 16px; flex: 1; overflow-y: auto; }
+        .nav-group { margin-bottom: 24px; }
+        .nav-label { font-size: 0.75rem; text-transform: uppercase; color: #9ca3af; font-weight: 600; margin-bottom: 8px; padding-left: 12px; }
+        .nav-item { display: flex; align-items: center; padding: 12px; color: #4b5563; text-decoration: none; border-radius: 8px; margin-bottom: 4px; transition: 0.2s; font-weight: 500; }
+        body.dark-mode .nav-item { color: #9ca3af; }
+        .nav-item:hover, .nav-item.active { background-color: #eff6ff; color: var(--primary-color); }
+        .nav-item i { font-size: 1.1rem; margin-right: 12px; width: 20px; text-align: center; }
+        
+        .main-wrapper { margin-left: var(--sidebar-width); transition: 0.3s; }
+        .top-header { height: var(--header-height); background: #fff; border-bottom: 1px solid var(--border-color); display: flex; align-items: center; justify-content: space-between; padding: 0 32px; position: sticky; top: 0; z-index: 900; }
+        .content-area { padding: 32px; }
+        .table-card { background: #fff; border-radius: 12px; border: 1px solid var(--border-color); overflow: hidden; }
+        .table thead th { background-color: #f9fafb; padding: 12px 24px; border-bottom: 1px solid var(--border-color); }
+        .table tbody td { padding: 16px 24px; vertical-align: middle; }
+        .status-badge { padding: 4px 12px; border-radius: 9999px; font-size: 0.75rem; font-weight: 500; }
+        .status-warning { background-color: #fef3c7; color: #92400e; }
+        @media (max-width: 992px) { .sidebar { transform: translateX(-100%); } .main-wrapper { margin-left: 0; } .sidebar.active { transform: translateX(0); } }
+    </style>
+</head>
+<body>
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header"><div class="logo"><i class="bi bi-layers-fill"></i> Nexus ERP</div></div>
+        <div class="nav-links">
+            <div class="nav-group"><div class="nav-label">Principal</div><a href="index.html" class="nav-item"><i class="bi bi-grid"></i> Dashboard</a><a href="#" class="nav-item"><i class="bi bi-graph-up"></i> Analytics</a></div>
+            <div class="nav-group"><div class="nav-label">Gestão</div><a href="produtos.html" class="nav-item"><i class="bi bi-box-seam"></i> Produtos</a><a href="clientes.html" class="nav-item"><i class="bi bi-people"></i> Clientes</a><a href="pedidos.html" class="nav-item"><i class="bi bi-cart3"></i> Pedidos</a></div>
+            <div class="nav-group"><div class="nav-label">Sistema</div><a href="configuracoes.html" class="nav-item"><i class="bi bi-gear"></i> Configurações</a><a href="../../index.html" class="nav-item text-danger"><i class="bi bi-box-arrow-left"></i> Sair</a></div>
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="d-flex align-items-center gap-3"><button class="btn btn-light d-lg-none" id="sidebarToggle"><i class="bi bi-list"></i></button><h5 class="mb-0 text-muted">Gestão de Pedidos</h5></div>
+            <div class="header-actions"><button class="btn btn-link text-secondary p-0" id="darkModeToggle"><i class="bi bi-moon fs-5"></i></button></div>
+        </header>
+
+        <div class="content-area">
+            <div class="d-flex justify-content-between align-items-center mb-4">
+                <h3>Todos os Pedidos</h3>
+                <button class="btn btn-primary" id="btnNewOrder"><i class="bi bi-plus-lg"></i> Novo Pedido</button>
+            </div>
+
+            <div class="table-card">
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0"><thead><tr><th>ID</th><th>Cliente</th><th>Data</th><th>Valor</th><th>Status</th><th>Ações</th></tr></thead><tbody id="ordersTableBody"></tbody></table>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="js/script.js"></script>
+</body>
+</html>
