@@ -45,25 +45,46 @@ async function handleUserResponse() {
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
     Atue como um Arquiteto de Soluções Web Sênior e Especialista em Copywriting.
-    Crie o conteúdo completo para uma Landing Page Premium de alta conversão baseada na descrição do usuário.
-    Se a descrição for vaga ou curta, NÃO peça esclarecimentos: crie uma marca fictícia de alto padrão, com nome, identidade visual e textos persuasivos automaticamente.
+    Sua missão é criar o JSON estruturado para uma Landing Page Premium de alta conversão.
+    
+    DIRETRIZES DE DESIGN E DIVERSIFICAÇÃO:
+    1. Adapte radicalmente as cores, fontes E LAYOUT ao nicho.
+    2. NÃO use sempre o mesmo layout (ex: Hero centralizado). VARIE entre alinhamento à esquerda, direita ou centro.
+    3. CONTRASTE É VITAL: Se o fundo for escuro, o texto TEM QUE SER CLARO. Se o fundo for claro, o texto TEM QUE SER ESCURO.
+    3. Use o campo 'customCss' para criar identidades visuais únicas (bordas arredondadas vs quadradas, sombras vs flat).
+    4. Se a descrição for vaga, invente uma marca criativa e única.
+    5. COPYWRITING: Use gatilhos mentais, textos persuasivos e evite linguagem genérica ("Lorem Ipsum" PROIBIDO).
+    6. IMAGENS: As keywords devem ser em INGLÊS e específicas para buscar fotos reais de alta qualidade.
     
     IMPORTANTE: Retorne APENAS o JSON cru. Não use Markdown, não use blocos de código. Comece com { e termine com }.
+    REGRAS ESTRITAS DE JSON:
+    1. Use APENAS aspas duplas (") para chaves e valores.
+    2. NÃO inclua URLs de imagens no JSON, apenas descrições visuais (prompts).
+    2. NUNCA use vírgula no final do último item de uma lista ou objeto.
+    3. ESCAPE todas as aspas duplas dentro de textos (ex: "texto com \"aspas\"").
+    4. NÃO use quebras de linha reais dentro de strings. Use \\n.
     
     Estrutura do JSON:
     {
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
+        "themeStyle": "modern | classic | minimalist | bold | luxury",
+        "layout": {
+            "heroStyle": "center | left | right",
+            "cardStyle": "shadow | border | flat",
+            "borderRadius": "rounded | sharp | pill"
+        },
         "colors": {
-            "primary": "Cor principal HEX (ex: #0D1B2A)",
+            "primary": "Cor principal HEX (escolha baseada na psicologia das cores do nicho)",
             "secondary": "Cor secundária HEX",
             "accent": "Cor de destaque/CTA HEX",
-            "bg_light": "Cor de fundo claro (ex: #f8f9fa)",
-            "text_dark": "Cor de texto escuro (ex: #333)"
+            "background": "Cor de fundo da página HEX (Pode ser Dark ou Light, mas deve contrastar com o texto)",
+            "text": "Cor do texto principal HEX (Alto contraste com o background)",
+            "card_bg": "Cor de fundo dos cards/caixas HEX (Ligeiramente diferente do background para destaque)"
         },
         "fonts": {
-            "heading": "Nome da fonte Google Fonts para títulos (ex: Playfair Display, Montserrat, Oswald)",
-            "body": "Nome da fonte Google Fonts para corpo (ex: Open Sans, Lato, Roboto)"
+            "heading": "Nome da fonte Google Fonts que combine com o estilo (ex: Playfair Display, Montserrat, Oswald, Merriweather, Poppins)",
+            "body": "Nome da fonte Google Fonts legível (ex: Open Sans, Lato, Roboto, Inter)"
         },
         "hero": {
             "title": "Headline poderosa e curta",
@@ -90,6 +111,11 @@ async function generateSiteStructure(userInput) {
             {"title": "Diferencial 2", "desc": "Explicação breve."},
             {"title": "Diferencial 3", "desc": "Explicação breve."}
         ],
+        "portfolio": [
+            {"title": "Nome do Projeto 1", "category": "Categoria (ex: Web, App)", "desc": "Breve descrição"},
+            {"title": "Nome do Projeto 2", "category": "Categoria", "desc": "Breve descrição"},
+            {"title": "Nome do Projeto 3", "category": "Categoria", "desc": "Breve descrição"}
+        ],
         "testimonials": [
             {"name": "Nome do Cliente", "text": "Depoimento curto elogiando o serviço."}
         ],
@@ -99,10 +125,12 @@ async function generateSiteStructure(userInput) {
             "phone": "(11) 99999-9999",
             "cta_text": "Solicitar Orçamento"
         },
+        "customCss": "Regras CSS específicas para forçar o layout escolhido (ex: header { justify-content: center; } .hero-text { text-align: center; })",
         "imageKeywords": {
-            "hero": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real de banco de imagens para o fundo (ex: office,business)",
-            "about": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real para a seção sobre (ex: team,working)",
-            "feature": "2 palavras-chave em Inglês (separadas por vírgula) para buscar uma foto real para o destaque (ex: detail,technology)"
+            "hero": "Descrição visual detalhada em Inglês para gerar uma imagem de fundo photorealistic (ex: modern luxury office with glass walls, cinematic lighting, 8k, sunset)",
+            "about": "Descrição visual em Inglês para a seção sobre (ex: professional team working in a modern office, diverse group, smiling)",
+            "feature": "Descrição visual em Inglês para o destaque (ex: close up of a futuristic technology device, glowing blue lights)",
+            "portfolio": "Descrição visual em Inglês para os projetos (ex: web design mockup on a laptop screen, minimalist style)"
         }
     }
     `;
@@ -120,7 +148,7 @@ async function generateSiteStructure(userInput) {
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
-                model: "sonar",
+                model: "sonar-pro", 
                 messages: [
                     { role: "system", content: systemPrompt },
                     { role: "user", content: userInput + "\n\n(Gere o JSON completo agora. Se a descrição for pouca, invente dados profissionais.)" }
@@ -149,11 +177,28 @@ async function generateSiteStructure(userInput) {
         
         text = text.substring(start, end + 1);
         
-        const siteData = JSON.parse(text);
+        let siteData;
+        try {
+            siteData = JSON.parse(text);
+        } catch (e) {
+            console.warn("JSON inválido detectado. Tentando corrigir...", e);
+            try {
+                // 1. Remove vírgulas finais (trailing commas)
+                let fixedText = text.replace(/,(\s*[}\]])/g, '$1');
+                // 2. Tenta corrigir chaves sem aspas (ex: key: "value" -> "key": "value")
+                fixedText = fixedText.replace(/([{,]\s*)([a-zA-Z0-9_]+)(\s*:)/g, '$1"$2"$3');
+                
+                siteData = JSON.parse(fixedText);
+            } catch (e2) {
+                console.error("Falha na correção automática do JSON:", e2);
+                throw e; // Lança o erro original para o catch principal tratar
+            }
+        }
         
         // Salva no LocalStorage para a página gerada usar
         localStorage.setItem('aiWebsiteData', JSON.stringify(siteData));
 
+        const timestamp = new Date().getTime(); // Cria um código único para evitar cache
         addMessage(`
             <strong>Sucesso!</strong> 🚀<br>
             Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
@@ -162,7 +207,7 @@ async function generateSiteStructure(userInput) {
                 <li>Foco: ${siteData.niche}</li>
             </ul>
             <div class="text-center mt-3">
-                <a href="generated.html" target="_blank" class="btn btn-success btn-sm">
+                <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
                     <i class="bi bi-magic"></i> Ver Site Gerado
                 </a>
             </div>
@@ -189,3 +234,14 @@ async function generateSiteStructure(userInput) {
 
 sendBtn.addEventListener('click', handleUserResponse);
 input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleUserResponse() });
+
+// Lógica para os botões de sugestão
+document.querySelectorAll('.suggestion-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        const prompt = btn.getAttribute('data-prompt');
+        input.value = prompt;
+        input.focus();
+        // Opcional: Clicar automaticamente no enviar se desejar
+        // handleUserResponse();
+    });
+});

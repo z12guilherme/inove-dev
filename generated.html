@@ -4,26 +4,65 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Site Gerado por IA | Inove Dev</title>
+    <!-- Meta tags para evitar cache e garantir que o robô do LoremFlickr suma -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <!-- AOS Animation Library -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <!-- Google Fonts Placeholder (Será preenchido via JS) -->
     <link id="dynamic-fonts" rel="stylesheet" href="">
     
     <style>
         :root { 
             --primary: #0d6efd; 
+            --primary-rgb: 13, 110, 253; /* Calculado via JS */
             --secondary: #6c757d; 
             --accent: #0dcaf0;
-            --bg-light: #f8f9fa;
-            --text-dark: #212529;
-            --font-heading: 'Sans-serif';
-            --font-body: 'Sans-serif';
+            --bg-page: #f8f9fa;
+            --text-main: #212529;
+            --card-bg: #ffffff;
+            --font-heading: 'Raleway', sans-serif;
+            --font-body: 'Open Sans', sans-serif;
+            --border-radius: 15px;
+            --shadow-sm: 0 5px 15px rgba(0,0,0,0.05);
+            --shadow-lg: 0 15px 30px rgba(0,0,0,0.1);
         }
-        body { font-family: var(--font-body); color: var(--text-dark); overflow-x: hidden; }
+        
+        body { font-family: var(--font-body); background-color: var(--bg-page); color: var(--text-main); overflow-x: hidden; line-height: 1.7; }
         h1, h2, h3, h4, h5 { font-family: var(--font-heading); font-weight: 700; }
         
+        /* Navbar Craftivo Style */
+        .navbar {
+            background: var(--card-bg) !important;
+            box-shadow: 0px 2px 15px rgba(0,0,0,0.1);
+            padding: 15px 0;
+        }
+        .navbar-brand { color: #222 !important; font-size: 1.8rem; font-weight: 700; text-transform: uppercase; letter-spacing: 1px; }
+        .nav-link { color: #444 !important; font-weight: 600; margin-left: 15px; font-family: var(--font-heading); text-transform: uppercase; font-size: 0.9rem; }
+        .nav-link:hover { color: var(--primary) !important; }
+
+        /* Section Titles (Craftivo Signature) */
+        .section-title { text-align: center; padding-bottom: 30px; margin-bottom: 30px; }
+        .section-title h2 { 
+            font-size: 32px; font-weight: bold; text-transform: uppercase; 
+            margin-bottom: 20px; padding-bottom: 20px; position: relative; color: var(--text-main); 
+        }
+        .section-title h2::before { 
+            content: ''; position: absolute; display: block; width: 120px; height: 1px; 
+            background: #ddd; bottom: 1px; left: calc(50% - 60px); 
+        }
+        .section-title h2::after { 
+            content: ''; position: absolute; display: block; width: 40px; height: 3px; 
+            background: var(--primary); bottom: 0; left: calc(50% - 20px); 
+        }
+        .section-title p { margin-bottom: 0; color: #777; font-style: italic; }
+
+        /* Hero Section */
         #hero {
-            min-height: 90vh;
+            min-height: 100vh;
             background-size: cover;
             background-position: center;
             display: flex;
@@ -32,42 +71,64 @@
             color: #fff;
             background-attachment: fixed;
         }
-        #hero::before {
+        .hero-overlay {
             content: ''; position: absolute; top:0; left:0; right:0; bottom:0;
-            background: linear-gradient(rgba(0,0,0,0.5), rgba(0,0,0,0.8));
+            background: rgba(0, 0, 0, 0.6); /* Darker overlay for text contrast */
+            z-index: 1;
         }
         #hero .container { position: relative; z-index: 2; }
+        #hero h1 { font-size: 48px; font-weight: 700; line-height: 1.2; margin-bottom: 20px; }
+        #hero p { font-size: 20px; margin-bottom: 30px; color: rgba(255,255,255,0.9); }
         
+        /* Buttons */
         .btn-custom {
-            background-color: var(--accent); color: #fff;
-            padding: 15px 40px; border-radius: 50px; border: none;
-            transition: 0.3s; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;
+            background: transparent; color: #fff;
+            padding: 12px 40px; 
+            border-radius: 50px; 
+            border: 2px solid var(--primary);
+            transition: 0.3s; font-weight: 600; text-transform: uppercase; letter-spacing: 1px;
+            font-family: var(--font-heading);
         }
-        .btn-custom:hover { filter: brightness(1.2); color: #fff; }
+        .btn-custom:hover { background: var(--primary); color: #fff; }
         
+        /* Cards & Boxes */
         .service-box {
-            padding: 40px 30px; border-radius: 15px;
-            background: #fff;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
+            padding: 40px 30px; text-align: center;
+            border-radius: 8px;
+            background: var(--card-bg);
+            box-shadow: 0 10px 29px 0 rgba(68, 88, 144, 0.1);
             height: 100%; transition: 0.3s;
-            border-bottom: 5px solid var(--primary);
+            border: none;
         }
-        .service-box:hover { transform: translateY(-10px); border-bottom-color: var(--accent); }
-        .service-icon { font-size: 50px; color: var(--primary); margin-bottom: 20px; }
-
-        .stat-item { text-align: center; padding: 20px; }
-        .stat-number { font-size: 3rem; font-weight: 800; color: var(--primary); display: block; }
-        .stat-label { font-size: 1.1rem; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; }
-
-        .feature-box { padding: 30px; border-left: 4px solid var(--accent); background: var(--bg-light); height: 100%; }
+        .service-box:hover { transform: translateY(-5px); }
         
-        .testimonial-card { background: #fff; padding: 30px; border-radius: 10px; box-shadow: 0 5px 15px rgba(0,0,0,0.05); position: relative; }
-        .testimonial-card::before { content: '"'; font-size: 80px; color: var(--primary); opacity: 0.1; position: absolute; top: -10px; left: 10px; font-family: serif; }
-        
+        .service-icon { 
+            display: inline-block;
+            width: 60px; height: 60px; line-height: 60px;
+            background: var(--bg-page); /* Contraste com o card */
+            color: var(--primary);
+            font-size: 32px; margin-bottom: 20px; transition: 0.3s;
+        }
+        .service-box:hover .service-icon { color: var(--accent); }
+
+        /* Portfolio */
+        .portfolio-item { position: relative; overflow: hidden; border-radius: 8px; margin-bottom: 30px; }
+        .portfolio-item img { transition: all 0.3s; width: 100%; }
+        .portfolio-item:hover img { transform: scale(1.1); }
+        .portfolio-info {
+            position: absolute; left: 0; bottom: 0; right: 0;
+            background: rgba(0,0,0,0.8); padding: 15px;
+            transform: translateY(100%); transition: 0.3s;
+            text-align: center;
+        }
+        .portfolio-item:hover .portfolio-info { transform: translateY(0); }
+        .portfolio-info h4 { color: #fff; margin: 0; font-size: 18px; }
+        .portfolio-info p { color: #ddd; margin: 0; font-size: 14px; }
+
         .ai-badge {
             position: fixed; bottom: 20px; right: 20px;
             background: #0D1B2A; color: #fff; padding: 15px;
-            border-radius: 10px; z-index: 9999;
+            border-radius: var(--border-radius); z-index: 9999;
             box-shadow: 0 5px 15px rgba(0,0,0,0.3);
             border: 1px solid rgba(255,255,255,0.1);
             max-width: 300px;
@@ -76,7 +137,7 @@
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: var(--primary);">
+    <nav class="navbar navbar-expand-lg fixed-top">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#" id="navBrand">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -85,6 +146,7 @@
                     <li class="nav-item"><a class="nav-link" href="#hero">Início</a></li>
                     <li class="nav-item"><a class="nav-link" href="#about">Sobre</a></li>
                     <li class="nav-item"><a class="nav-link" href="#services">Serviços</a></li>
+                    <li class="nav-item"><a class="nav-link" href="#portfolio">Portfólio</a></li>
                     <li class="nav-item"><a class="nav-link" href="#contact">Contato</a></li>
                 </ul>
             </div>
@@ -92,9 +154,10 @@
     </nav>
 
     <section id="hero">
+        <div class="hero-overlay"></div>
         <div class="container text-center">
             <div class="row justify-content-center">
-                <div class="col-lg-10">
+                <div class="col-lg-10" data-aos="fade-up" data-aos-duration="1000">
                     <h1 class="display-2 mb-4" id="heroTitle">Carregando...</h1>
                     <p class="lead mb-5 fs-3" id="heroSubtitle">Aguarde enquanto a IA constrói seu site.</p>
                     <a href="#contact" class="btn-custom" id="heroCTA">Saiba Mais</a>
@@ -106,10 +169,10 @@
     <section id="about" class="py-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6">
+                <div class="col-lg-6" data-aos="fade-right">
                     <img src="" id="aboutImg" class="img-fluid rounded shadow" alt="Sobre">
                 </div>
-                <div class="col-lg-6 mt-4 mt-lg-0">
+                <div class="col-lg-6 mt-4 mt-lg-0" data-aos="fade-left">
                     <h5 class="text-uppercase" style="color: var(--accent);">Nossa História</h5>
                     <h2 class="mb-4" id="aboutTitle">Sobre Nós</h2>
                     <p class="lead" id="aboutText">...</p>
@@ -122,13 +185,26 @@
         </div>
     </section>
 
-    <section id="services" class="py-5" style="background-color: var(--bg-light);">
+    <section id="services" class="py-5">
         <div class="container">
-            <div class="text-center mb-5">
-                <h5 class="text-uppercase" style="color: var(--accent);">O que fazemos</h5>
+            <div class="section-title" data-aos="fade-up">
                 <h2>Nossos Serviços</h2>
+                <p>Soluções completas desenvolvidas para impulsionar o seu negócio.</p>
             </div>
             <div class="row g-4" id="servicesGrid">
+                <!-- Inserido via JS -->
+            </div>
+        </div>
+    </section>
+
+    <!-- Portfolio Section (Novo) -->
+    <section id="portfolio" class="py-5">
+        <div class="container">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Portfólio</h2>
+                <p>Confira alguns dos nossos projetos recentes.</p>
+            </div>
+            <div class="row g-4" id="portfolioGrid">
                 <!-- Inserido via JS -->
             </div>
         </div>
@@ -137,22 +213,22 @@
     <section id="features" class="py-5">
         <div class="container">
             <div class="row align-items-center">
-                <div class="col-lg-6 order-2 order-lg-1">
+                <div class="col-lg-6 order-2 order-lg-1" data-aos="fade-up">
                     <h2 class="mb-4">Por que nos escolher?</h2>
                     <div class="row g-4" id="featuresGrid">
                         <!-- Features via JS -->
                     </div>
                 </div>
-                <div class="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0">
+                <div class="col-lg-6 order-1 order-lg-2 mb-4 mb-lg-0" data-aos="zoom-in">
                     <img src="" id="featureImg" class="img-fluid rounded shadow-lg" alt="Destaque">
                 </div>
             </div>
         </div>
     </section>
 
-    <section id="testimonials" class="py-5" style="background-color: var(--primary); color: #fff;">
+    <section id="testimonials" class="py-5">
         <div class="container">
-            <div class="text-center mb-5">
+            <div class="section-title" data-aos="fade-down">
                 <h2>O que dizem nossos clientes</h2>
             </div>
             <div class="row justify-content-center" id="testimonialsGrid">
@@ -163,26 +239,34 @@
 
     <section id="contact" class="py-5">
         <div class="container">
-            <div class="row justify-content-center text-center">
+            <div class="section-title" data-aos="fade-up">
+                <h2>Contato</h2>
+                <p>Estamos prontos para atender você.</p>
+            </div>
+            <div class="row justify-content-center text-center" data-aos="fade-up">
                 <div class="col-lg-8">
-                    <h2 class="mb-4">Vamos conversar?</h2>
-                    <p class="lead mb-5">Entre em contato e transforme seu projeto em realidade.</p>
                     
                     <div class="row g-4 mb-5">
-                        <div class="col-md-4">
-                            <i class="bi bi-geo-alt fs-2" style="color: var(--accent);"></i>
+                        <div class="col-md-4" data-aos="flip-left" data-aos-delay="100">
+                            <div class="p-4 rounded shadow-sm h-100" style="background: var(--card-bg);">
+                                <i class="bi bi-geo-alt fs-2" style="color: var(--accent);"></i>
                             <h5 class="mt-2">Endereço</h5>
                             <p id="contactAddress">...</p>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-envelope fs-2" style="color: var(--accent);"></i>
+                        <div class="col-md-4" data-aos="flip-left" data-aos-delay="200">
+                            <div class="p-4 rounded shadow-sm h-100" style="background: var(--card-bg);">
+                                <i class="bi bi-envelope fs-2" style="color: var(--accent);"></i>
                             <h5 class="mt-2">Email</h5>
                             <p id="contactEmail">...</p>
+                            </div>
                         </div>
-                        <div class="col-md-4">
-                            <i class="bi bi-telephone fs-2" style="color: var(--accent);"></i>
+                        <div class="col-md-4" data-aos="flip-left" data-aos-delay="300">
+                            <div class="p-4 rounded shadow-sm h-100" style="background: var(--card-bg);">
+                                <i class="bi bi-telephone fs-2" style="color: var(--accent);"></i>
                             <h5 class="mt-2">Telefone</h5>
                             <p id="contactPhone">...</p>
+                            </div>
                         </div>
                     </div>
 
@@ -192,9 +276,26 @@
         </div>
     </section>
 
-    <footer class="py-4 text-center text-white" style="background-color: #111;">
+    <footer class="py-5 text-white" style="background-color: #1a1a1a;">
         <div class="container">
-            <p class="mb-0">&copy; <span id="footerYear"></span> <span id="footerBrand"></span>. Todos os direitos reservados.</p>
+            <div class="row">
+                <div class="col-md-4 mb-4">
+                    <h3 id="footerBrand" class="fw-bold mb-3">Logo</h3>
+                    <p class="text-secondary">Criado com tecnologia de ponta para impulsionar seu negócio.</p>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Links Rápidos</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#hero" class="text-secondary text-decoration-none">Início</a></li>
+                        <li><a href="#about" class="text-secondary text-decoration-none">Sobre</a></li>
+                        <li><a href="#services" class="text-secondary text-decoration-none">Serviços</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4 mb-4">
+                    <h5 class="mb-3">Legal</h5>
+                    <p class="text-secondary mb-0">&copy; <span id="footerYear"></span> Todos os direitos reservados.</p>
+                </div>
+            </div>
         </div>
     </footer>
 
@@ -204,8 +305,32 @@
         <a href="https://wa.me/5581989035561" class="btn btn-success btn-sm mt-2 w-100">Contratar Site Real</a>
     </div>
 
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+
     <script>
+        // Helper para converter HEX para RGB
+        function hexToRgb(hex) {
+            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
+            return result ? 
+                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
+                '0, 0, 0';
+        }
+
         document.addEventListener('DOMContentLoaded', () => {
+            // Inicializar Animações
+            AOS.init({ once: true, offset: 100 });
+            
+            console.log("Inove AI: Versão do Gerador v2.1 - Imagens via Pollinations");
+
+            // Função Helper para gerar URLs de Imagem Robustas (Pollinations AI)
+            const getImageUrl = (prompt, width, height) => {
+                const safePrompt = prompt ? encodeURIComponent(prompt) : 'abstract,technology';
+                const seed = Math.floor(Math.random() * 1000);
+                return `https://image.pollinations.ai/prompt/${safePrompt}?width=${width}&height=${height}&nologo=true&private=true&seed=${seed}&model=flux`;
+            };
+
             const data = JSON.parse(localStorage.getItem('aiWebsiteData'));
 
             if (!data) {
@@ -214,21 +339,65 @@
             }
 
             // 1. Carregar Fontes do Google
-            const fontHeading = data.fonts?.heading || 'Montserrat';
+            const fontHeading = data.fonts?.heading || 'Raleway';
             const fontBody = data.fonts?.body || 'Open Sans';
             const fontLink = `https://fonts.googleapis.com/css2?family=${fontHeading.replace(' ', '+')}:wght@400;700&family=${fontBody.replace(' ', '+')}:wght@300;400;600&display=swap`;
             document.getElementById('dynamic-fonts').href = fontLink;
 
             // 2. Aplicar Variáveis CSS (Design System)
             document.documentElement.style.setProperty('--primary', data.colors.primary);
+            document.documentElement.style.setProperty('--primary-rgb', hexToRgb(data.colors.primary)); // Novo
             document.documentElement.style.setProperty('--secondary', data.colors.secondary);
             document.documentElement.style.setProperty('--accent', data.colors.accent);
-            document.documentElement.style.setProperty('--bg-light', data.colors.bg_light);
-            document.documentElement.style.setProperty('--text-dark', data.colors.text_dark);
+            document.documentElement.style.setProperty('--bg-page', data.colors.background || data.colors.bg_light || '#f8f9fa');
+            document.documentElement.style.setProperty('--text-main', data.colors.text || data.colors.text_dark || '#212529');
+            document.documentElement.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             document.documentElement.style.setProperty('--font-heading', `'${fontHeading}', sans-serif`);
             document.documentElement.style.setProperty('--font-body', `'${fontBody}', sans-serif`);
 
-            // 3. Preencher Conteúdo
+            // 3. Aplicar Layout Dinâmico (Novo)
+            if (data.layout) {
+                // Alinhamento do Hero
+                const heroContainer = document.querySelector('#hero .container');
+                const heroRow = heroContainer.querySelector('.row');
+                
+                if (data.layout.heroStyle === 'left') {
+                    heroContainer.classList.remove('text-center');
+                    heroContainer.classList.add('text-start');
+                    heroRow.classList.remove('justify-content-center'); // Alinha à esquerda
+                } else if (data.layout.heroStyle === 'right') {
+                    heroContainer.classList.remove('text-center');
+                    heroContainer.classList.add('text-end');
+                    heroRow.classList.remove('justify-content-center');
+                    heroRow.classList.add('justify-content-end');
+                }
+
+                // Bordas (Sharp vs Rounded vs Pill)
+                let radius = '15px'; // Padrão
+                if (data.layout.borderRadius === 'sharp') radius = '0px';
+                if (data.layout.borderRadius === 'pill') radius = '50px';
+                document.documentElement.style.setProperty('--border-radius', radius);
+
+                // Estilo dos Cards (Flat vs Shadow)
+                if (data.layout.cardStyle === 'flat') {
+                    const flatStyle = document.createElement('style');
+                    flatStyle.textContent = `.service-box, .testimonial-card, .feature-box { box-shadow: none !important; border: 1px solid rgba(0,0,0,0.1); }`;
+                    document.head.appendChild(flatStyle);
+                } else if (data.layout.cardStyle === 'border') {
+                    const borderStyle = document.createElement('style');
+                    borderStyle.textContent = `.service-box, .testimonial-card { border: 2px solid var(--primary); box-shadow: none !important; }`;
+                    document.head.appendChild(borderStyle);
+                }
+            }
+
+            // 4. Injetar CSS Personalizado da IA
+            if (data.customCss) {
+                const customStyle = document.createElement('style');
+                customStyle.textContent = data.customCss;
+                document.head.appendChild(customStyle);
+            }
+
+            // 5. Preencher Conteúdo
             document.title = data.brandName + " - Site Oficial";
             document.getElementById('navBrand').textContent = data.brandName;
             document.getElementById('footerBrand').textContent = data.brandName;
@@ -257,9 +426,11 @@
 
             // Services
             const servicesGrid = document.getElementById('servicesGrid');
-            data.services.forEach(service => {
+            data.services.forEach((service, index) => {
                 const col = document.createElement('div');
                 col.className = 'col-md-6 col-lg-3';
+                col.setAttribute('data-aos', 'fade-up');
+                col.setAttribute('data-aos-delay', index * 100);
                 col.innerHTML = `
                     <div class="service-box">
                         <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
@@ -269,6 +440,27 @@
                 `;
                 servicesGrid.appendChild(col);
             });
+
+            // Portfolio (Novo)
+            const portfolioGrid = document.getElementById('portfolioGrid');
+            const portfolioKey = data.imageKeywords?.portfolio || 'web design project';
+            
+            if(data.portfolio) {
+                data.portfolio.forEach((item, index) => {
+                    const pUrl = getImageUrl(portfolioKey + ' ' + item.category, 600, 400);
+                    
+                    portfolioGrid.innerHTML += `
+                        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="${index * 100}">
+                            <div class="portfolio-item">
+                                <img src="${pUrl}" class="img-fluid" alt="${item.title}" onerror="this.src='https://placehold.co/600x400?text=Projeto'">
+                                <div class="portfolio-info">
+                                    <h4>${item.title}</h4>
+                                    <p>${item.category}</p>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
 
             // Features
             const featuresGrid = document.getElementById('featuresGrid');
@@ -287,12 +479,15 @@
             // Testimonials
             const testimonialsGrid = document.getElementById('testimonialsGrid');
             if(data.testimonials) {
-                data.testimonials.forEach(test => {
+                data.testimonials.forEach((test, index) => {
                     testimonialsGrid.innerHTML += `
                         <div class="col-md-6 col-lg-4">
-                            <div class="testimonial-card h-100">
+                            <div class="testimonial-card h-100" data-aos="flip-up" data-aos-delay="${index * 100}">
                                 <p class="fst-italic text-muted mb-3">${test.text}</p>
-                                <h6 class="fw-bold mb-0 text-dark">${test.name}</h6>
+                                <div class="testimonial-author">
+                                    <div class="testimonial-avatar"></div>
+                                    <h6 class="fw-bold mb-0 text-dark">${test.name}</h6>
+                                </div>
                             </div>
                         </div>`;
                 });
@@ -305,37 +500,33 @@
             document.getElementById('contactCTA').textContent = data.contact.cta_text;
             document.getElementById('contactCTA').href = `https://wa.me/?text=Olá, vim pelo site ${data.brandName}`;
 
-            // Imagens Inteligentes (Busca via LoremFlickr com Keywords da IA)
+            // Imagens Inteligentes (Geradas via Pollinations.ai)
             const heroBg = document.getElementById('hero');
             
-            // Fallback keywords caso a IA não retorne
-            const heroKey = data.imageKeywords?.hero || 'business,office';
-            const aboutKey = data.imageKeywords?.about || 'team,work';
-            const featureKey = data.imageKeywords?.feature || 'technology,detail';
+            // Fallback de segurança (Placeholder)
+            const fallbackImg = 'https://placehold.co/800x600?text=Imagem+Indispon%C3%ADvel';
             
-            const seed = Math.floor(Math.random() * 1000);
+            // 1. Hero Image (Com preloader para evitar fundo branco se falhar)
+            const heroKey = data.imageKeywords?.hero || 'modern business office, 8k';
+            const heroUrl = getImageUrl(heroKey, 1920, 1080);
             
-            // Função para formatar keywords corretamente para o LoremFlickr (não codificar as vírgulas)
-            const formatUrl = (keys) => keys.split(',').map(k => encodeURIComponent(k.trim())).join(',');
+            const imgPreloader = new Image();
+            imgPreloader.onload = () => { heroBg.style.backgroundImage = `url('${heroUrl}')`; };
+            imgPreloader.onerror = () => { heroBg.style.backgroundImage = `url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80')`; };
+            imgPreloader.src = heroUrl;
             
-            // URLs do LoremFlickr (Busca em banco de imagens reais)
-            // O '/all' ajuda a buscar em todo o acervo creative commons, evitando gatos
-            const heroUrl = `https://loremflickr.com/1920/1080/${formatUrl(heroKey)}/all?random=${seed}`;
-            const aboutUrl = `https://loremflickr.com/800/600/${formatUrl(aboutKey)}/all?random=${seed}`;
-            const featureUrl = `https://loremflickr.com/800/800/${formatUrl(featureKey)}/all?random=${seed}`;
             
-            // Fallback de segurança
-            const fallbackImg = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80';
-
-            heroBg.style.backgroundImage = `url('${heroUrl}')`;
-            
+            // 2. About Image
+            const aboutKey = data.imageKeywords?.about || 'team working';
             const aboutImg = document.getElementById('aboutImg');
-            aboutImg.src = aboutUrl;
-            aboutImg.onerror = () => { aboutImg.src = fallbackImg; };
+            aboutImg.src = getImageUrl(aboutKey, 800, 600);
+            aboutImg.onerror = function() { this.src = fallbackImg; };
             
+            // 3. Feature Image
+            const featureKey = data.imageKeywords?.feature || 'technology detail';
             const featureImg = document.getElementById('featureImg');
-            featureImg.src = featureUrl;
-            featureImg.onerror = () => { featureImg.src = fallbackImg; };
+            featureImg.src = getImageUrl(featureKey, 800, 800);
+            featureImg.onerror = function() { this.src = fallbackImg; };
         });
     </script>
 </body>
