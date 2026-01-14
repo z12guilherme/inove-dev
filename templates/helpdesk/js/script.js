@@ -85,10 +85,12 @@ document.addEventListener('DOMContentLoaded', () => {
     if(btnSaveTicket) {
         btnSaveTicket.addEventListener('click', () => {
             const subjectInput = document.querySelector('#newTicketForm input[type="text"]');
-            const deptSelect = document.querySelector('#newTicketForm select:nth-of-type(1)');
-            const prioritySelect = document.querySelector('#newTicketForm select:nth-of-type(2)');
+            // Correção: Usa querySelectorAll para pegar os selects na ordem que aparecem
+            const selects = document.querySelectorAll('#newTicketForm select');
+            const deptSelect = selects[0];
+            const prioritySelect = selects[1];
             
-            if(subjectInput && subjectInput.value) {
+            if(subjectInput && subjectInput.value && deptSelect && prioritySelect) {
                 const newTicket = { 
                     id: 'TK-' + Math.floor(Math.random() * 9000 + 1000),
                     subject: subjectInput.value, 

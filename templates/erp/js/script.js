@@ -1,4 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // --- Active Menu Logic ---
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    document.querySelectorAll('.sidebar .nav-item').forEach(link => {
+        const href = link.getAttribute('href');
+        if (href === currentPage) {
+            link.classList.add('active');
+        } else {
+            link.classList.remove('active');
+        }
+    });
+
     // Sidebar Toggle
     const sidebar = document.getElementById('sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
@@ -33,6 +44,66 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // --- Dashboard Logic (Real Data) ---
+    function updateDashboardStats() {
+        const orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
+        
+        let revenue = 0;
+        let clients = new Set();
+        const salesByMonth = new Array(12).fill(0); // Jan-Dez
+
+        orders.forEach(order => {
+            // Parse Valor (R$ 1.200,00 -> 1200.00)
+            const valStr = order.value.replace('R$', '').trim().replace(/\./g, '').replace(',', '.');
+            const val = parseFloat(valStr) || 0;
+            
+            // Apenas soma se estiver Concluído
+            if (order.status === 'Concluído') {
+                revenue += val;
+
+                // Parse Data para o Gráfico (Ex: "12 jan. 2024")
+                // Normaliza: remove "de", remove pontos e passa para minúsculo
+                const cleanDate = order.date.toLowerCase().replace(/ de /g, ' ').replace(/\./g, '');
+                const parts = cleanDate.split(' ');
+                
+                if (parts.length >= 2) {
+                    const monthStr = parts[1]; // Agora deve ser "jan", "fev", etc.
+                    const monthMap = { 'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11 };
+                    if (monthMap.hasOwnProperty(monthStr)) {
+                        salesByMonth[monthMap[monthStr]] += val;
+                    }
+                }
+            }
+            
+            if(order.client) clients.add(order.client);
+        });
+
+        const totalOrders = orders.length;
+        const avgTicket = totalOrders > 0 ? revenue / totalOrders : 0;
+
+        // Atualiza Cards
+        const elRevenue = document.getElementById('totalRevenue');
+        const elOrders = document.getElementById('totalOrders');
+        const elClients = document.getElementById('totalClients');
+        const elTicket = document.getElementById('avgTicket');
+
+        if(elRevenue) elRevenue.textContent = revenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+        if(elOrders) elOrders.textContent = totalOrders;
+        if(elClients) elClients.textContent = clients.size;
+        if(elTicket) elTicket.textContent = avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+
+        // Atualiza Gráfico de Vendas
+        const chartCanvas = document.getElementById('salesChart');
+        if (chartCanvas) {
+            const chartInstance = Chart.getChart(chartCanvas);
+            if (chartInstance) {
+                chartInstance.data.labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
+                chartInstance.data.datasets[0].data = salesByMonth;
+                chartInstance.update();
+            }
+        }
+    }
+
     // Charts Configuration (Apenas se o elemento existir)
     if (document.getElementById('salesChart')) {
         const ctxSales = document.getElementById('salesChart').getContext('2d');
@@ -45,10 +116,10 @@ document.addEventListener('DOMContentLoaded', () => {
         new Chart(ctxSales, {
             type: 'line',
             data: {
-                labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun'],
+            labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
                 datasets: [{
                     label: 'Vendas (R$)',
-                    data: [12000, 19000, 15000, 25000, 22000, 30000],
+                data: [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], // Será preenchido pelo updateDashboardStats
                     borderColor: '#4361ee',
                     backgroundColor: gradientSales,
                     tension: 0.4,
@@ -92,16 +163,51 @@ document.addEventListener('DOMContentLoaded', () => {
     const ordersTableBody = document.getElementById('ordersTableBody');
     const btnNewOrder = document.getElementById('btnNewOrder');
 
+    // Dados iniciais se estiver vazio
+    const defaultOrders = [
+        { id: '#ORD-001', client: 'John Doe', date: '12 jan. 2024', value: 'R$ 450,00', status: 'Concluído' },
+        { id: '#ORD-002', client: 'Alice Smith', date: '12 jan. 2024', value: 'R$ 1.250,00', status: 'Pendente' },
+        { id: '#ORD-003', client: 'Robert Fox', date: '11 fev. 2024', value: 'R$ 89,90', status: 'Cancelado' },
+        { id: '#ORD-004', client: 'Jane Cooper', date: '15 mar. 2024', value: 'R$ 2.400,00', status: 'Concluído' }
+    ];
+
     function loadOrders() {
-        if (!ordersTableBody) return;
-        const storedOrders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
-        ordersTableBody.innerHTML = ''; // Limpa antes de renderizar
-        storedOrders.forEach(order => renderOrderRow(order));
+        let storedOrders = JSON.parse(localStorage.getItem('erp_orders'));
+        if (!storedOrders || storedOrders.length === 0) {
+            storedOrders = defaultOrders;
+            localStorage.setItem('erp_orders', JSON.stringify(storedOrders));
+        }
+        
+        if (ordersTableBody) {
+            ordersTableBody.innerHTML = ''; 
+            storedOrders.forEach(order => renderOrderRow(order));
+        }
+        
+        // Atualiza os cards e gráficos sempre que carregar pedidos
+        updateDashboardStats();
     }
 
     function renderOrderRow(order) {
         if (!ordersTableBody) return;
         const row = document.createElement('tr');
+        
+        let statusBadge = '';
+        let actionButtons = '';
+
+        if (order.status === 'Concluído') {
+            statusBadge = '<span class="status-badge status-success">Concluído</span>';
+            actionButtons = `<button class="btn btn-sm btn-outline-danger" onclick="deleteOrder('${order.id}')" title="Excluir"><i class="bi bi-trash"></i></button>`;
+        } else if (order.status === 'Cancelado') {
+            statusBadge = '<span class="status-badge status-danger">Cancelado</span>';
+            actionButtons = `<button class="btn btn-sm btn-outline-danger" onclick="deleteOrder('${order.id}')" title="Excluir"><i class="bi bi-trash"></i></button>`;
+        } else {
+            statusBadge = '<span class="status-badge status-warning">Pendente</span>';
+            actionButtons = `
+                <button class="btn btn-sm btn-outline-success me-1" onclick="completeOrder('${order.id}')" title="Concluir"><i class="bi bi-check-lg"></i></button>
+                <button class="btn btn-sm btn-outline-danger" onclick="deleteOrder('${order.id}')" title="Excluir"><i class="bi bi-trash"></i></button>
+            `;
+        }
+
         row.innerHTML = `
             <td>${order.id}</td>
             <td>
@@ -112,8 +218,8 @@ document.addEventListener('DOMContentLoaded', () => {
             </td>
             <td>${order.date}</td>
             <td>${order.value}</td>
-            <td><span class="status-badge status-warning">${order.status}</span></td>
-            <td><button class="btn btn-sm btn-outline-danger" onclick="deleteOrder('${order.id}')" title="Excluir"><i class="bi bi-trash"></i></button></td>
+            <td>${statusBadge}</td>
+            <td>${actionButtons}</td>
         `;
         // Prepend to show first
         ordersTableBody.insertBefore(row, ordersTableBody.firstChild);
@@ -136,9 +242,21 @@ document.addEventListener('DOMContentLoaded', () => {
                 localStorage.setItem('erp_orders', JSON.stringify(orders));
                 
                 renderOrderRow(newOrder);
+                updateDashboardStats(); // Atualiza stats ao adicionar
             }
         });
     }
+
+    // Tornar global para ser acessível via onclick no HTML
+    window.completeOrder = function(id) {
+        let orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
+        const orderIndex = orders.findIndex(o => o.id === id);
+        if (orderIndex > -1) {
+            orders[orderIndex].status = 'Concluído';
+            localStorage.setItem('erp_orders', JSON.stringify(orders));
+            loadOrders();
+        }
+    };
 
     // Tornar global para ser acessível via onclick no HTML
     window.deleteOrder = function(id) {
@@ -148,9 +266,63 @@ document.addEventListener('DOMContentLoaded', () => {
             localStorage.setItem('erp_orders', JSON.stringify(orders));
             
             loadOrders();
+            // updateDashboardStats já é chamado dentro de loadOrders
         }
     };
 
     // Load saved orders on startup
     loadOrders();
+
+    // --- Products Logic ---
+    const productsTableBody = document.getElementById('productsTableBody');
+    const btnNewProduct = document.getElementById('btnNewProduct');
+
+    function loadProducts() {
+        if (!productsTableBody) return;
+        const defaultProducts = [
+            { id: 1, name: 'Notebook Dell', category: 'Eletrônicos', price: 'R$ 3.500', stock: 12 },
+            { id: 2, name: 'Mouse Sem Fio', category: 'Acessórios', price: 'R$ 85,00', stock: 45 },
+            { id: 3, name: 'Teclado Mecânico', category: 'Acessórios', price: 'R$ 250,00', stock: 8 }
+        ];
+        const products = JSON.parse(localStorage.getItem('erp_products')) || defaultProducts;
+        
+        productsTableBody.innerHTML = '';
+        products.forEach(p => renderProductRow(p));
+    }
+
+    function renderProductRow(p) {
+        if (!productsTableBody) return;
+        const row = document.createElement('tr');
+        row.innerHTML = `
+            <td class="fw-bold">${p.name}</td>
+            <td><span class="badge bg-light text-dark border">${p.category}</span></td>
+            <td>${p.price}</td>
+            <td>${p.stock} un.</td>
+            <td><button class="btn btn-sm btn-outline-danger" onclick="deleteProduct(${p.id})"><i class="bi bi-trash"></i></button></td>
+        `;
+        productsTableBody.appendChild(row);
+    }
+
+    if(btnNewProduct) {
+        btnNewProduct.addEventListener('click', () => {
+            const name = prompt("Nome do Produto:");
+            if(name) {
+                const products = JSON.parse(localStorage.getItem('erp_products')) || [];
+                products.push({ id: Date.now(), name: name, category: 'Geral', price: 'R$ 0,00', stock: 0 });
+                localStorage.setItem('erp_products', JSON.stringify(products));
+                loadProducts();
+            }
+        });
+    }
+
+    window.deleteProduct = function(id) {
+        if(confirm("Excluir este produto?")) {
+            let products = JSON.parse(localStorage.getItem('erp_products')) || [];
+            products = products.filter(p => p.id !== id);
+            localStorage.setItem('erp_products', JSON.stringify(products));
+            loadProducts();
+        }
+    };
+
+    loadProducts();
 });
