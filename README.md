@@ -1,9 +1,12 @@
-# 🌐 Inove Dev
-
-Transformamos sua ideia em presença digital.  
-Este é o site institucional da **Inove Dev**, empresa especializada na criação de **sites**, **e-commerce** e **soluções digitais modernas**.
-
-🔗 **Site Online:** [inovedev.netlify.app](https://inovedev.netlify.app/)
+<div align="center">
+  <img src="assets/logo.png" alt="Inove Dev Logo" width="150">
+  <h1>Inove Dev</h1>
+  <p><strong>Transformamos sua ideia em presença digital.</strong></p>
+  <p>Este é o site institucional da <strong>Inove Dev</strong>, empresa especializada na criação de <strong>sites</strong>, <strong>e-commerce</strong> e <strong>soluções digitais modernas</strong>.</p>
+  <p>
+    <a href="https://inovedev.netlify.app/">🔗 <strong>Acessar Site Online</strong></a>
+  </p>
+</div>
 
 ---
 
@@ -25,54 +28,62 @@ Este é o site institucional da **Inove Dev**, empresa especializada na criaçã
 ---
 
 ## 📂 Estrutura do Projeto
+```bash
 inovedev/
-├── index.html # Página principal
+├── index.html       # Página principal
 ├── css/
-│ └── styles.css # Estilos globais
+│   └── styles.css   # Estilos globais
 ├── js/
-│ └── script.js # Scripts e lógica do formulário
-├── assets/ # Imagens, logos e mídias
-└── README.md # Documentação
+│   └── script.js    # Scripts e lógica do formulário
+├── assets/          # Imagens, logos e mídias
+└── README.md        # Documentação
+
+```
 
 ---
 
 ## 🤖 Inove AI Studio (Novo)
+
 Uma funcionalidade inovadora que utiliza Inteligência Artificial para criar protótipos de sites em segundos.
 
-- **Cérebro (Texto & Estrutura):** Integração com **Perplexity API** (Llama 3/Sonar) para gerar copy persuasiva, paleta de cores e design system.
-- **Visual (Imagens):** Integração com **LoremFlickr** para buscar imagens reais e contextuais baseadas em palavras-chave inteligentes selecionadas pela IA.
-- **Magic Deploy:** O usuário descreve o negócio e recebe uma Landing Page funcional e personalizada em tempo real.
+* **Cérebro (Texto & Estrutura):** Integração com **Perplexity API** (Llama 3/Sonar) para gerar copy persuasiva, paleta de cores e design system.
+* **Visual (Imagens):** Integração com **LoremFlickr** para buscar imagens reais e contextuais baseadas em palavras-chave inteligentes selecionadas pela IA.
+* **Magic Deploy:** O usuário descreve o negócio e recebe uma Landing Page funcional e personalizada em tempo real.
 
 ---
 
-## 🕵️‍♂️ Protocolo Ghost
-Este projeto não é apenas uma vitrine... é um **enigma**.
+## 🐇 CTF: PROTOCOLO GHOST (Hard Mode)
+
+Este projeto esconde uma camada oculta. Um desafio de Cibersegurança e Lógica integrado à interface.
 
 ### 🧩 O Desafio
-Prepare-se para testar suas habilidades em:
-- **Hash MD5** (Criptografia)
-- **Esteganografia** (Análise de Imagens)
-- **OSINT** (Investigação em Fontes Abertas)
-- **Segredos de Interface** (Keyboard Inputs)
 
-> *Nada é o que parece. O barulho não é apenas ruído. As imagens não são apenas pixels.* 🐇
+> **⚠️ Aviso:** Força bruta não resolve. O Hard Mode não testa suas ferramentas, testa sua interpretação.
 
-**Você consegue chegar ao final e ver a Matrix?**
+Prepare-se para enfrentar:
+
+* **Audio Steganography** (O som esconde a forma)
+* **Image Steganography** (A arte esconde a instrução)
+* **Engenharia Reversa de Hash** (O formato é uma armadilha)
+* **Lógica & Percepção** (Sair da caixa é a única saída)
+
+> *"O erro não estava no conteúdo. Estava na forma de olhar."*
+> **A arte pode ser prisão ou liberdade: faça sua escolha.**
+
+**Você consegue chegar ao final e ver a verdade?**
 
 ---
 
-## 📸 Preview
-![preview](assets/logo.png)
-
----
 
 ## 📞 Contato
-- 🌍 Site: [inovedev.netlify.app](https://inovedev.netlify.app/)  
-- 📧 Email: mguimarcos39@gmail.com  
-- 📱 WhatsApp: [Clique aqui](https://wa.me/5581989035561)  
+
+* 🌍 Site: [inovedev.netlify.app](https://inovedev.netlify.app/)
+* 📧 Email: mguimarcos39@gmail.com
+* 📱 WhatsApp: [Clique aqui](https://wa.me/5581989035561)
 
 ---
 
 ## 📜 Licença
-Este projeto é de uso **pessoal e comercial** da **Inove Dev**.  
-Não é permitido copiar ou redistribuir sem autorização.
+
+Este projeto é de uso **pessoal e comercial** da **Inove Dev**.
+**Não é permitido copiar ou redistribuir sem autorização.**
