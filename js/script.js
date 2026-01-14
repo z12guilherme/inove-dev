@@ -562,6 +562,7 @@ function initGhostMode() {
 
     // Mensagem provocativa no console (Easter Egg)
     console.log("%c🔊 Você está tentando se libertar pelos seus sentidos, mas a arte é a única saida", "color: #ff0000; background: #000; font-size: 14px; padding: 10px; border: 1px solid #ff0000;");
+    console.log("%c🎼 Som sem direção não é sinfonia, é só ruido", "color: #00C7B7; background: #000; font-size: 14px; padding: 10px; border: 1px solid #00C7B7;");
 
     // Áudio Loop (Morse)
     const audio = new Audio('assets/hard_mode_morse.wav');

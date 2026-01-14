@@ -44,85 +44,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // --- Dashboard Logic (Real Data) ---
-    function updateDashboardStats() {
-        const orders = JSON.parse(localStorage.getItem('erp_orders') || '[]');
-        
-        let revenue = 0;
-        let clients = new Set();
-        const salesByMonth = new Array(12).fill(0); // Jan-Dez
-        
-        console.log("Calculando estatísticas para " + orders.length + " pedidos...");
-
-        orders.forEach(order => {
-            if (!order.value) return; // Pula se não tiver valor
-
-            // Parse Valor Robusto (Remove tudo que não é dígito, vírgula ou ponto)
-            // Ex: "R$ 1.200,00" -> "1200.00"
-            let valStr = order.value.toString().replace(/[^\d,.-]/g, ''); 
-            // Se tiver vírgula, assume que é decimal (padrão BR) e remove pontos de milhar
-            if (valStr.includes(',')) {
-                valStr = valStr.replace(/\./g, '').replace(',', '.');
-            }
-            const val = parseFloat(valStr) || 0;
-            
-            // Apenas soma se estiver Concluído (Verifica se contém "Conclu" para evitar erros de acentuação)
-            // Normaliza para minúsculo para garantir
-            const status = (order.status || '').toLowerCase();
-            if (status.includes('conclu')) {
-                revenue += val;
-
-                // Parse Data para o Gráfico (Ex: "12 jan. 2024")
-                // Normaliza: remove "de", remove pontos e passa para minúsculo
-                const cleanDate = (order.date || '').toLowerCase().replace(/ de /g, ' ').replace(/\./g, '').trim();
-                const parts = cleanDate.split(' ');
-                
-                if (parts.length >= 2 && parts[1]) {
-                    const monthStr = parts[1].substring(0, 3); // Pega as 3 primeiras letras (jan, fev...)
-                    const monthMap = { 'jan': 0, 'fev': 1, 'mar': 2, 'abr': 3, 'mai': 4, 'jun': 5, 'jul': 6, 'ago': 7, 'set': 8, 'out': 9, 'nov': 10, 'dez': 11 };
-                    if (monthMap.hasOwnProperty(monthStr)) {
-                        salesByMonth[monthMap[monthStr]] += val;
-                    }
-                }
-            }
-            
-            if(order.client) clients.add(order.client);
-        });
-
-        const totalOrders = orders.length;
-        const avgTicket = totalOrders > 0 ? revenue / totalOrders : 0;
-
-        console.log("Receita Total Calculada: ", revenue);
-        console.log("Atualizando elementos do Dashboard...");
-
-        // Atualiza Cards
-        const elRevenue = document.getElementById('totalRevenue');
-        const elOrders = document.getElementById('totalOrders');
-        const elClients = document.getElementById('totalClients');
-        const elTicket = document.getElementById('avgTicket');
-
-        if(elRevenue) {
-            elRevenue.textContent = revenue.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-        } else {
-            console.warn("Elemento 'totalRevenue' não encontrado nesta página.");
-        }
-        
-        if(elOrders) elOrders.textContent = totalOrders;
-        if(elClients) elClients.textContent = clients.size;
-        if(elTicket) elTicket.textContent = avgTicket.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
-
-        // Atualiza Gráfico de Vendas
-        const chartCanvas = document.getElementById('salesChart');
-        if (chartCanvas) {
-            const chartInstance = Chart.getChart(chartCanvas);
-            if (chartInstance) {
-                chartInstance.data.labels = ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'];
-                chartInstance.data.datasets[0].data = salesByMonth;
-                chartInstance.update();
-            }
-        }
-    }
-
     // Charts Configuration (Apenas se o elemento existir)
     if (document.getElementById('salesChart')) {
         const ctxSales = document.getElementById('salesChart').getContext('2d');
@@ -257,7 +178,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function loadOrders() {
         let storedOrders = JSON.parse(localStorage.getItem('erp_orders'));
-        if (!storedOrders || storedOrders.length === 0) {
+        if (!storedOrders) {
             storedOrders = defaultOrders;
             localStorage.setItem('erp_orders', JSON.stringify(storedOrders));
         }
@@ -380,7 +301,7 @@ document.addEventListener('DOMContentLoaded', () => {
     function loadProducts() {
         // Inicializa o localStorage com dados padrão se estiver vazio
         let products = JSON.parse(localStorage.getItem('erp_products'));
-        if (!products || products.length === 0) {
+        if (!products) {
             products = defaultProducts;
             localStorage.setItem('erp_products', JSON.stringify(products));
         }
