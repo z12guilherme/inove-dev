@@ -44,95 +44,75 @@ async function handleUserResponse() {
 
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
-    Atue como um Arquiteto de Soluções Web Sênior e Especialista em Copywriting.
-    Sua missão é criar o JSON estruturado para uma Landing Page Premium de alta conversão.
+    Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
+    Sua missão é criar o JSON estruturado para um projeto web.
     
-    DIRETRIZES DE DESIGN E DIVERSIFICAÇÃO:
-    1. Adapte radicalmente as cores, fontes E LAYOUT ao nicho.
-    2. NÃO use sempre o mesmo layout (ex: Hero centralizado). VARIE entre alinhamento à esquerda, direita ou centro.
-    3. CONTRASTE É VITAL: Se o fundo for escuro, o texto TEM QUE SER CLARO. Se o fundo for claro, o texto TEM QUE SER ESCURO.
-    3. Use o campo 'customCss' para criar identidades visuais únicas (bordas arredondadas vs quadradas, sombras vs flat).
-    4. Se a descrição for vaga, invente uma marca criativa e única.
-    5. COPYWRITING: Use gatilhos mentais, textos persuasivos e evite linguagem genérica ("Lorem Ipsum" PROIBIDO).
-    6. IMAGENS: As keywords devem ser em INGLÊS e específicas para buscar fotos reais de alta qualidade.
+    PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
+    1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
+    2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
     
-    IMPORTANTE: Retorne APENAS o JSON cru. Não use Markdown, não use blocos de código. Comece com { e termine com }.
-    REGRAS ESTRITAS DE JSON:
-    1. Use APENAS aspas duplas (") para chaves e valores.
-    2. NÃO inclua URLs de imagens no JSON, apenas descrições visuais (prompts).
-    2. NUNCA use vírgula no final do último item de uma lista ou objeto.
-    3. ESCAPE todas as aspas duplas dentro de textos (ex: "texto com \"aspas\"").
-    4. NÃO use quebras de linha reais dentro de strings. Use \\n.
-    
-    Estrutura do JSON:
+    ESTRUTURA JSON PARA "landing":
     {
+        "projectType": "landing",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | classic | minimalist | bold | luxury",
-        "layout": {
-            "heroStyle": "center | left | right",
-            "cardStyle": "shadow | border | flat",
-            "borderRadius": "rounded | sharp | pill"
-        },
+        "layout": { "heroStyle": "center", "cardStyle": "shadow", "borderRadius": "rounded" },
         "colors": {
-            "primary": "Cor principal HEX (escolha baseada na psicologia das cores do nicho)",
-            "secondary": "Cor secundária HEX",
-            "accent": "Cor de destaque/CTA HEX",
-            "background": "Cor de fundo da página HEX (Pode ser Dark ou Light, mas deve contrastar com o texto)",
-            "text": "Cor do texto principal HEX (Alto contraste com o background)",
-            "card_bg": "Cor de fundo dos cards/caixas HEX (Ligeiramente diferente do background para destaque)"
+            "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
+            "background": "#HEX", "text": "#HEX", "card_bg": "#HEX"
         },
         "fonts": {
-            "heading": "Nome da fonte Google Fonts que combine com o estilo (ex: Playfair Display, Montserrat, Oswald, Merriweather, Poppins)",
-            "body": "Nome da fonte Google Fonts legível (ex: Open Sans, Lato, Roboto, Inter)"
+            "heading": "FontName", "body": "FontName"
         },
-        "hero": {
-            "title": "Headline poderosa e curta",
-            "subtitle": "Subtítulo explicativo que gera desejo",
-            "cta": "Texto do botão de ação"
-        },
-        "about": {
-            "title": "Sobre Nós / A Empresa",
-            "text": "Texto institucional de 3 a 4 linhas, transmitindo autoridade e confiança.",
-            "stats": [
-                {"number": "10+", "label": "Anos de Mercado"},
-                {"number": "500+", "label": "Projetos"},
-                {"number": "98%", "label": "Satisfação"}
-            ]
-        },
-        "services": [
-            {"title": "Nome do Serviço 1", "desc": "Descrição curta do benefício.", "icon": "bi-star"},
-            {"title": "Nome do Serviço 2", "desc": "Descrição curta do benefício.", "icon": "bi-shield-check"},
-            {"title": "Nome do Serviço 3", "desc": "Descrição curta do benefício.", "icon": "bi-gem"},
-            {"title": "Nome do Serviço 4", "desc": "Descrição curta do benefício.", "icon": "bi-rocket"}
-        ],
-        "features": [
-            {"title": "Diferencial 1", "desc": "Explicação breve."},
-            {"title": "Diferencial 2", "desc": "Explicação breve."},
-            {"title": "Diferencial 3", "desc": "Explicação breve."}
-        ],
-        "portfolio": [
-            {"title": "Nome do Projeto 1", "category": "Categoria (ex: Web, App)", "desc": "Breve descrição"},
-            {"title": "Nome do Projeto 2", "category": "Categoria", "desc": "Breve descrição"},
-            {"title": "Nome do Projeto 3", "category": "Categoria", "desc": "Breve descrição"}
-        ],
-        "testimonials": [
-            {"name": "Nome do Cliente", "text": "Depoimento curto elogiando o serviço."}
-        ],
-        "contact": {
-            "address": "Endereço Comercial Fictício",
-            "email": "contato@empresa.com",
-            "phone": "(11) 99999-9999",
-            "cta_text": "Solicitar Orçamento"
-        },
+        "hero": { "title": "Headline", "subtitle": "Subhead", "cta": "Button Text" },
+        "about": { "title": "Sobre", "text": "Texto", "stats": [{"number": "10", "label": "Anos"}] },
+        "services": [{"title": "Serviço", "desc": "Desc", "icon": "bi-star"}],
+        "features": [{"title": "Feature", "desc": "Desc"}],
+        "portfolio": [{"title": "Proj", "category": "Cat", "desc": "Desc"}],
+        "testimonials": [{"name": "Cliente", "text": "Depoimento"}],
+        "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
         "customCss": "Regras CSS específicas para forçar o layout escolhido (ex: header { justify-content: center; } .hero-text { text-align: center; })",
         "imageKeywords": {
-            "hero": "Descrição visual detalhada em Inglês para gerar uma imagem de fundo photorealistic (ex: modern luxury office with glass walls, cinematic lighting, 8k, sunset)",
-            "about": "Descrição visual em Inglês para a seção sobre (ex: professional team working in a modern office, diverse group, smiling)",
-            "feature": "Descrição visual em Inglês para o destaque (ex: close up of a futuristic technology device, glowing blue lights)",
-            "portfolio": "Descrição visual em Inglês para os projetos (ex: web design mockup on a laptop screen, minimalist style)"
+            "hero": "prompt", "about": "prompt", "feature": "prompt", "portfolio": "prompt"
         }
     }
+
+    ESTRUTURA JSON PARA "system":
+    {
+        "projectType": "system",
+        "brandName": "Nome do Sistema",
+        "themeColor": "#HEX (Cor Principal)",
+        "sidebarItems": [
+            {"label": "Dashboard", "icon": "bi-grid"},
+            {"label": "Menu 2", "icon": "bi-box"}
+        ],
+        "stats": [
+            {"label": "KPI 1", "value": "100", "icon": "bi-graph-up", "trend": "+10%", "color": "primary"},
+            {"label": "KPI 2", "value": "50", "icon": "bi-people", "trend": "-5%", "color": "danger"},
+            {"label": "KPI 3", "value": "R$ 1k", "icon": "bi-wallet", "trend": "+2%", "color": "success"},
+            {"label": "KPI 4", "value": "10", "icon": "bi-bell", "trend": "0%", "color": "warning"}
+        ],
+        "charts": {
+            "line": { "title": "Gráfico de Linha (ex: Vendas)", "labels": ["Jan", "Fev", "Mar", "Abr"], "data": [10, 20, 15, 30] },
+            "doughnut": { "title": "Gráfico de Rosca (ex: Categorias)", "labels": ["A", "B", "C"], "data": [30, 50, 20] }
+        },
+        "table": {
+            "title": "Listagem Principal",
+            "columns": ["ID", "Coluna 2", "Coluna 3", "Status"],
+            "rows": [
+                {"col1": "#001", "col2": "Dado A", "col3": "Dado B", "col4": "Ativo"},
+                {"col1": "#002", "col2": "Dado C", "col3": "Dado D", "col4": "Pendente"}
+            ]
+        }
+    }
+
+    REGRAS ESTRITAS:
+    1. Retorne APENAS o JSON cru.
+    2. Use aspas duplas.
+    3. NÃO use vírgulas no final de listas.
+    4. Escape aspas internas.
+    5. Para imagens, use prompts descritivos em inglês.
     `;
 
     if (!API_KEY || API_KEY === '') {
@@ -195,23 +175,37 @@ async function generateSiteStructure(userInput) {
             }
         }
         
-        // Salva no LocalStorage para a página gerada usar
-        localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
-
         const timestamp = new Date().getTime(); // Cria um código único para evitar cache
-        addMessage(`
-            <strong>Sucesso!</strong> 🚀<br>
-            Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
-            <ul>
-                <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
-                <li>Foco: ${siteData.niche}</li>
-            </ul>
-            <div class="text-center mt-3">
-                <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
-                    <i class="bi bi-magic"></i> Ver Site Gerado
-                </a>
-            </div>
-        `, 'bot');
+        
+        if (siteData.projectType === 'system') {
+            // Lógica para SISTEMAS
+            localStorage.setItem('aiSystemData', JSON.stringify(siteData));
+            addMessage(`
+                <strong>Sistema Gerado!</strong> 🖥️<br>
+                Configurei o painel administrativo para <strong>${siteData.brandName}</strong>.<br>
+                <div class="text-center mt-3">
+                    <a href="generated-system.html?v=${timestamp}" target="_blank" class="btn btn-primary btn-sm">
+                        <i class="bi bi-speedometer2"></i> Acessar Sistema
+                    </a>
+                </div>
+            `, 'bot');
+        } else {
+            // Lógica para LANDING PAGES (Padrão)
+            localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
+            addMessage(`
+                <strong>Site Gerado!</strong> 🚀<br>
+                Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
+                <ul>
+                    <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
+                    <li>Foco: ${siteData.niche}</li>
+                </ul>
+                <div class="text-center mt-3">
+                    <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
+                        <i class="bi bi-magic"></i> Ver Site Gerado
+                    </a>
+                </div>
+            `, 'bot');
+        }
 
     } catch (e) {
         console.error("Erro detalhado:", e);

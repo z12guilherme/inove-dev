@@ -279,6 +279,33 @@
                 mainImage.src = this.src;
             });
         });
+
+        // --- E-commerce Interaction Logic (LocalStorage) ---
+        function updateCartCount() {
+            const cart = JSON.parse(localStorage.getItem('shopStyle_cart') || '[]');
+            document.querySelectorAll('.badge-cart').forEach(el => el.textContent = cart.length);
+        }
+
+        function addToCart(productName, price) {
+            const cart = JSON.parse(localStorage.getItem('shopStyle_cart') || '[]');
+            cart.push({ name: productName, price: price, date: new Date() });
+            localStorage.setItem('shopStyle_cart', JSON.stringify(cart));
+            updateCartCount();
+            alert(`${productName} adicionado ao carrinho!`);
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartCount();
+            
+            const btnAdd = document.querySelector('.btn-add-to-cart');
+            if(btnAdd) {
+                btnAdd.addEventListener('click', () => {
+                    const name = document.querySelector('.product-title').textContent;
+                    const price = document.querySelector('.product-price').childNodes[1].textContent; // Get text after span
+                    addToCart(name, price);
+                });
+            }
+        });
     </script>
 </body>
 </html>

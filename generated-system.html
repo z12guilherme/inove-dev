@@ -1,0 +1,284 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema Gerado por IA | Inove Dev</title>
+    
+    <!-- Meta tags anti-cache -->
+    <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+    <meta http-equiv="Pragma" content="no-cache">
+    <meta http-equiv="Expires" content="0">
+
+    <!-- Fonts & CSS -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <style>
+        :root {
+            --sidebar-width: 260px;
+            --primary-color: #4361ee; /* Será substituído via JS */
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+            --sidebar-bg: #ffffff;
+        }
+
+        body { font-family: 'Inter', sans-serif; background-color: var(--bg-color); color: var(--text-color); overflow-x: hidden; }
+        
+        /* Sidebar */
+        .sidebar { width: var(--sidebar-width); height: 100vh; position: fixed; top: 0; left: 0; background: var(--sidebar-bg); border-right: 1px solid #e5e7eb; z-index: 1000; display: flex; flex-direction: column; }
+        .sidebar-header { height: 60px; display: flex; align-items: center; padding: 0 24px; border-bottom: 1px solid #f3f4f6; }
+        .logo { font-weight: 700; font-size: 1.25rem; color: var(--primary-color); display: flex; align-items: center; gap: 10px; }
+        .nav-links { padding: 20px 16px; flex: 1; overflow-y: auto; }
+        .nav-item { display: flex; align-items: center; padding: 10px 12px; color: #4b5563; text-decoration: none; border-radius: 8px; margin-bottom: 4px; transition: all 0.2s; font-weight: 500; }
+        .nav-item:hover, .nav-item.active { background-color: #eff6ff; color: var(--primary-color); }
+        .nav-item i { font-size: 1.1rem; margin-right: 12px; width: 20px; text-align: center; }
+
+        /* Main Content */
+        .main-wrapper { margin-left: var(--sidebar-width); transition: all 0.3s ease; }
+        .top-header { height: 60px; background: #fff; border-bottom: 1px solid #e5e7eb; display: flex; align-items: center; justify-content: space-between; padding: 0 32px; position: sticky; top: 0; z-index: 900; }
+        .content-area { padding: 32px; }
+        
+        /* Cards */
+        .stat-card { background: #fff; border-radius: 12px; padding: 24px; border: 1px solid #e5e7eb; height: 100%; transition: 0.3s; }
+        .stat-card:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
+        .stat-label { color: #6b7280; font-size: 0.875rem; font-weight: 500; }
+        .stat-value { font-size: 1.75rem; font-weight: 700; margin: 8px 0; color: #111827; }
+        .stat-trend { font-size: 0.875rem; display: flex; align-items: center; gap: 4px; }
+        
+        /* Charts & Tables */
+        .chart-container { background: #fff; border-radius: 12px; padding: 24px; border: 1px solid #e5e7eb; margin-bottom: 24px; }
+        .table-card { background: #fff; border-radius: 12px; border: 1px solid #e5e7eb; overflow: hidden; }
+        .table thead th { background-color: #f9fafb; font-weight: 600; text-transform: uppercase; font-size: 0.75rem; color: #6b7280; padding: 12px 24px; border-bottom: 1px solid #e5e7eb; }
+        .table tbody td { padding: 16px 24px; vertical-align: middle; color: #374151; font-size: 0.875rem; }
+
+        .ai-badge { position: fixed; bottom: 20px; right: 20px; background: #0D1B2A; color: #fff; padding: 10px 20px; border-radius: 50px; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.8rem; }
+
+        @media (max-width: 992px) {
+            .sidebar { transform: translateX(-100%); }
+            .main-wrapper { margin-left: 0; }
+            .sidebar.active { transform: translateX(0); }
+        }
+    </style>
+</head>
+<body>
+
+    <aside class="sidebar" id="sidebar">
+        <div class="sidebar-header">
+            <div class="logo" id="sysBrand">
+                <i class="bi bi-layers-fill"></i> Sistema
+            </div>
+        </div>
+        <div class="nav-links" id="sidebarMenu">
+            <!-- Inserido via JS -->
+        </div>
+    </aside>
+
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light d-lg-none" id="sidebarToggle"><i class="bi bi-list"></i></button>
+                <h5 class="mb-0 text-muted" id="pageTitle">Dashboard</h5>
+            </div>
+            <div class="d-flex align-items-center gap-3">
+                <button class="btn btn-light rounded-circle"><i class="bi bi-bell"></i></button>
+                <div class="dropdown">
+                    <a href="#" class="d-flex align-items-center text-decoration-none dropdown-toggle" data-bs-toggle="dropdown">
+                        <img src="https://ui-avatars.com/api/?name=Admin&background=random" class="rounded-circle" width="32" height="32">
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-end border-0 shadow">
+                        <li><a class="dropdown-item" href="#">Perfil</a></li>
+                        <li><hr class="dropdown-divider"></li>
+                        <li><a class="dropdown-item text-danger" href="index.html">Sair</a></li>
+                    </ul>
+                </div>
+            </div>
+        </header>
+
+        <div class="content-area">
+            <!-- Stats -->
+            <div class="row g-4 mb-4" id="statsGrid">
+                <!-- Inserido via JS -->
+            </div>
+
+            <!-- Charts -->
+            <div class="row g-4 mb-4">
+                <div class="col-lg-8">
+                    <div class="chart-container h-100">
+                        <h5 class="mb-4" id="lineChartTitle">Desempenho</h5>
+                        <div style="position: relative; height: 300px; width: 100%;">
+                            <canvas id="lineChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="chart-container h-100">
+                        <h5 class="mb-4" id="doughnutChartTitle">Distribuição</h5>
+                        <div style="position: relative; height: 300px; width: 100%;">
+                            <canvas id="doughnutChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="table-card">
+                <div class="p-4 border-bottom d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0 fw-bold" id="tableTitle">Registros</h5>
+                    <button class="btn btn-sm btn-primary">Ver Todos</button>
+                </div>
+                <div class="table-responsive">
+                    <table class="table table-hover mb-0" id="dataTable">
+                        <thead>
+                            <tr id="tableHeader">
+                                <!-- Inserido via JS -->
+                            </tr>
+                        </thead>
+                        <tbody id="tableBody">
+                            <!-- Inserido via JS -->
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="ai-badge">Gerado por Inove AI Studio</div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const data = JSON.parse(localStorage.getItem('aiSystemData'));
+
+            if (!data) {
+                alert("Nenhum dado de sistema encontrado.");
+                return;
+            }
+
+            // Sidebar Toggle
+            const sidebar = document.getElementById('sidebar');
+            const sidebarToggle = document.getElementById('sidebarToggle');
+            if(sidebarToggle) {
+                sidebarToggle.addEventListener('click', () => {
+                    sidebar.classList.toggle('active');
+                });
+            }
+
+            // 1. Configurações Gerais
+            document.title = data.brandName + " - Sistema";
+            document.getElementById('sysBrand').innerHTML = `<i class="bi bi-layers-fill"></i> ${data.brandName}`;
+            document.documentElement.style.setProperty('--primary-color', data.themeColor || '#4361ee');
+
+            // 2. Sidebar
+            const sidebarMenu = document.getElementById('sidebarMenu');
+            if (data.sidebarItems) {
+                data.sidebarItems.forEach((item, index) => {
+                    const activeClass = index === 0 ? 'active' : '';
+                    sidebarMenu.innerHTML += `
+                        <a href="#" class="nav-item ${activeClass}">
+                            <i class="bi ${item.icon || 'bi-circle'}"></i> ${item.label}
+                        </a>`;
+                });
+            }
+
+            // 3. Stats
+            const statsGrid = document.getElementById('statsGrid');
+            if (data.stats) {
+                data.stats.forEach(stat => {
+                    const colorClass = stat.color ? `text-${stat.color}` : 'text-primary';
+                    const bgClass = stat.color ? `bg-${stat.color}` : 'bg-primary';
+                    
+                    statsGrid.innerHTML += `
+                        <div class="col-xl-3 col-md-6">
+                            <div class="stat-card">
+                                <div class="d-flex justify-content-between align-items-start">
+                                    <div>
+                                        <div class="stat-label">${stat.label}</div>
+                                        <div class="stat-value">${stat.value}</div>
+                                    </div>
+                                    <div class="p-2 ${bgClass} bg-opacity-10 rounded-3 ${colorClass}">
+                                        <i class="bi ${stat.icon || 'bi-graph-up'} fs-4"></i>
+                                    </div>
+                                </div>
+                                <div class="stat-trend ${stat.trend.includes('+') ? 'text-success' : 'text-danger'}">
+                                    <i class="bi ${stat.trend.includes('+') ? 'bi-arrow-up' : 'bi-arrow-down'}"></i>
+                                    <span>${stat.trend}</span>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+            }
+
+            // 4. Charts
+            if (data.charts) {
+                // Line Chart
+                if (data.charts.line) {
+                    document.getElementById('lineChartTitle').textContent = data.charts.line.title;
+                    new Chart(document.getElementById('lineChart'), {
+                        type: 'line',
+                        data: {
+                            labels: data.charts.line.labels,
+                            datasets: [{
+                                label: 'Dados',
+                                data: data.charts.line.data,
+                                borderColor: data.themeColor || '#4361ee',
+                                backgroundColor: (data.themeColor || '#4361ee') + '20',
+                                fill: true,
+                                tension: 0.4
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                }
+
+                // Doughnut Chart
+                if (data.charts.doughnut) {
+                    document.getElementById('doughnutChartTitle').textContent = data.charts.doughnut.title;
+                    new Chart(document.getElementById('doughnutChart'), {
+                        type: 'doughnut',
+                        data: {
+                            labels: data.charts.doughnut.labels,
+                            datasets: [{
+                                data: data.charts.doughnut.data,
+                                backgroundColor: [data.themeColor, '#3f37c9', '#4cc9f0', '#e5e7eb']
+                            }]
+                        },
+                        options: { responsive: true, maintainAspectRatio: false }
+                    });
+                }
+            }
+
+            // 5. Table
+            if (data.table) {
+                document.getElementById('tableTitle').textContent = data.table.title;
+                
+                // Headers
+                const tableHeader = document.getElementById('tableHeader');
+                data.table.columns.forEach(col => {
+                    tableHeader.innerHTML += `<th>${col}</th>`;
+                });
+
+                // Rows
+                const tableBody = document.getElementById('tableBody');
+                data.table.rows.forEach(row => {
+                    let rowHtml = '<tr>';
+                    Object.values(row).forEach(cell => {
+                        // Verifica se é status para colocar badge
+                        if (['Ativo', 'Concluído', 'Pago'].includes(cell)) {
+                            rowHtml += `<td><span class="badge bg-success bg-opacity-10 text-success px-3 py-2 rounded-pill">${cell}</span></td>`;
+                        } else if (['Pendente', 'Em Andamento'].includes(cell)) {
+                            rowHtml += `<td><span class="badge bg-warning bg-opacity-10 text-warning px-3 py-2 rounded-pill">${cell}</span></td>`;
+                        } else {
+                            rowHtml += `<td>${cell}</td>`;
+                        }
+                    });
+                    rowHtml += '</tr>';
+                    tableBody.innerHTML += rowHtml;
+                });
+            }
+        });
+    </script>
+</body>
+</html>
