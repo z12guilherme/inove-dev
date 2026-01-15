@@ -78,8 +78,8 @@ Prepare-se para enfrentar:
 ## 📞 Contato
 
 * 🌍 Site: [inovedev.com.br](https://www.inovedev.com.br/)
-* 📧 Email: contato@inovedev.com.br
-* 📱 WhatsApp: [Clique aqui](https://wa.me/5581989035561)
+* 📧 Email: [contato@inovedev.com.br](mailto:contato@inovedev.com.br)
+* � WhatsApp: [Clique aqui](https://wa.me/5581989035561)
 
 ---
 
