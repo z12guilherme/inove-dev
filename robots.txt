@@ -1,6 +1,4 @@
 User-agent: *
 Allow: /
 
-# Área Restrita (CTF Challenge)
-Disallow: /admin.html
-Disallow: /assets/SecretFile.wav
+Sitemap: https://www.inovedev.com.br/sitemap.xml
