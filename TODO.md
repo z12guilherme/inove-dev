@@ -17,7 +17,7 @@
 
 ## Fase 3: Performance e SEO (Prioridade Média)
 - [ ] Otimizar imagens (comprimir, lazy loading)
-- [ ] Adicionar meta tags, Open Graph, structured data
+- [x] Adicionar meta tags, Open Graph, structured data (Local Business e Keywords Locais)
 - [ ] Melhorar acessibilidade (alt texts, ARIA labels)
 - [ ] Adicionar vídeos demonstrativos (embed YouTube)
 
