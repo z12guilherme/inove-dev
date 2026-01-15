@@ -4,6 +4,7 @@ import { API_KEY } from './config.js';
 const chatWindow = document.getElementById('aiChatWindow');
 const input = document.getElementById('aiInput');
 const sendBtn = document.getElementById('aiSendBtn');
+const clearBtn = document.getElementById('aiClearBtn');
 
 let step = 0;
 let userData = { name: "", details: "" };
@@ -14,6 +15,15 @@ function addMessage(text, sender) {
     div.innerHTML = text;
     chatWindow.appendChild(div);
     chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function updateLastMessage(text) {
+    const lastMsg = chatWindow.lastElementChild;
+    if (lastMsg && lastMsg.classList.contains('bot')) {
+        lastMsg.innerHTML = text;
+    } else {
+        addMessage(text, 'bot');
+    }
 }
 
 async function handleUserResponse() {
@@ -29,7 +39,7 @@ async function handleUserResponse() {
         userData.name = text; // Na verdade pegamos tudo junto no primeiro prompt para simplificar
         userData.details = text;
         
-        addMessage("Entendi! Estou analisando seu nicho e criando uma estrutura personalizada... <span class='typing-indicator'></span>", 'bot');
+        addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
         
         try {
             await generateSiteStructure(userData.details);
@@ -45,7 +55,7 @@ async function handleUserResponse() {
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
     Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
-    Sua missão é criar o JSON estruturado para um projeto web.
+    Sua missão é criar o JSON estruturado para um projeto web moderno e responsivo.
     
     PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
     1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
@@ -56,7 +66,7 @@ async function generateSiteStructure(userInput) {
         "projectType": "landing",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
-        "themeStyle": "modern | classic | minimalist | bold | luxury",
+        "themeStyle": "modern | classic | minimalist | bold | luxury | tech",
         "layout": { "heroStyle": "center", "cardStyle": "shadow", "borderRadius": "rounded" },
         "colors": {
             "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
@@ -73,8 +83,8 @@ async function generateSiteStructure(userInput) {
         "testimonials": [{"name": "Cliente", "text": "Depoimento"}],
         "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
         "customCss": "Regras CSS específicas para forçar o layout escolhido (ex: header { justify-content: center; } .hero-text { text-align: center; })",
-        "imageKeywords": {
-            "hero": "prompt", "about": "prompt", "feature": "prompt", "portfolio": "prompt"
+        "images": {
+            "hero": "https://loremflickr.com/g/1280/720/keyword", "about": "https://loremflickr.com/g/800/600/keyword", "feature": "https://loremflickr.com/g/600/400/keyword", "portfolio": "https://loremflickr.com/g/600/400/keyword"
         }
     }
 
@@ -112,13 +122,29 @@ async function generateSiteStructure(userInput) {
     2. Use aspas duplas.
     3. NÃO use vírgulas no final de listas.
     4. Escape aspas internas.
-    5. Para imagens, use prompts descritivos em inglês.
+    5. Para imagens, use URLs do 'loremflickr.com' com keywords em inglês. NÃO use 'source.unsplash.com' (serviço descontinuado).
     `;
 
     if (!API_KEY || API_KEY === '') {
         addMessage("⚠️ <strong>Configuração Necessária:</strong><br>Você precisa adicionar sua chave de API no arquivo <code>js/config.js</code> para que eu possa funcionar.<br>Abra o arquivo e coloque sua chave.", 'bot');
         return;
     }
+
+    // Simulação de Progresso para UX
+    const progressSteps = [
+        "🔍 Analisando seu nicho de mercado...",
+        "🎨 Definindo paleta de cores e tipografia...",
+        "📐 Estruturando o layout da interface...",
+        "✍️ Criando copy persuasiva e conteúdo...",
+        "🚀 Finalizando protótipo e gerando código..."
+    ];
+    let stepIndex = 0;
+    const progressInterval = setInterval(() => {
+        if (stepIndex < progressSteps.length) {
+            updateLastMessage(`${progressSteps[stepIndex]} <span class='typing-indicator'></span>`);
+            stepIndex++;
+        }
+    }, 2500);
 
     try {
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
@@ -135,6 +161,8 @@ async function generateSiteStructure(userInput) {
                 ]
             })
         });
+
+        clearInterval(progressInterval); // Para a animação
 
         if (!response.ok) {
             const errorData = await response.json().catch(() => ({}));
@@ -159,7 +187,35 @@ async function generateSiteStructure(userInput) {
         
         let siteData;
         try {
+            // Correção automática para JSON mal formatado (vírgulas extras)
+            text = text.replace(/,(\s*[}\]])/g, '$1');
             siteData = JSON.parse(text);
+
+            // --- FIX: Substituir Unsplash (Robozinho) por LoremFlickr ---
+            const fixImage = (urlOrKeyword) => {
+                if(!urlOrKeyword) return "https://loremflickr.com/g/800/600/tech";
+                // Se for URL quebrada do Unsplash ou apenas uma keyword, converte para LoremFlickr
+                if(urlOrKeyword.includes('source.unsplash.com') || !urlOrKeyword.startsWith('http')) {
+                    const keyword = urlOrKeyword.includes('?') ? urlOrKeyword.split('?')[1] : urlOrKeyword;
+                    return `https://loremflickr.com/g/800/600/${encodeURIComponent(keyword.replace(/[^a-zA-Z0-9]/g, ''))}`;
+                }
+                return urlOrKeyword;
+            };
+
+            // Aplica a correção nas imagens do tipo Landing Page
+            if (siteData.projectType === 'landing') {
+                // Garante que o objeto images existe
+                if (!siteData.images && siteData.imageKeywords) {
+                    siteData.images = {};
+                    for (const key in siteData.imageKeywords) {
+                        siteData.images[key] = fixImage(siteData.imageKeywords[key]);
+                    }
+                } else if (siteData.images) {
+                    for (const key in siteData.images) {
+                        siteData.images[key] = fixImage(siteData.images[key]);
+                    }
+                }
+            }
         } catch (e) {
             console.warn("JSON inválido detectado. Tentando corrigir...", e);
             try {
@@ -208,6 +264,7 @@ async function generateSiteStructure(userInput) {
         }
 
     } catch (e) {
+        clearInterval(progressInterval);
         console.error("Erro detalhado:", e);
         let errorMsg = "Desculpe, não consegui gerar o site agora.";
         
@@ -228,6 +285,22 @@ async function generateSiteStructure(userInput) {
 
 sendBtn.addEventListener('click', handleUserResponse);
 input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleUserResponse() });
+
+// Botão Limpar
+if(clearBtn) {
+    clearBtn.addEventListener('click', () => {
+        chatWindow.innerHTML = `
+            <div class="ai-message bot">
+                Olá! Sou a IA da Inove. Posso criar um site completo para você agora mesmo.<br>
+                <strong>Qual é o nome do seu negócio e o que você faz?</strong>
+            </div>
+        `;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.value = '';
+        step = 0;
+    });
+}
 
 // Lógica para os botões de sugestão
 document.querySelectorAll('.suggestion-btn').forEach(btn => {

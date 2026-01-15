@@ -4,7 +4,7 @@
   <p><strong>Transformamos sua ideia em presença digital.</strong></p>
   <p>Este é o site institucional da <strong>Inove Dev</strong>, empresa especializada na criação de <strong>sites</strong>, <strong>e-commerce</strong> e <strong>soluções digitais modernas</strong>.</p>
   <p>
-    <a href="https://inovedev.netlify.app/">🔗 <strong>Acessar Site Online</strong></a>
+    <a href="https://www.inovedev.com.br/">🔗 <strong>Acessar Site Online</strong></a>
   </p>
 </div>
 
@@ -77,7 +77,7 @@ Prepare-se para enfrentar:
 
 ## 📞 Contato
 
-* 🌍 Site: [inovedev.netlify.app](https://inovedev.netlify.app/)
+* 🌍 Site: [inovedev.com.br](https://www.inovedev.com.br/)
 * 📧 Email: mguimarcos39@gmail.com
 * 📱 WhatsApp: [Clique aqui](https://wa.me/5581989035561)
 

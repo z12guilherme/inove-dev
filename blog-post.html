@@ -16,7 +16,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
     
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="../css/styles.css">
+    <link rel="stylesheet" href="css/styles.css">
     <style>
         /* Estilos específicos do Blog (Mesmos do blog.html) */
         .blog .entry {
@@ -150,149 +150,21 @@
 
     <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="../js/script.js"></script>
+    <script src="js/blog-data.js"></script>
+    <script src="js/script.js"></script>
 
     <script>
-        // Dados dos Artigos
-        const articles = {
-            1: {
-                title: "5 Motivos para ter um site profissional em 2024",
-                date: "Jan 1, 2026",
-                author: "Marcos G.",
-                image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">Ter uma presença digital forte não é mais um diferencial, é uma necessidade. Se sua empresa não está na internet, ela praticamente não existe para uma grande parcela dos seus clientes.</p>
-                    <h3>1. Credibilidade e Profissionalismo</h3>
-                    <p>Um site bem estruturado transmite confiança. Redes sociais são ótimas, mas um domínio próprio (suaempresa.com.br) mostra que você leva seu negócio a sério.</p>
-                    <h3>2. Aberto 24 horas por dia</h3>
-                    <p>Diferente de um escritório físico, seu site nunca fecha. Clientes podem conhecer seus serviços e solicitar orçamentos no domingo à noite ou feriados.</p>
-                    <h3>3. Controle da sua Marca</h3>
-                    <p>Nas redes sociais, você está sujeito a mudanças de algoritmo. No seu site, você dita as regras, o design e como o conteúdo é apresentado.</p>
-                    <h3>4. Ser encontrado no Google (SEO)</h3>
-                    <p>A maioria das jornadas de compra começa com uma pesquisa. Com um site otimizado (veja nosso artigo sobre <a href='blog-post.html?id=2'>SEO</a>), você aparece para quem já está procurando o que você vende.</p>
-                    <h3>5. Centralização do Marketing</h3>
-                    <p>Seu site é o destino final de todas as suas campanhas, seja do Instagram, Facebook Ads ou cartão de visita. É lá que a conversão acontece.</p>
-                `
-            },
-            2: {
-                title: "O que é SEO e por que ele é importante?",
-                date: "Jan 4, 2026",
-                author: "Equipe Inove",
-                image: "https://images.unsplash.com/photo-1562577309-4932fdd64cd1?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">SEO (Search Engine Optimization) é a arte de fazer seu site ser amado pelo Google. Não adianta ter o site mais bonito do mundo se ninguém consegue encontrá-lo.</p>
-                    <h3>Como funciona?</h3>
-                    <p>O Google usa robôs para ler todos os sites da internet. O SEO ajuda esses robôs a entenderem sobre o que é o seu conteúdo e a mostrá-lo para as pessoas certas.</p>
-                    <h3>Pilares do SEO</h3>
-                    <ul>
-                        <li><strong>Conteúdo de Qualidade:</strong> Textos que respondem às dúvidas dos usuários.</li>
-                        <li><strong>Palavras-chave:</strong> Termos que seus clientes usam na busca.</li>
-                        <li><strong>Performance:</strong> Sites rápidos (falamos disso no artigo sobre <a href='blog-post.html?id=5'>Velocidade</a>) rankeiam melhor.</li>
-                    </ul>
-                    <h3>Resultado a Longo Prazo</h3>
-                    <p>Diferente de anúncios pagos, o tráfego orgânico vindo do SEO é gratuito e sustentável a longo prazo. É um investimento no patrimônio digital da sua empresa.</p>
-                `
-            },
-            3: {
-                title: "Transformação Digital: Por onde começar?",
-                date: "Jan 7, 2026",
-                author: "Marcos G.",
-                image: "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">A transformação digital vai muito além de ter um site ou usar o WhatsApp. Envolve mudar a cultura da empresa e utilizar a tecnologia para melhorar processos.</p>
-                    <h3>Não é só tecnologia, é cultura</h3>
-                    <p>Comprar softwares caros não resolve se a equipe não souber usar. A transformação começa na mentalidade de buscar eficiência através de dados.</p>
-                    <h3>Passos Iniciais</h3>
-                    <ol>
-                        <li>Digitalize documentos e processos manuais.</li>
-                        <li>Adote ferramentas de comunicação interna (Slack, Teams).</li>
-                        <li>Tenha um CRM para gerenciar clientes.</li>
-                        <li>Esteja presente online (Site e Redes Sociais).</li>
-                    </ol>
-                    <p>Pequenas empresas podem começar automatizando o atendimento ou criando uma loja virtual (veja nosso comparativo sobre <a href='blog-post.html?id=4'>E-commerce</a>).</p>
-                `
-            },
-            4: {
-                title: "E-commerce vs Marketplace: Qual o melhor?",
-                date: "Jan 10, 2026",
-                author: "Equipe Inove",
-                image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">Essa é a dúvida de ouro para quem vende produtos: criar sua própria loja virtual ou vender no Mercado Livre, Shopee e Amazon?</p>
-                    <h3>Marketplace: O Shopping Center</h3>
-                    <p><strong>Vantagens:</strong> Já tem milhões de clientes passando por lá. É fácil de começar.<br>
-                    <strong>Desvantagens:</strong> Taxas altas, concorrência por preço na mesma página e você não é dono do cliente.</p>
-                    <h3>E-commerce Próprio: Sua Loja de Rua</h3>
-                    <p><strong>Vantagens:</strong> Sem taxas de comissão por venda, controle total da marca, fidelização do cliente.<br>
-                    <strong>Desvantagens:</strong> Você precisa gerar seu próprio tráfego (marketing).</p>
-                    <h3>O Veredito</h3>
-                    <p>O ideal é a <strong>estratégia Omnichannel</strong>: use os marketplaces para ganhar volume e atrair clientes novos, mas tente levá-los para seu site próprio para compras futuras.</p>
-                `
-            },
-            5: {
-                title: "A importância da velocidade de carregamento",
-                date: "Jan 13, 2026",
-                author: "Marcos G.",
-                image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">Você sabia que 53% dos usuários mobile abandonam um site se ele demorar mais de 3 segundos para carregar? A velocidade é dinheiro.</p>
-                    <h3>Core Web Vitals</h3>
-                    <p>O Google agora usa métricas de velocidade como fator de rankeamento. Se seu site é lento, ele aparece menos nas buscas.</p>
-                    <h3>Impacto na Conversão</h3>
-                    <p>A cada segundo de atraso no carregamento, a conversão cai em média 7%. Em um e-commerce, isso pode significar milhares de reais perdidos.</p>
-                    <h3>Como melhorar?</h3>
-                    <ul>
-                        <li>Otimize o tamanho das imagens.</li>
-                        <li>Use um código limpo e moderno.</li>
-                        <li>Contrate uma hospedagem de qualidade.</li>
-                    </ul>
-                    <p>Na <strong>InoveDev</strong>, todos os nossos projetos são focados em alta performance.</p>
-                `
-            },
-            6: {
-                title: "Cibersegurança: Protegendo sua empresa de ataques modernos",
-                date: "Jan 16, 2026",
-                author: "Equipe Inove",
-                image: "https://images.unsplash.com/photo-1550751827-4bd374c3f58b?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">Com o aumento exponencial de ataques cibernéticos, a segurança da informação deixou de ser um luxo para se tornar uma necessidade vital para empresas de todos os tamanhos.</p>
-                    <h3>O cenário atual de ameaças</h3>
-                    <p>Ransomwares, phishing e ataques de engenharia social estão cada vez mais sofisticados. Um único clique errado pode comprometer dados sensíveis de clientes e paralisar operações.</p>
-                    <h3>Como se proteger?</h3>
-                    <ul>
-                        <li><strong>Autenticação de Dois Fatores (2FA):</strong> Uma camada extra de segurança essencial.</li>
-                        <li><strong>Backups Regulares:</strong> Mantenha cópias de segurança offline e testadas.</li>
-                        <li><strong>Treinamento da Equipe:</strong> O fator humano ainda é o elo mais fraco. Eduque seus colaboradores.</li>
-                    </ul>
-                    <p>Na <strong>InoveDev</strong>, desenvolvemos sistemas com <em>security-by-design</em>, pensando na proteção desde a primeira linha de código.</p>
-                `
-            },
-            7: {
-                title: "Arquitetura de Microsserviços vs Monolítica: Qual escolher?",
-                date: "Jan 19, 2026",
-                author: "Marcos G.",
-                image: "https://images.unsplash.com/photo-1518770660439-4636190af475?auto=format&fit=crop&w=800&q=80",
-                content: `
-                    <p class="lead">A escolha da arquitetura de software define como seu sistema irá crescer e se manter ao longo do tempo. Entender as diferenças entre Monolitos e Microsserviços é crucial.</p>
-                    <h3>Arquitetura Monolítica</h3>
-                    <p>Todos os componentes do sistema estão interligados em um único bloco. É mais simples de desenvolver e implantar inicialmente, mas pode se tornar difícil de escalar e manter conforme o sistema cresce.</p>
-                    <h3>Microsserviços</h3>
-                    <p>O sistema é dividido em pequenos serviços independentes que se comunicam entre si. Permite escalabilidade granular e uso de diferentes tecnologias, mas adiciona complexidade na gestão e deploy.</p>
-                    <h3>Qual o veredito?</h3>
-                    <p>Não existe bala de prata. Para startups e MVPs, um monólito bem estruturado (Modular Monolith) geralmente é a melhor escolha. Microsserviços são ideais para sistemas complexos com múltiplas equipes de desenvolvimento.</p>
-                `
-            }
-        };
-
         // Lógica para carregar o artigo
         document.addEventListener('DOMContentLoaded', () => {
             const params = new URLSearchParams(window.location.search);
-            const id = params.get('id');
+            const id = parseInt(params.get('id')); // Converte para número
             const container = document.getElementById('article-container');
             const breadcrumb = document.getElementById('breadcrumb-title');
 
-            if (id && articles[id]) {
-                const post = articles[id];
+            // Busca o post no array global blogPosts
+            const post = blogPosts.find(p => p.id === id);
+
+            if (post) {
                 
                 // Atualiza Título da Página
                 document.title = post.title + " - InoveDev";
@@ -321,15 +193,15 @@
 
                 // Carregar Posts Recentes (Sidebar)
                 const recentContainer = document.getElementById('recentPosts');
-                const otherIds = Object.keys(articles).filter(k => k !== id).slice(0, 4); // Pega 4 outros posts
+                // Pega 4 outros posts que não sejam o atual
+                const otherPosts = blogPosts.filter(p => p.id !== id).slice(0, 4);
                 
-                otherIds.forEach(otherId => {
-                    const otherPost = articles[otherId];
+                otherPosts.forEach(otherPost => {
                     recentContainer.innerHTML += `
                         <div class="post-item clearfix mb-3">
                             <img src="${otherPost.image}" alt="" class="float-start me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
                             <h4 style="font-size: 15px; margin-bottom: 5px;">
-                                <a href="blog-post.html?id=${otherId}" class="text-dark text-decoration-none fw-bold">${otherPost.title}</a>
+                                <a href="blog-post.html?id=${otherPost.id}" class="text-dark text-decoration-none fw-bold">${otherPost.title}</a>
                             </h4>
                             <time class="text-muted small">${otherPost.date}</time>
                         </div>

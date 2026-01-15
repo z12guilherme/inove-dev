@@ -40,3 +40,4 @@
 - [ ] Validar HTML/CSS/JS com ferramentas online
 - [ ] Verificar performance com Lighthouse
 - [ ] Deploy e teste em produção
+ - [x] Configuração de Domínio (inovedev.com.br)
