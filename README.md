@@ -78,7 +78,7 @@ Prepare-se para enfrentar:
 ## 📞 Contato
 
 * 🌍 Site: [inovedev.com.br](https://www.inovedev.com.br/)
-* 📧 Email: mguimarcos39@gmail.com
+* 📧 Email: contato@inovedev.com.br
 * 📱 WhatsApp: [Clique aqui](https://wa.me/5581989035561)
 
 ---
