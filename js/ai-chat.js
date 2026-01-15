@@ -84,7 +84,7 @@ async function generateSiteStructure(userInput) {
         "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
         "customCss": "Regras CSS específicas para forçar o layout escolhido (ex: header { justify-content: center; } .hero-text { text-align: center; })",
         "images": {
-            "hero": "https://loremflickr.com/g/1280/720/keyword", "about": "https://loremflickr.com/g/800/600/keyword", "feature": "https://loremflickr.com/g/600/400/keyword", "portfolio": "https://loremflickr.com/g/600/400/keyword"
+            "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
         }
     }
 
@@ -122,7 +122,8 @@ async function generateSiteStructure(userInput) {
     2. Use aspas duplas.
     3. NÃO use vírgulas no final de listas.
     4. Escape aspas internas.
-    5. Para imagens, use URLs do 'loremflickr.com' com keywords em inglês. NÃO use 'source.unsplash.com' (serviço descontinuado).
+    5. IMAGENS: Retorne descrições visuais do CONTEÚDO em INGLÊS (ex: "modern office workspace", "plate of pasta"). NÃO envie URLs.
+    6. CORES: Garanta ALTO CONTRASTE. Se o fundo for escuro, o texto DEVE ser claro (e vice-versa). Use cores harmônicas.
     `;
 
     if (!API_KEY || API_KEY === '') {
@@ -191,31 +192,62 @@ async function generateSiteStructure(userInput) {
             text = text.replace(/,(\s*[}\]])/g, '$1');
             siteData = JSON.parse(text);
 
-            // --- FIX: Substituir Unsplash (Robozinho) por LoremFlickr ---
-            const fixImage = (urlOrKeyword) => {
-                if(!urlOrKeyword) return "https://loremflickr.com/g/800/600/tech";
-                // Se for URL quebrada do Unsplash ou apenas uma keyword, converte para LoremFlickr
-                if(urlOrKeyword.includes('source.unsplash.com') || !urlOrKeyword.startsWith('http')) {
-                    const keyword = urlOrKeyword.includes('?') ? urlOrKeyword.split('?')[1] : urlOrKeyword;
-                    return `https://loremflickr.com/g/800/600/${encodeURIComponent(keyword.replace(/[^a-zA-Z0-9]/g, ''))}`;
+            // Fallback de cores para garantir contraste se a IA falhar
+            if (!siteData.colors) {
+                siteData.colors = {
+                    "primary": "#0d6efd", "secondary": "#6c757d", "accent": "#0dcaf0", 
+                    "background": "#ffffff", "text": "#212529", "card_bg": "#f8f9fa"
+                };
+            }
+
+            // --- FIX: Sistema Robusto de Imagens (Pollinations AI) ---
+            const fixImage = (description, type = 'landscape') => {
+                let prompt = description;
+                
+                // 1. Validação e Fallback
+                if (!prompt || typeof prompt !== 'string' || prompt.length < 3) {
+                    prompt = `${siteData.niche || "business"} ${siteData.themeStyle || "modern"}`;
                 }
-                return urlOrKeyword;
+                
+                // 2. Detecção Agressiva de URLs (Se a IA mandar link, ignoramos e usamos o nicho)
+                // Regex ajustado para evitar falsos positivos, mas pegar links reais
+                if (prompt.match(/(https?:\/\/|www\.|unsplash\.com|source\.unsplash|\.com|\.net|\.org)/i)) {
+                    prompt = `${siteData.niche || "modern business"} ${siteData.themeStyle || "professional"}`;
+                }
+                
+                // 3. Limpeza Inteligente
+                // Remove caracteres de código mas mantém acentos e pontuação básica
+                let cleanPrompt = prompt.replace(/[<>{}[\]\\\/]/g, '').trim();
+                
+                // 4. Engenharia de Prompt para Qualidade (Injeta realismo)
+                // Adiciona modificadores para garantir qualidade fotográfica
+                const enhancedPrompt = `${cleanPrompt}, realistic, 8k, cinematic lighting, high quality, professional photo`;
+                const encodedPrompt = encodeURIComponent(enhancedPrompt);
+                
+                const width = type === 'portrait' ? 600 : 1280;
+                const height = type === 'portrait' ? 800 : 720;
+                const seed = Math.floor(Math.random() * 10000);
+                
+                // Usa o modelo 'flux' para maior realismo e 'nologo' para limpar a imagem
+                return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true&model=flux&seed=${seed}`;
             };
 
-            // Aplica a correção nas imagens do tipo Landing Page
-            if (siteData.projectType === 'landing') {
-                // Garante que o objeto images existe
-                if (!siteData.images && siteData.imageKeywords) {
-                    siteData.images = {};
-                    for (const key in siteData.imageKeywords) {
-                        siteData.images[key] = fixImage(siteData.imageKeywords[key]);
-                    }
-                } else if (siteData.images) {
-                    for (const key in siteData.images) {
-                        siteData.images[key] = fixImage(siteData.images[key]);
-                    }
+            // Garantir que todas as imagens essenciais existam
+            if (!siteData.images) siteData.images = {};
+            
+            // 1. Processar TODAS as imagens que vieram no JSON (não apenas as required)
+            Object.keys(siteData.images).forEach(key => {
+                siteData.images[key] = fixImage(siteData.images[key]);
+            });
+
+            // 2. Garantir que as obrigatórias existam
+            const requiredImages = ['hero', 'about', 'feature', 'portfolio'];
+            requiredImages.forEach(key => {
+                if (!siteData.images[key]) {
+                    siteData.images[key] = fixImage((siteData.niche || "business") + " " + key);
                 }
-            }
+            });
+
         } catch (e) {
             console.warn("JSON inválido detectado. Tentando corrigir...", e);
             try {
@@ -255,6 +287,9 @@ async function generateSiteStructure(userInput) {
                     <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
                     <li>Foco: ${siteData.niche}</li>
                 </ul>
+                <div class="alert alert-warning p-2 mt-2" style="font-size: 0.85em;">
+                    <i class="bi bi-exclamation-triangle"></i> <strong>Nota:</strong> As imagens são geradas por IA em tempo real e podem apresentar variações ou não corresponder exatamente ao contexto.
+                </div>
                 <div class="text-center mt-3">
                     <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
                         <i class="bi bi-magic"></i> Ver Site Gerado
