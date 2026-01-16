@@ -105,6 +105,15 @@ async function generateSiteStructure(userInput, apiKey) {
             "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
             "background": "#HEX (Fundo da página)", "text": "#HEX (Cor do texto - ALTO CONTRASTE)", "card_bg": "#HEX (Fundo dos cards)"
         },
+        "sectionTitles": {
+            "services": "Título da Seção (ex: 'Cerimônia', 'Nossos Serviços')", 
+            "services_subtitle": "Subtítulo (ex: 'Detalhes do evento')",
+            "portfolio": "Título (ex: 'Galeria de Fotos', 'Portfólio')", 
+            "portfolio_subtitle": "Subtítulo",
+            "features": "Título (ex: 'Lista de Presentes', 'Diferenciais')",
+            "testimonials": "Título (ex: 'Mensagens dos Padrinhos', 'Depoimentos')",
+            "contact": "Título (ex: 'RSVP', 'Contato')", "contact_subtitle": "Subtítulo"
+        },
         "fonts": {
             "heading": "FontName (Google Fonts)", "body": "FontName (Google Fonts)"
         },
@@ -269,7 +278,11 @@ async function generateSiteStructure(userInput, apiKey) {
                 "arquitetura": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1920&q=80",
                 "construcao": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=80",
                 "educacao": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80",
-                "escola": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80"
+                "escola": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80",
+                "casamento": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80",
+                "wedding": "https://images.unsplash.com/photo-1511285560982-1351cdeb9821?auto=format&fit=crop&w=1920&q=80",
+                "noiva": "https://images.unsplash.com/photo-1595838788845-30242ad81cf8?auto=format&fit=crop&w=1920&q=80",
+                "festa": "https://images.unsplash.com/photo-1519225421980-715cb0202128?auto=format&fit=crop&w=1920&q=80"
             };
 
             // --- FIX: Sistema Robusto de Imagens (Pollinations AI) ---
@@ -396,6 +409,10 @@ async function generateSiteStructure(userInput, apiKey) {
             errorMsg = "Erro 404: Não consegui acessar a Função do Netlify. Se estiver rodando localmente, use 'netlify dev' ou insira a chave no chat.";
         } else if (e.toString().includes('502')) {
             errorMsg = "Erro 502 (Bad Gateway): A função do servidor falhou ou excedeu o tempo limite (10s). Tente novamente.";
+        } else if (e.toString().includes('504')) {
+            errorMsg = "Erro 504 (Timeout): A IA demorou mais de 10s e o servidor encerrou. Dica: Cole sua chave 'pplx-' no chat para conectar direto (sem limite de tempo).";
+        } else if (e.toString().includes('405')) {
+            errorMsg = "Erro 405: Você está rodando no Live Server (local). As funções de servidor não funcionam aqui. Para testar, cole sua chave 'pplx-' diretamente no chat.";
         }
 
         addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
