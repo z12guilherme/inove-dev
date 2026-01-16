@@ -1,5 +1,5 @@
-# Ignorar arquivos de sistema
-.DS_Store
+# Logs e Dependências
+node_modules/
+npm-debug.log
 
-# Ignorar chaves de API e segredos
-js/config.js
+# Arquivos de Configuração (Segurança)

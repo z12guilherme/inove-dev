@@ -20,7 +20,7 @@
 - [ ] Otimizar imagens (comprimir, lazy loading)
 - [ ] Adicionar meta tags, Open Graph, structured data
 - [x] Implementar Schema.org (JSON-LD) para Rich Snippets
-- [ ] Melhorar acessibilidade (alt texts, ARIA labels)
+- [x] Melhorar acessibilidade (alt texts, ARIA labels)
 - [x] Criar sitemap.xml e robots.txt
 - [ ] Adicionar vídeos demonstrativos (embed YouTube)
 

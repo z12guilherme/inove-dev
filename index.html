@@ -35,6 +35,7 @@
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="preconnect" href="https://cdn.jsdelivr.net" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     
     <!-- Bootstrap CSS -->
@@ -99,6 +100,36 @@
       "embedUrl": "https://www.youtube.com/embed/alxrSEuRKjU"
     }
     </script>
+
+    <!-- Schema.org FAQPage (Para aparecer nas perguntas do Google) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [{
+        "@type": "Question",
+        "name": "Quanto custa para fazer um site?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "O valor varia conforme a complexidade (Institucional, Loja Virtual, Sistema). Nossos projetos começam com valores acessíveis e parcelamos no cartão. Solicite um orçamento sem compromisso!"
+        }
+      }, {
+        "@type": "Question",
+        "name": "Quanto tempo demora para ficar pronto?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sites institucionais levam em média 7 a 15 dias. Lojas virtuais e sistemas podem levar de 20 a 40 dias, dependendo das funcionalidades."
+        }
+      }, {
+        "@type": "Question",
+        "name": "O site funciona no celular?",
+        "acceptedAnswer": {
+          "@type": "Answer",
+          "text": "Sim! Todos os nossos projetos são 100% responsivos, ou seja, se adaptam perfeitamente a celulares, tablets e computadores."
+        }
+      }]
+    }
+    </script>
 </head>
 <body>
 
@@ -120,7 +151,7 @@
                     <li><a class="nav-link active" href="blog.html">Blog</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
                 </ul>
-                <i class="bi bi-list mobile-nav-toggle"></i>
+                <i class="bi bi-list mobile-nav-toggle" role="button" aria-label="Abrir Menu de Navegação" tabindex="0"></i>
             </nav>
         </div>
     </header>
@@ -185,11 +216,11 @@
                             Com experiência sólida em desenvolvimento web e sistemas, fundei a Inove Dev com o objetivo de oferecer tecnologia de ponta acessível. Especialista em criar interfaces intuitivas, e-commerces de alta conversão e sistemas de gestão robustos.
                         </p>
                         <div class="social-links mt-4">
-                            <a href="https://wa.me/5581989035561" target="_blank" title="WhatsApp"><i class="bi bi-whatsapp"></i></a>
-                            <a href="mailto:contato@inovedev.com.br" title="Email"><i class="bi bi-envelope"></i></a>
-                            <a href="https://www.instagram.com/inovedev_/" target="_blank" title="Instagram"><i class="bi bi-instagram"></i></a>
-                            <a href="https://www.linkedin.com/in/marcos-guilherme-3a00022ab/" title="LinkedIn"><i class="bi bi-linkedin"></i></a>
-                            <a href="https://github.com/z12guilherme/" title="GitHub"><i class="bi bi-github"></i></a>
+                            <a href="https://wa.me/5581989035561" target="_blank" title="WhatsApp" aria-label="WhatsApp"><i class="bi bi-whatsapp"></i></a>
+                            <a href="mailto:contato@inovedev.com.br" title="Email" aria-label="Email"><i class="bi bi-envelope"></i></a>
+                            <a href="https://www.instagram.com/inovedev_/" target="_blank" title="Instagram" aria-label="Instagram"><i class="bi bi-instagram"></i></a>
+                            <a href="https://www.linkedin.com/in/marcos-guilherme-3a00022ab/" title="LinkedIn" aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
+                            <a href="https://github.com/z12guilherme/" title="GitHub" aria-label="GitHub"><i class="bi bi-github"></i></a>
                         </div>
                     </div>
                 </div>
@@ -507,7 +538,7 @@
                 <div class="row justify-content-center">
                     <div class="col-lg-8">
                         <div class="testimonial-item text-center">
-                            <img src="https://placehold.co/100x100/0D1B2A/FFF?text=DP" class="testimonial-img mb-3 rounded-circle" alt="" loading="lazy">
+                            <img src="https://placehold.co/100x100/0D1B2A/FFF?text=DP" class="testimonial-img mb-3 rounded-circle" alt="Foto de Daniele Oliveira" loading="lazy">
                             <h3>Daniele Oliveira</h3>
                             <h4>CEO Empório Paraibano</h4>
                             <p>
@@ -597,7 +628,7 @@
 
                     <div class="col-lg-3 col-md-6">
                         <div class="info-box mb-4">
-                            <a href="mailto:contato@inovedev.com.br" title="Enviar Email"><i class="bi bi-envelope"></i></a>
+                            <a href="mailto:contato@inovedev.com.br" title="Enviar Email" aria-label="Enviar Email"><i class="bi bi-envelope"></i></a>
                             <h3>Email</h3>
                             <p><a href="mailto:contato@inovedev.com.br" class="text-reset text-decoration-none" title="Enviar Email">contato@inovedev.com.br</a></p>
                         </div>
