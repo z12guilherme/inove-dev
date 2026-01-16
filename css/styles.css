@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
         right: 0;
         left: 0;
         bottom: 0;
-        background: rgba(13, 27, 42, 0.9);
+        background: rgba(13, 27, 42, 0.5); /* Fundo semi-transparente (Backdrop) */
         transition: 0.3s;
         z-index: 999;
     }
@@ -117,31 +117,37 @@ h1, h2, h3, h4, h5, h6 {
         display: flex;
         flex-direction: column;
         position: absolute;
-        top: 55px;
-        right: 15px;
-        bottom: 15px;
-        left: 15px;
-        padding: 10px 0;
+        top: 0;
+        right: 0;
+        bottom: 0;
+        left: auto;
+        width: 280px; /* Largura fixa da janela lateral */
+        padding: 60px 20px 20px 20px;
         background-color: #fff;
         overflow-y: auto;
         transition: 0.3s;
-        border-radius: 10px;
+        border-radius: 0;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Sombra suave */
     }
     
     .navbar-mobile a {
-        padding: 10px 20px;
-        font-size: 15px;
+        padding: 15px 20px;
+        font-size: 16px;
         color: #2c4964;
+        border-bottom: 1px solid #eee; /* Separadores sutis */
+        font-weight: 600;
     }
     
     .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
         color: #00C7B7;
+        background: #f9f9fa;
+        padding-left: 25px; /* Efeito de movimento ao passar o mouse */
     }
     
     .navbar-mobile .mobile-nav-toggle {
         position: absolute;
-        top: 15px;
-        right: 15px;
+        top: 20px;
+        right: 20px;
     }
 }
 
