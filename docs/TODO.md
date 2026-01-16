@@ -19,7 +19,9 @@
 ## Fase 3: Performance e SEO (Prioridade Média)
 - [ ] Otimizar imagens (comprimir, lazy loading)
 - [ ] Adicionar meta tags, Open Graph, structured data
+- [x] Implementar Schema.org (JSON-LD) para Rich Snippets
 - [ ] Melhorar acessibilidade (alt texts, ARIA labels)
+- [ ] Criar sitemap.xml e robots.txt
 - [ ] Adicionar vídeos demonstrativos (embed YouTube)
 
 ## Fase 4: Conteúdo e Engajamento (Prioridade Baixa)
