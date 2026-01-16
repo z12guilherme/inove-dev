@@ -53,12 +53,10 @@ async function handleUserResponse() {
     }
 
     // 3. Se ainda não temos chave, pedimos ao usuário
-    if (!effectiveKey) {
-        addMessage("🔒 <strong>Modo Seguro Ativado</strong><br>Como este é um projeto público, a chave de API não está exposta no código.<br><br>Para testar, por favor <strong>cole sua chave da Perplexity</strong> abaixo (começa com 'pplx-'):", 'bot');
-        input.disabled = false;
-        sendBtn.disabled = false;
-        return;
-    }
+    // ALTERAÇÃO: Não bloqueamos mais se não tiver chave. 
+    // Se não tiver chave, tentaremos usar o Proxy do Netlify.
+    // if (!effectiveKey) { ... } -> Removido o bloqueio
+    
     // -----------------------------------------------------------
 
     if (step === 0) {
@@ -167,9 +165,8 @@ async function generateSiteStructure(userInput, apiKey) {
     `;
 
     // Verificação de segurança redundante
-    if (!apiKey) {
-        throw new Error("Chave de API não fornecida.");
-    }
+    // REMOVIDO: Permitimos apiKey vazia para tentar o Proxy do Netlify
+    // if (!apiKey) { throw new Error("Chave de API não fornecida."); }
 
     // Simulação de Progresso para UX
     const progressSteps = [
@@ -188,12 +185,23 @@ async function generateSiteStructure(userInput, apiKey) {
     }, 2500);
 
     try {
-        const response = await fetch('https://api.perplexity.ai/chat/completions', {
+        // LÓGICA HÍBRIDA: Direto ou Proxy
+        let apiUrl = 'https://api.perplexity.ai/chat/completions';
+        let headers = {
+            'Content-Type': 'application/json'
+        };
+
+        if (apiKey) {
+            // Se tem chave do usuário, vai direto
+            headers['Authorization'] = `Bearer ${apiKey}`;
+        } else {
+            // Se não tem chave, usa a função do Netlify (Proxy)
+            apiUrl = '/.netlify/functions/chat';
+        }
+
+        const response = await fetch(apiUrl, {
             method: 'POST',
-            headers: {
-                'Authorization': `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
+            headers: headers,
             body: JSON.stringify({
                 model: "sonar-pro", 
                 messages: [
