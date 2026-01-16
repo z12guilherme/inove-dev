@@ -3,18 +3,18 @@
   <!-- Páginas Principais -->
   <url>
     <loc>https://www.inovedev.com.br/</loc>
-    <lastmod>2026-01-15</lastmod>
+    <lastmod>2024-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
   <url>
     <loc>https://www.inovedev.com.br/blog.html</loc>
-    <lastmod>2026-01-15</lastmod>
+    <lastmod>2024-01-16</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
-
-  <!-- Artigos do Blog -->
+  
+  <!-- Artigos do Blog (Mapeados manualmente conforme blog-data.js) -->
   <url>
     <loc>https://www.inovedev.com.br/blog-post.html?id=1</loc>
     <changefreq>monthly</changefreq>
@@ -49,37 +49,5 @@
     <loc>https://www.inovedev.com.br/blog-post.html?id=7</loc>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-  </url>
-
-  <!-- Modelos / Templates -->
-  <url>
-    <loc>https://www.inovedev.com.br/templates/institucional.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.inovedev.com.br/templates/medico.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.inovedev.com.br/templates/ecommerce.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.inovedev.com.br/templates/erp/index.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.inovedev.com.br/templates/helpdesk/index.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
-  </url>
-  <url>
-    <loc>https://www.inovedev.com.br/templates/kanban/index.html</loc>
-    <changefreq>monthly</changefreq>
-    <priority>0.6</priority>
   </url>
 </urlset>

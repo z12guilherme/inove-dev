@@ -310,239 +310,241 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 
     <script>
-        // Helper para converter HEX para RGB
-        function hexToRgb(hex) {
-            var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-            return result ? 
-                `${parseInt(result[1], 16)}, ${parseInt(result[2], 16)}, ${parseInt(result[3], 16)}` : 
-                '0, 0, 0';
-        }
-
         document.addEventListener('DOMContentLoaded', () => {
-            // Inicializar Animações
-            AOS.init({ once: true, offset: 100 });
-            
-            console.log("Inove AI: Versão do Gerador v2.1 - Imagens via Pollinations");
-            
-            // --- SCRIPT ANTI-ROBÔ (NUCLEAR) ---
-            // Verifica a cada 1 segundo se alguma imagem quebrada ou do LoremFlickr apareceu e a substitui
-            setInterval(() => {
-                document.querySelectorAll('img').forEach(img => {
-                    if (img.src.includes('loremflickr') || img.src.includes('we-have-moved')) {
-                        img.src = 'https://placehold.co/600x400?text=Imagem+Atualizada';
-                    }
-                });
-            }, 1000);
-
-            // Função Helper para gerar URLs de Imagem Robustas (Pollinations AI)
-            const getImageUrl = (prompt, width, height) => {
-                // Limpeza extra: Se o prompt vier com URL (erro antigo), removemos
-                let cleanPrompt = prompt ? prompt.replace(/https?:\/\/[^\s]+/, '') : '';
-                cleanPrompt = cleanPrompt.trim() || 'technology, abstract';
-                
-                const safePrompt = encodeURIComponent(cleanPrompt);
-                const seed = Math.floor(Math.random() * 1000);
-                return `https://image.pollinations.ai/prompt/${safePrompt}?width=${width}&height=${height}&nologo=true&private=true&seed=${seed}&model=flux`;
-            };
-
-            // MUDANÇA DE VERSÃO: Lê da nova chave v3 para ignorar dados antigos com o robô
             const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
-
             if (!data) {
-                alert("Nenhum dado de site encontrado. Volte e gere novamente.");
+                alert('Nenhum dado encontrado. Volte e gere novamente.');
                 return;
             }
 
-            // 1. Carregar Fontes do Google
-            const fontHeading = data.fonts?.heading || 'Raleway';
-            const fontBody = data.fonts?.body || 'Open Sans';
-            const fontLink = `https://fonts.googleapis.com/css2?family=${fontHeading.replace(' ', '+')}:wght@400;700&family=${fontBody.replace(' ', '+')}:wght@300;400;600&display=swap`;
-            document.getElementById('dynamic-fonts').href = fontLink;
+            // Renderizar o site diretamente (Universal Template Engine)
+            renderSite(data);
+        });
 
-            // 2. Aplicar Variáveis CSS (Design System)
-            document.documentElement.style.setProperty('--primary', data.colors.primary);
-            document.documentElement.style.setProperty('--primary-rgb', hexToRgb(data.colors.primary)); // Novo
-            document.documentElement.style.setProperty('--secondary', data.colors.secondary);
-            document.documentElement.style.setProperty('--accent', data.colors.accent);
-            document.documentElement.style.setProperty('--bg-page', data.colors.background || data.colors.bg_light || '#f8f9fa');
-            document.documentElement.style.setProperty('--text-main', data.colors.text || data.colors.text_dark || '#212529');
-            document.documentElement.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
-            document.documentElement.style.setProperty('--font-heading', `'${fontHeading}', sans-serif`);
-            document.documentElement.style.setProperty('--font-body', `'${fontBody}', sans-serif`);
-
-            // 3. Aplicar Layout Dinâmico (Novo)
-            if (data.layout) {
-                // Alinhamento do Hero
-                const heroContainer = document.querySelector('#hero .container');
-                const heroRow = heroContainer.querySelector('.row');
+        function renderSite(data) {
+            // 1. Configurar Cores e Variáveis CSS
+            if (data.colors) {
+                const root = document.documentElement;
                 
-                if (data.layout.heroStyle === 'left') {
-                    heroContainer.classList.remove('text-center');
-                    heroContainer.classList.add('text-start');
-                    heroRow.classList.remove('justify-content-center'); // Alinha à esquerda
-                } else if (data.layout.heroStyle === 'right') {
-                    heroContainer.classList.remove('text-center');
-                    heroContainer.classList.add('text-end');
-                    heroRow.classList.remove('justify-content-center');
-                    heroRow.classList.add('justify-content-end');
+                // Função de Segurança: Calcula contraste automaticamente (YIQ)
+                // Se o fundo for escuro, retorna branco. Se for claro, retorna preto.
+                const getContrastYIQ = (hexcolor) => {
+                    if (!hexcolor) return '#212529';
+                    hexcolor = hexcolor.replace('#', '');
+                    var r = parseInt(hexcolor.substr(0,2),16);
+                    var g = parseInt(hexcolor.substr(2,2),16);
+                    var b = parseInt(hexcolor.substr(4,2),16);
+                    var yiq = ((r*299)+(g*587)+(b*114))/1000;
+                    return (yiq >= 128) ? '#212529' : '#ffffff';
                 }
 
-                // Bordas (Sharp vs Rounded vs Pill)
-                let radius = '15px'; // Padrão
-                if (data.layout.borderRadius === 'sharp') radius = '0px';
-                if (data.layout.borderRadius === 'pill') radius = '50px';
-                document.documentElement.style.setProperty('--border-radius', radius);
-
-                // Estilo dos Cards (Flat vs Shadow)
-                if (data.layout.cardStyle === 'flat') {
-                    const flatStyle = document.createElement('style');
-                    flatStyle.textContent = `.service-box, .testimonial-card, .feature-box { box-shadow: none !important; border: 1px solid rgba(0,0,0,0.1); }`;
-                    document.head.appendChild(flatStyle);
-                } else if (data.layout.cardStyle === 'border') {
-                    const borderStyle = document.createElement('style');
-                    borderStyle.textContent = `.service-box, .testimonial-card { border: 2px solid var(--primary); box-shadow: none !important; }`;
-                    document.head.appendChild(borderStyle);
-                }
+                root.style.setProperty('--primary', data.colors.primary);
+                root.style.setProperty('--secondary', data.colors.secondary);
+                root.style.setProperty('--accent', data.colors.accent || data.colors.primary);
+                root.style.setProperty('--bg-page', data.colors.background || '#f8f9fa');
+                
+                // Força a cor do texto baseada no cálculo matemático de contraste, ignorando a IA se necessário
+                const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
+                root.style.setProperty('--text-main', safeTextColor);
+                
+                root.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             }
 
-            // 4. Injetar CSS Personalizado da IA
+            // 2. Carregar Fontes do Google
+            if (data.fonts) {
+                const fontHeading = data.fonts.heading || 'Raleway';
+                const fontBody = data.fonts.body || 'Open Sans';
+                const fontUrl = `https://fonts.googleapis.com/css2?family=${fontHeading.replace(/ /g, '+')}:wght@300;400;600;700&family=${fontBody.replace(/ /g, '+')}:wght@300;400;600&display=swap`;
+                document.getElementById('dynamic-fonts').href = fontUrl;
+                
+                document.documentElement.style.setProperty('--font-heading', `'${fontHeading}', sans-serif`);
+                document.documentElement.style.setProperty('--font-body', `'${fontBody}', sans-serif`);
+            }
+
+            // 3. Injetar CSS Personalizado (IA)
             if (data.customCss) {
-                const customStyle = document.createElement('style');
-                customStyle.textContent = data.customCss;
-                document.head.appendChild(customStyle);
+                const style = document.createElement('style');
+                style.innerHTML = data.customCss;
+                document.head.appendChild(style);
             }
 
-            // 5. Preencher Conteúdo
-            document.title = data.brandName + " - Site Oficial";
-            document.getElementById('navBrand').textContent = data.brandName;
-            document.getElementById('footerBrand').textContent = data.brandName;
-            document.getElementById('footerYear').textContent = new Date().getFullYear();
-            
-            document.getElementById('heroTitle').textContent = data.hero.title;
-            document.getElementById('heroSubtitle').textContent = data.hero.subtitle;
-            document.getElementById('heroCTA').textContent = data.hero.cta;
-            
-            document.getElementById('aboutTitle').textContent = data.about.title;
-            document.getElementById('aboutText').textContent = data.about.text;
+            // 4. Preencher Conteúdo de Texto
+            const elements = {
+                'brandName': data.brandName,
+                'navBrand': data.brandName,
+                'footerBrand': data.brandName,
+                'heroTitle': data.hero?.title,
+                'heroSubtitle': data.hero?.subtitle,
+                'heroCTA': data.hero?.cta,
+                'aboutTitle': data.about?.title,
+                'aboutText': data.about?.text,
+                'contactAddress': data.contact?.address,
+                'contactEmail': data.contact?.email,
+                'contactPhone': data.contact?.phone,
+                'contactCTA': data.contact?.cta_text,
+                'footerYear': new Date().getFullYear()
+            };
 
-            // Stats
-            const statsGrid = document.getElementById('statsGrid');
-            if(data.about.stats) {
-                data.about.stats.forEach(stat => {
-                    statsGrid.innerHTML += `
-                        <div class="col-4">
-                            <div class="stat-item">
-                                <span class="stat-number">${stat.number}</span>
-                                <span class="stat-label">${stat.label}</span>
-                            </div>
-                        </div>`;
-                });
-            }
-
-            // Services
-            const servicesGrid = document.getElementById('servicesGrid');
-            data.services.forEach((service, index) => {
-                const col = document.createElement('div');
-                col.className = 'col-md-6 col-lg-3';
-                col.setAttribute('data-aos', 'fade-up');
-                col.setAttribute('data-aos-delay', index * 100);
-                col.innerHTML = `
-                    <div class="service-box">
-                        <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
-                        <h4>${service.title}</h4>
-                        <p class="text-muted">${service.desc}</p>
-                    </div>
-                `;
-                servicesGrid.appendChild(col);
+            Object.keys(elements).forEach(id => {
+                const el = document.getElementById(id);
+                if (el && elements[id]) el.textContent = elements[id];
             });
 
-            // Portfolio (Novo)
-            const portfolioGrid = document.getElementById('portfolioGrid');
-            const portfolioKey = data.imageKeywords?.portfolio || 'web design project';
+            // 5. Layout do Hero (Ajuste Estrutural)
+            const heroSection = document.getElementById('hero');
+            const heroContainer = heroSection.querySelector('.container');
             
-            if(data.portfolio) {
-                data.portfolio.forEach((item, index) => {
-                    const pUrl = getImageUrl(portfolioKey + ' ' + item.category, 600, 400);
-                    
-                    portfolioGrid.innerHTML += `
-                        <div class="col-md-4" data-aos="zoom-in" data-aos-delay="${index * 100}">
-                            <div class="portfolio-item">
-                                <img src="${pUrl}" class="img-fluid" alt="${item.title}" onerror="this.src='https://placehold.co/600x400?text=Projeto'">
-                                <div class="portfolio-info">
-                                    <h4>${item.title}</h4>
-                                    <p>${item.category}</p>
+            if (data.layout?.heroStyle === 'split-left' || data.layout?.heroStyle === 'split-right') {
+                heroContainer.innerHTML = `
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-2' : ''}">
+                            <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
+                        </div>
+                        <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
+                            <h1 class="display-3 fw-bold mb-4">${data.hero?.title}</h1>
+                            <p class="lead mb-4">${data.hero?.subtitle}</p>
+                            <a href="#contact" class="btn-custom">${data.hero?.cta || 'Saiba Mais'}</a>
+                        </div>
+                    </div>
+                `;
+                // Remove overlay for split layout to make it cleaner
+                const overlay = heroSection.querySelector('.hero-overlay');
+                if(overlay) overlay.style.display = 'none';
+                heroSection.style.backgroundImage = 'none';
+                heroSection.style.backgroundColor = data.colors?.background || '#f8f9fa';
+                heroSection.style.color = data.colors?.text || '#333';
+            } else {
+                // Default Center
+                if (data.images?.hero) {
+                    heroSection.style.backgroundImage = `url(${data.images.hero})`;
+                }
+            }
+
+            // 6. Imagens Gerais
+            if (data.images) {
+                const imgMap = {
+                    'aboutImg': data.images.about,
+                    'featureImg': data.images.feature
+                };
+                Object.keys(imgMap).forEach(id => {
+                    const el = document.getElementById(id);
+                    if (el && imgMap[id]) {
+                        el.src = imgMap[id];
+                        // Fallback de segurança: Se a imagem falhar, carrega um placeholder profissional
+                        el.onerror = function() {
+                            this.onerror = null;
+                            this.src = 'https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80';
+                            this.alt = 'Imagem indisponível';
+                        };
+                    }
+                });
+            }
+
+            // 7. Renderizar Listas (Serviços, Features, Portfolio, Testimonials)
+            if (data.services) {
+                const servicesContainer = document.querySelector('#services .row') || document.getElementById('servicesGrid');
+                if (servicesContainer) {
+                    servicesContainer.innerHTML = '';
+                    data.services.forEach(service => {
+                        const col = document.createElement('div');
+                        col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
+                        col.setAttribute('data-aos', 'fade-up');
+                        col.innerHTML = `
+                            <div class="service-box w-100">
+                                <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
+                                <h4>${service.title}</h4>
+                                <p class="text-muted">${service.desc}</p>
+                            </div>
+                        `;
+                        servicesContainer.appendChild(col);
+                    });
+                }
+            }
+
+            if (data.features) {
+                const featuresGrid = document.getElementById('featuresGrid');
+                if (featuresGrid) {
+                    featuresGrid.innerHTML = '';
+                    data.features.forEach(feat => {
+                        featuresGrid.innerHTML += `
+                            <div class="col-md-6">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi ${feat.icon || 'bi-check-circle-fill'} fs-4 me-3" style="color: var(--primary);"></i>
+                                    <div>
+                                        <h5 class="fw-bold">${feat.title}</h5>
+                                        <p class="small text-muted">${feat.desc}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>`;
-                });
+                        `;
+                    });
+                }
             }
 
-            // Features
-            const featuresGrid = document.getElementById('featuresGrid');
-            if(data.features) {
-                data.features.forEach(feat => {
-                    featuresGrid.innerHTML += `
-                        <div class="col-12">
-                            <div class="feature-box rounded">
-                                <h5>${feat.title}</h5>
-                                <p class="mb-0 text-muted">${feat.desc}</p>
-                            </div>
-                        </div>`;
-                });
-            }
-
-            // Testimonials
-            const testimonialsGrid = document.getElementById('testimonialsGrid');
-            if(data.testimonials) {
-                data.testimonials.forEach((test, index) => {
-                    testimonialsGrid.innerHTML += `
-                        <div class="col-md-6 col-lg-4">
-                            <div class="testimonial-card h-100" data-aos="flip-up" data-aos-delay="${index * 100}">
-                                <p class="fst-italic text-muted mb-3">${test.text}</p>
-                                <div class="testimonial-author">
-                                    <div class="testimonial-avatar"></div>
-                                    <h6 class="fw-bold mb-0 text-dark">${test.name}</h6>
+            if (data.portfolio) {
+                const portfolioGrid = document.getElementById('portfolioGrid');
+                if (portfolioGrid) {
+                    portfolioGrid.innerHTML = '';
+                    data.portfolio.forEach((item, index) => {
+                        // Generate a random image for portfolio if not provided specifically
+                        const pImg = data.images.portfolio ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
+                        
+                        portfolioGrid.innerHTML += `
+                            <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
+                                <div class="portfolio-item shadow">
+                                    <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
+                                    <div class="portfolio-info">
+                                        <h4>${item.title}</h4>
+                                        <p>${item.category}</p>
+                                    </div>
                                 </div>
                             </div>
-                        </div>`;
-                });
+                        `;
+                    });
+                }
             }
 
-            // Contact Info
-            document.getElementById('contactAddress').textContent = data.contact.address;
-            document.getElementById('contactEmail').textContent = data.contact.email;
-            document.getElementById('contactPhone').textContent = data.contact.phone;
-            document.getElementById('contactCTA').textContent = data.contact.cta_text;
-            document.getElementById('contactCTA').href = `https://wa.me/?text=Olá, vim pelo site ${data.brandName}`;
+            if (data.testimonials) {
+                const testGrid = document.getElementById('testimonialsGrid');
+                if (testGrid) {
+                    testGrid.innerHTML = '';
+                    data.testimonials.forEach(t => {
+                        testGrid.innerHTML += `
+                            <div class="col-md-4 mb-4" data-aos="fade-up">
+                                <div class="card border-0 shadow-sm h-100 p-4 text-center" style="background: var(--card-bg);">
+                                    <div class="mb-3 text-warning">
+                                        <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
+                                    </div>
+                                    <p class="fst-italic">"${t.text}"</p>
+                                    <h6 class="fw-bold mt-3 mb-0">${t.name}</h6>
+                                    <small class="text-muted">${t.role || 'Cliente'}</small>
+                                </div>
+                            </div>
+                        `;
+                    });
+                }
+            }
 
-            // Imagens Inteligentes (Geradas via Pollinations.ai)
-            const heroBg = document.getElementById('hero');
-            
-            // Fallback de segurança (Placeholder)
-            const fallbackImg = 'https://placehold.co/800x600?text=Imagem+Indispon%C3%ADvel';
-            
-            // 1. Hero Image (Com preloader para evitar fundo branco se falhar)
-            const heroKey = data.imageKeywords?.hero || 'modern business office, 8k';
-            const heroUrl = getImageUrl(heroKey, 1920, 1080);
-            
-            const imgPreloader = new Image();
-            imgPreloader.onload = () => { heroBg.style.backgroundImage = `url('${heroUrl}')`; };
-            imgPreloader.onerror = () => { heroBg.style.backgroundImage = `url('https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80')`; };
-            imgPreloader.src = heroUrl;
-            
-            
-            // 2. About Image
-            const aboutKey = data.imageKeywords?.about || 'team working';
-            const aboutImg = document.getElementById('aboutImg');
-            aboutImg.src = getImageUrl(aboutKey, 800, 600);
-            aboutImg.onerror = function() { this.src = fallbackImg; };
-            
-            // 3. Feature Image
-            const featureKey = data.imageKeywords?.feature || 'technology detail';
-            const featureImg = document.getElementById('featureImg');
-            featureImg.src = getImageUrl(featureKey, 800, 800);
-            featureImg.onerror = function() { this.src = fallbackImg; };
-        });
+            if (data.about?.stats) {
+                const statsGrid = document.getElementById('statsGrid');
+                if (statsGrid) {
+                    statsGrid.innerHTML = '';
+                    data.about.stats.forEach(stat => {
+                        statsGrid.innerHTML += `
+                            <div class="col-4 text-center">
+                                <h3 class="fw-bold display-6" style="color: var(--primary);">${stat.number}</h3>
+                                <p class="small text-uppercase fw-bold text-muted">${stat.label}</p>
+                            </div>
+                        `;
+                    });
+                }
+            }
+
+            // 8. Inicializar Animações
+            if (typeof AOS !== 'undefined') {
+                AOS.init();
+            }
+        }
     </script>
 </body>
 </html>

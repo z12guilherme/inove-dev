@@ -1,7 +1,6 @@
 User-agent: *
 Allow: /
 Disallow: /admin.html
-Disallow: /generated.html
-Disallow: /generated-system.html
+Disallow: /templates/
 
 Sitemap: https://www.inovedev.com.br/sitemap.xml

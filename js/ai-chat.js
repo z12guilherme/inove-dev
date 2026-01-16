@@ -35,6 +35,32 @@ async function handleUserResponse() {
     input.disabled = true;
     sendBtn.disabled = true;
 
+    // --- LÓGICA DE SEGURANÇA: Gerenciamento de Chave Dinâmica ---
+    // 1. Tenta usar a chave do arquivo config.js OU a salva no navegador
+    let effectiveKey = API_KEY;
+    if (!effectiveKey || effectiveKey === '') {
+        effectiveKey = localStorage.getItem('inove_user_api_key');
+    }
+
+    // 2. Se o usuário enviou algo que parece uma chave, salvamos
+    if (!effectiveKey && text.trim().startsWith('pplx-')) {
+        localStorage.setItem('inove_user_api_key', text.trim());
+        addMessage("✅ Chave de API salva com sucesso! Vamos começar.", 'bot');
+        addMessage("Qual é o nome do seu negócio e o que você faz?", 'bot');
+        input.disabled = false;
+        sendBtn.disabled = false;
+        return;
+    }
+
+    // 3. Se ainda não temos chave, pedimos ao usuário
+    if (!effectiveKey) {
+        addMessage("🔒 <strong>Modo Seguro Ativado</strong><br>Como este é um projeto público, a chave de API não está exposta no código.<br><br>Para testar, por favor <strong>cole sua chave da Perplexity</strong> abaixo (começa com 'pplx-'):", 'bot');
+        input.disabled = false;
+        sendBtn.disabled = false;
+        return;
+    }
+    // -----------------------------------------------------------
+
     if (step === 0) {
         userData.name = text; // Na verdade pegamos tudo junto no primeiro prompt para simplificar
         userData.details = text;
@@ -42,7 +68,8 @@ async function handleUserResponse() {
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
         
         try {
-            await generateSiteStructure(userData.details);
+            // Passamos a chave efetiva para a função de geração
+            await generateSiteStructure(userData.details, effectiveKey);
         } catch (error) {
             console.error(error);
             addMessage("Ops! Tive um problema ao conectar com a IA. Verifique a API Key no código.", 'bot');
@@ -52,10 +79,14 @@ async function handleUserResponse() {
     }
 }
 
-async function generateSiteStructure(userInput) {
+async function generateSiteStructure(userInput, apiKey) {
     const systemPrompt = `
     Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
     Sua missão é criar o JSON estruturado para um projeto web moderno e responsivo.
+    
+    OBJETIVO VISUAL:
+    O design DEVE ser de altíssima qualidade, visualmente impactante e comparável aos melhores templates Premium do BootstrapMade (ex: 'Arsha', 'HeroBiz', 'Gp', 'OnePage', 'Day').
+    Não se limite ao básico. Use sombras suaves (box-shadow), gradientes modernos, bordas arredondadas e tipografia elegante através do campo 'customCss'.
     
     PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
     1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
@@ -66,23 +97,27 @@ async function generateSiteStructure(userInput) {
         "projectType": "landing",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
-        "themeStyle": "modern | classic | minimalist | bold | luxury | tech",
-        "layout": { "heroStyle": "center", "cardStyle": "shadow", "borderRadius": "rounded" },
+        "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
+        "layout": { 
+            "heroStyle": "center | split-left | split-right", 
+            "cardStyle": "shadow | border | flat", 
+            "borderRadius": "rounded | rounded-pill | sharp" 
+        },
         "colors": {
             "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
-            "background": "#HEX", "text": "#HEX", "card_bg": "#HEX"
+            "background": "#HEX (Fundo da página)", "text": "#HEX (Cor do texto - ALTO CONTRASTE)", "card_bg": "#HEX (Fundo dos cards)"
         },
         "fonts": {
-            "heading": "FontName", "body": "FontName"
+            "heading": "FontName (Google Fonts)", "body": "FontName (Google Fonts)"
         },
         "hero": { "title": "Headline", "subtitle": "Subhead", "cta": "Button Text" },
         "about": { "title": "Sobre", "text": "Texto", "stats": [{"number": "10", "label": "Anos"}] },
         "services": [{"title": "Serviço", "desc": "Desc", "icon": "bi-star"}],
-        "features": [{"title": "Feature", "desc": "Desc"}],
+        "features": [{"title": "Feature", "desc": "Desc", "icon": "bi-check-circle"}],
         "portfolio": [{"title": "Proj", "category": "Cat", "desc": "Desc"}],
-        "testimonials": [{"name": "Cliente", "text": "Depoimento"}],
+        "testimonials": [{"name": "Cliente", "role": "Cargo", "text": "Depoimento"}],
         "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
-        "customCss": "Regras CSS específicas para forçar o layout escolhido (ex: header { justify-content: center; } .hero-text { text-align: center; })",
+        "customCss": "CSS COMPLETO. IMPORTANTE: Se usar imagem de fundo no Hero, adicione 'text-shadow: 0 2px 10px rgba(0,0,0,0.8)' nos títulos para garantir leitura. Estilize botões com gradientes.",
         "images": {
             "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
         }
@@ -123,12 +158,17 @@ async function generateSiteStructure(userInput) {
     3. NÃO use vírgulas no final de listas.
     4. Escape aspas internas.
     5. IMAGENS: Retorne descrições visuais do CONTEÚDO em INGLÊS (ex: "modern office workspace", "plate of pasta"). NÃO envie URLs.
-    6. CORES: Garanta ALTO CONTRASTE. Se o fundo for escuro, o texto DEVE ser claro (e vice-versa). Use cores harmônicas.
+    6. CORES E CONTRASTE (CRÍTICO - LEIA COM ATENÇÃO): 
+       - A LEGIBILIDADE É A PRIORIDADE NÚMERO 1.
+       - Se 'background' for escuro (ex: #000, #1a1a1a, #0f172a), 'text' DEVE SER EXATAMENTE #FFFFFF.
+       - Se 'background' for claro (ex: #fff, #f8f9fa), 'text' DEVE SER EXATAMENTE #212529.
+       - NUNCA use cinza médio para texto principal.
+    7. FONTS: Use nomes reais do Google Fonts (ex: 'Poppins', 'Montserrat', 'Open Sans', 'Playfair Display', 'Roboto').
     `;
 
-    if (!API_KEY || API_KEY === '') {
-        addMessage("⚠️ <strong>Configuração Necessária:</strong><br>Você precisa adicionar sua chave de API no arquivo <code>js/config.js</code> para que eu possa funcionar.<br>Abra o arquivo e coloque sua chave.", 'bot');
-        return;
+    // Verificação de segurança redundante
+    if (!apiKey) {
+        throw new Error("Chave de API não fornecida.");
     }
 
     // Simulação de Progresso para UX
@@ -151,7 +191,7 @@ async function generateSiteStructure(userInput) {
         const response = await fetch('https://api.perplexity.ai/chat/completions', {
             method: 'POST',
             headers: {
-                'Authorization': `Bearer ${API_KEY}`,
+                'Authorization': `Bearer ${apiKey}`,
                 'Content-Type': 'application/json'
             },
             body: JSON.stringify({
@@ -200,9 +240,34 @@ async function generateSiteStructure(userInput) {
                 };
             }
 
+            // --- BANCO DE IMAGENS PREMIUM (TEMPLATES REAIS) ---
+            // Garante fotos de alta qualidade para nichos comuns, evitando "robôs" ou falhas da IA
+            const TEMPLATE_IMAGES = {
+                "advocacia": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1920&q=80",
+                "direito": "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1920&q=80",
+                "medico": "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1920&q=80",
+                "saude": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1920&q=80",
+                "clinica": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=80",
+                "tech": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80",
+                "tecnologia": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80",
+                "marketing": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80",
+                "fitness": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80",
+                "academia": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80",
+                "restaurante": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80",
+                "comida": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80",
+                "cafe": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1920&q=80",
+                "ecommerce": "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=1920&q=80",
+                "loja": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1920&q=80",
+                "arquitetura": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1920&q=80",
+                "construcao": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=80",
+                "educacao": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80",
+                "escola": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80"
+            };
+
             // --- FIX: Sistema Robusto de Imagens (Pollinations AI) ---
             const fixImage = (description, type = 'landscape') => {
                 let prompt = description;
+                const nicheKey = (siteData.niche || "").toLowerCase();
                 
                 // 1. Validação e Fallback
                 if (!prompt || typeof prompt !== 'string' || prompt.length < 3) {
@@ -219,7 +284,18 @@ async function generateSiteStructure(userInput) {
                 // Remove caracteres de código mas mantém acentos e pontuação básica
                 let cleanPrompt = prompt.replace(/[<>{}[\]\\\/]/g, '').trim();
                 
-                // 4. Engenharia de Prompt para Qualidade (Injeta realismo)
+                // 4. VERIFICAÇÃO DE TEMPLATE (Prioridade Máxima)
+                // Se o nicho do usuário bater com nosso banco de imagens, usamos a foto real (Unsplash)
+                // Isso evita o "robô" ou imagens estranhas da IA em nichos comuns.
+                for (const [key, url] of Object.entries(TEMPLATE_IMAGES)) {
+                    if (nicheKey.includes(key) || cleanPrompt.toLowerCase().includes(key)) {
+                        // Retorna a imagem de template se for compatível
+                        // Adiciona um parametro aleatório para evitar cache se usar a mesma imagem várias vezes
+                        return url + "&random=" + Math.floor(Math.random() * 1000);
+                    }
+                }
+
+                // 5. Engenharia de Prompt para Qualidade (Injeta realismo se não tiver template)
                 // Adiciona modificadores para garantir qualidade fotográfica
                 const enhancedPrompt = `${cleanPrompt}, realistic, 8k, cinematic lighting, high quality, professional photo`;
                 const encodedPrompt = encodeURIComponent(enhancedPrompt);
