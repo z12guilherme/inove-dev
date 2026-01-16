@@ -109,7 +109,7 @@ const navbar = document.querySelector('#navbar');
 if (mobileNavToggle) {
     mobileNavToggle.addEventListener('click', function(e) {
         navbar.classList.toggle('navbar-mobile');
-        this.classList.toggle('bi-list');
+        this.classList.toggle('bi-three-dots-vertical');
         this.classList.toggle('bi-x');
     });
 }
