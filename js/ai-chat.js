@@ -394,6 +394,8 @@ async function generateSiteStructure(userInput, apiKey) {
             errorMsg = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
         } else if (e.toString().includes('404')) {
             errorMsg = "Erro 404: Não consegui acessar a Função do Netlify. Se estiver rodando localmente, use 'netlify dev' ou insira a chave no chat.";
+        } else if (e.toString().includes('502')) {
+            errorMsg = "Erro 502 (Bad Gateway): A função do servidor falhou ou excedeu o tempo limite (10s). Tente novamente.";
         }
 
         addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
