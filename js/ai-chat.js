@@ -393,7 +393,7 @@ async function generateSiteStructure(userInput, apiKey) {
         } else if (e.toString().includes('429')) {
             errorMsg = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
         } else if (e.toString().includes('404')) {
-            errorMsg = "Erro 404: Modelo não encontrado ou endpoint incorreto.";
+            errorMsg = "Erro 404: Não consegui acessar a Função do Netlify. Se estiver rodando localmente, use 'netlify dev' ou insira a chave no chat.";
         }
 
         addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
