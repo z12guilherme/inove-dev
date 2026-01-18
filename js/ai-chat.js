@@ -393,8 +393,8 @@ async function generateSiteStructure(userInput, apiKey) {
                     <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
                     <li>Foco: ${siteData.niche}</li>
                 </ul>
-                <div class="alert alert-warning p-2 mt-2" style="font-size: 0.85em;">
-                    <i class="bi bi-exclamation-triangle"></i> <strong>Nota:</strong> As imagens são geradas por IA em tempo real e podem apresentar variações ou não corresponder exatamente ao contexto.
+                <div class="alert alert-info p-2 mt-2" style="font-size: 0.85em; border-left: 4px solid #00C7B7;">
+                    <strong>✨ Você é o Designer:</strong> No protótipo, você pode <strong>clicar em qualquer texto para editar</strong> e usar a barra superior para mudar cores e fontes. Quando terminar, me envie o link e eu receberei exatamente o que você criou!
                 </div>
                 <div class="text-center mt-3">
                     <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">

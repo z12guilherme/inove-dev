@@ -155,6 +155,14 @@
         [contenteditable="true"]:hover { outline: 2px dashed var(--primary); cursor: edit; }
         [contenteditable="true"]:focus { outline: 2px solid var(--primary); background: rgba(var(--primary-rgb), 0.05); }
         [contenteditable="true"] { transition: all 0.2s ease; }
+        
+        /* Pulse animation for instructions */
+        @keyframes pulse-text {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; color: var(--accent); }
+            100% { opacity: 0.6; }
+        }
+        .instruction-pulse { animation: pulse-text 2s infinite; font-weight: 600; }
 
         /* Color Pickers Styling */
         .color-control { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 5px; }
@@ -185,7 +193,7 @@
     <div class="studio-toolbar">
         <div class="d-flex align-items-center">
             <i class="bi bi-stars text-primary me-2"></i>
-            <strong>Inove AI Studio</strong> <span class="badge bg-primary ms-2">Modo Protótipo</span>
+            <strong>Inove AI Studio</strong> <span class="badge bg-primary ms-2">Estúdio de Edição Ativo</span>
         </div>
         
         <div class="d-flex align-items-center gap-3">
@@ -225,7 +233,9 @@
                 <i class="bi bi-whatsapp me-1"></i> Finalizar e Enviar
             </button>
         </div>
-        <div class="d-none d-lg-block text-white-50 small">Clique nos textos para editar</div>
+        <div class="d-none d-lg-block text-white-50 small instruction-pulse">
+            <i class="bi bi-mouse me-1"></i> Clique em qualquer texto para personalizar!
+        </div>
     </div>
 
     <section id="hero">
