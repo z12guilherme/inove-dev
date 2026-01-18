@@ -36,6 +36,30 @@ document.addEventListener('DOMContentLoaded', () => {
         localStorage.setItem(storageKey, JSON.stringify(data));
     };
 
+    // --- HELPER: Gerador de Seletor Único (Para persistência de edições livres) ---
+    const getUniqueSelector = (el) => {
+        if (el.id) return '#' + el.id;
+        if (el === document.body) return 'body';
+        let path = [];
+        while (el.parentNode && el !== document.body) {
+            if (el.id) {
+                path.unshift('#' + el.id);
+                break;
+            }
+            let selector = el.tagName.toLowerCase();
+            let sib = el;
+            let nth = 1;
+            while (sib = sib.previousElementSibling) {
+                if (sib.tagName.toLowerCase() === selector) nth++;
+            }
+            if (nth > 1) selector += `:nth-of-type(${nth})`;
+            path.unshift(selector);
+            el = el.parentNode;
+        }
+        if (el === document.body && path.length > 0 && !path[0].startsWith('#')) path.unshift('body');
+        return path.join(' > ');
+    };
+
     // --- INJEÇÃO DA BARRA DE FERRAMENTAS (STUDIO) ---
     const injectStudioToolbar = () => {
         // 1. CSS
@@ -260,9 +284,9 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mapeamento Inteligente (Tenta encontrar elementos comuns em templates Bootstrap)
     const mappings = [
         // Marca e Títulos
-        { selector: '.logo h1, .navbar-brand, title', value: data.brandName, path: 'brandName' },
-        { selector: '#hero h1, .hero h1, .banner h1', value: data.hero?.title, path: 'hero.title' },
-        { selector: '#hero h2, #hero p, .hero p', value: data.hero?.subtitle, path: 'hero.subtitle' },
+        { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a', value: data.brandName, path: 'brandName' },
+        { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1', value: data.hero?.title, path: 'hero.title' },
+        { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2', value: data.hero?.subtitle, path: 'hero.subtitle' },
         { selector: '#hero .btn-get-started, .hero .btn-primary', value: data.hero?.cta, path: 'hero.cta' },
         
         // Sobre
@@ -431,19 +455,57 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
+    // 6. Aplicar Edições Manuais Salvas (Overrides)
+    if (data.textOverrides) {
+        Object.entries(data.textOverrides).forEach(([selector, text]) => {
+            try {
+                const el = document.querySelector(selector);
+                if (el) el.innerText = text;
+            } catch (e) {
+                console.warn("Erro ao aplicar override:", selector);
+            }
+        });
+    }
+
+    // 7. Habilitar Edição Global (Qualquer texto)
+    const enableGlobalEditing = () => {
+        const allElements = document.body.querySelectorAll('*');
+        allElements.forEach(el => {
+            // Ignora elementos da interface do Studio
+            if (el.closest('.studio-toolbar') || el.closest('.studio-context-menu') || el.closest('.ai-badge')) return;
+            // Ignora tags não visuais
+            if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'SVG', 'PATH', 'BR', 'HR'].includes(el.tagName)) return;
+
+            // Verifica se tem texto direto
+            const hasText = Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.nodeValue.trim().length > 0);
+            
+            if (hasText && !el.isContentEditable) {
+                el.setAttribute('contenteditable', 'true');
+                el.style.cursor = 'text';
+            }
+        });
+    };
+    enableGlobalEditing();
+
     console.log("🤖 Inove AI: Template hidratado com sucesso!");
 
     // Listener Global para Edição de Texto
     document.addEventListener('input', (e) => {
-        if (e.target.getAttribute('contenteditable') === 'true' && e.target.dataset.path) {
-            const path = e.target.dataset.path.split('.');
-            // Atualiza o objeto data aninhado
-            let current = data;
-            for (let i = 0; i < path.length - 1; i++) {
-                if (!current[path[i]]) current[path[i]] = {};
-                current = current[path[i]];
+        if (e.target.getAttribute('contenteditable') === 'true') {
+            if (e.target.dataset.path) {
+                const path = e.target.dataset.path.split('.');
+                let current = data;
+                for (let i = 0; i < path.length - 1; i++) {
+                    if (!current[path[i]]) current[path[i]] = {};
+                    current = current[path[i]];
+                }
+                current[path[path.length - 1]] = e.target.innerText;
+            } else {
+                // Salva edição livre em textOverrides
+                if (!data.textOverrides) data.textOverrides = {};
+                const selector = getUniqueSelector(e.target);
+                data.textOverrides[selector] = e.target.innerText;
             }
-            current[path[path.length - 1]] = e.target.innerText;
             saveToLocal();
         }
     });

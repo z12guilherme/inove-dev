@@ -83,6 +83,7 @@ async function generateSiteStructure(userInput) {
         - Educação: "learne" (templates/learne)
         - Saúde/Clínica: "medinest" (templates/medinest)
         - Portfólio/Pessoal: "iportfolio" (templates/iportfolio), "folione" (templates/folione), "snapfolio" (templates/snapfolio)
+        - Casamento/Eventos: "nuptial" (templates/nuptial)
 
         REGRAS DE OURO:
         1. Responda APENAS com o JSON. Sem markdown, sem explicações.
@@ -93,6 +94,7 @@ async function generateSiteStructure(userInput) {
            - Para produtos/lançamentos -> leadpage
            - Para médicos -> medinest
            - Para currículos/pessoal -> iportfolio ou folione
+           - Para casamentos -> nuptial
         4. As imagens devem ser URLs reais do Unsplash (ex: https://source.unsplash.com/800x600/?keyword).
         5. Todo o conteúdo de texto gerado (títulos, descrições, botões, depoimentos) DEVE ser em Português do Brasil.
         6. Siga estritamente este schema JSON:
