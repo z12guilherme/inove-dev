@@ -89,7 +89,7 @@ async function generateSiteStructure(userInput) {
                 <li>Motor: Inove Native AI v1.0</li>
             </ul>
             <div class="text-center mt-3">
-                <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
+                <a href="generated.html?v=${timestamp}" target="_blank" rel="nofollow" class="btn btn-success btn-sm">
                     <i class="bi bi-magic"></i> Ver Site Gerado
                 </a>
             </div>

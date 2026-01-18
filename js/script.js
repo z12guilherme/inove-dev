@@ -614,3 +614,23 @@ function initGhostMode() {
         }
     });
 }
+
+// --- SEO FIX: Dynamic Canonical for Blog Posts ---
+// Corrige o problema de "Página alternativa com tag canônica adequada" no Search Console.
+// Garante que o Google indexe cada post individualmente (ex: ?id=7) em vez de ignorá-los.
+if (window.location.pathname.includes('blog-post.html')) {
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
+    
+    if (postId) {
+        let canonical = document.querySelector("link[rel='canonical']");
+        // Se não existir, cria. Se existir, atualiza.
+        if (!canonical) {
+            canonical = document.createElement('link');
+            canonical.rel = 'canonical';
+            document.head.appendChild(canonical);
+        }
+        // Define a URL canônica como a URL específica do post (limpa de outros parâmetros de rastreamento)
+        canonical.href = `${window.location.origin}${window.location.pathname}?id=${postId}`;
+    }
+}
