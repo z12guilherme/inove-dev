@@ -430,7 +430,14 @@
 
             // 2. Se não houver URL válida, carrega do localStorage
             if (!data) {
-                data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+                const urlParams = new URLSearchParams(window.location.search);
+                const siteId = urlParams.get('id');
+                if (siteId) {
+                    data = JSON.parse(localStorage.getItem(`ai_site_${siteId}`));
+                }
+                if (!data) {
+                    data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+                }
             }
 
             if (!data) {
@@ -446,6 +453,74 @@
             const saveToLocal = () => {
                 localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
             };
+
+            // --- LÓGICA DE PROXY DE TEMPLATE (NOVO) ---
+            // Se um template específico foi escolhido, carregamos ele em vez do layout padrão
+            if (data.templateSource && data.templateSource !== 'generic') {
+                const slug = data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '');
+                const templatePath = `templates/${slug}/index.html`;
+
+                console.log(`🤖 Tentando carregar template: ${templatePath}`);
+
+                fetch(templatePath)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Template não encontrado");
+                        return response.text();
+                    })
+                    .then(html => {
+                        // 1. Corrigir caminhos relativos (assets/ -> templates/slug/assets/)
+                        const basePath = `templates/${slug}/`;
+                        let fixedHtml = html.replace(/(src|href)="'([^"']+)["']/g, (match, attr, url) => {
+                            // Se for script de integração ou script global, ajusta para a raiz
+                            if (url.includes('ai-integration.js') || url.includes('script.js')) {
+                                return `${attr}="js/${url.split('/').pop()}"`;
+                            }
+                            // Se for assets do template, adiciona o prefixo da pasta
+                            if (url.startsWith('assets/') || url.startsWith('css/') || url.startsWith('js/')) {
+                                return `${attr}="${basePath}${url}"`;
+                            }
+                            return match;
+                        });
+
+                        // 2. Injetar a Barra de Ferramentas do Studio no HTML do template
+                        const toolbarHtml = document.querySelector('.studio-toolbar').outerHTML;
+                        const badgeHtml = document.querySelector('.ai-badge').outerHTML;
+                        
+                        // Substitui o corpo do documento atual pelo do template
+                        document.open();
+                        document.write(fixedHtml);
+                        document.close();
+
+                        // Re-injeta a toolbar após o carregamento
+                        setTimeout(() => {
+                            const body = document.body;
+                            if (body) {
+                                const div = document.createElement('div');
+                                div.innerHTML = toolbarHtml + badgeHtml;
+                                body.prepend(div.firstChild); // Toolbar no topo
+                                body.appendChild(div.lastChild); // Badge no rodapé
+                                
+                                // Reativa os listeners da toolbar (pois o DOM mudou)
+                                // Nota: Em uma implementação ideal, a toolbar seria um iframe ou componente isolado,
+                                // mas para este protótipo, recarregar a página se necessário ou aceitar que a edição
+                                // visual pode ser limitada no modo template é aceitável.
+                            }
+                        }, 500);
+                        
+                        return; // Interrompe a renderização do layout padrão
+                    })
+                    .catch(e => {
+                        console.warn("⚠️ Falha ao carregar template, usando layout universal:", e);
+                        // Continua para o código abaixo (Layout Universal)
+                    });
+            }
+            // -------------------------------------------
+
+            // 0. Aplicar Classe do Template ao Body (Para permitir CSS específico)
+            if (data.templateSource) {
+                const themeClass = 'theme-' + data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                document.body.classList.add(themeClass);
+            }
 
             // 1. Configurar Cores e Variáveis CSS
             if (data.colors) {

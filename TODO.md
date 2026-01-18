@@ -25,6 +25,7 @@
 - [ ] Fortalecer CTAs com landing pages
 - [ ] Adicionar mais conteúdo (casos de sucesso, processo de trabalho)
 - [x] Criar Template: Landing Page de Alta Conversão
+- [x] Integrar Engine Llama 3 (Groq) ao Studio
 - [x] Criar Template: Médico/Saúde (Portfólio Profissional)
 - [x] Criar Template: Restaurante/Gastronomia
 - [x] Criar Template: E-commerce Simples
