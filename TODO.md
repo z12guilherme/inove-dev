@@ -28,6 +28,11 @@
 - [x] Criar Template: Médico/Saúde (Portfólio Profissional)
 - [x] Criar Template: Restaurante/Gastronomia
 - [x] Criar Template: E-commerce Simples
+- [x] Criar Template: Site de Casamento / Eventos (Inove AI Studio)
+- [x] Criar Template: E-commerce Premium / Luxo (Inove AI Studio)
+- [ ] Adicionar seletor de visualização (Mobile/Desktop) no Studio
+- [x] Permitir edição de texto, cores e fontes direta no preview
+- [x] Implementar salvamento de progresso e envio de design via WhatsApp
 - [ ] Integrar analytics (Google Analytics)
 
 ## Dependências e Setup

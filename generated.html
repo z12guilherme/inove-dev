@@ -133,11 +133,40 @@
             border: 1px solid rgba(255,255,255,0.1);
             max-width: 300px;
         }
+
+        /* Studio Toolbar */
+        .studio-toolbar {
+            background: #0D1B2A;
+            color: white;
+            padding: 10px 20px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 14px;
+            border-bottom: 2px solid var(--primary);
+        }
+        body { padding-top: 50px; }
+        [contenteditable="true"]:hover { outline: 2px dashed var(--primary); cursor: edit; }
+        [contenteditable="true"]:focus { outline: 2px solid var(--primary); background: rgba(var(--primary-rgb), 0.05); }
+        [contenteditable="true"] { transition: all 0.2s ease; }
+
+        /* Color Pickers Styling */
+        .color-control { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 5px; }
+        .color-control label { font-size: 10px; text-transform: uppercase; opacity: 0.7; margin: 0; font-weight: 600; }
+        .color-control select { background: transparent; color: white; border: none; font-size: 11px; cursor: pointer; outline: none; padding: 0; }
+        .color-control select option { background: #0D1B2A; color: white; }
+        .form-control-color-sm { width: 30px; height: 25px; padding: 0; border: none; background: none; cursor: pointer; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top">
+    <nav class="navbar navbar-expand-lg fixed-top" style="top: 45px;">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#" id="navBrand">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -152,6 +181,52 @@
             </div>
         </div>
     </nav>
+
+    <div class="studio-toolbar">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-stars text-primary me-2"></i>
+            <strong>Inove AI Studio</strong> <span class="badge bg-primary ms-2">Modo Protótipo</span>
+        </div>
+        
+        <div class="d-flex align-items-center gap-3">
+            <div class="color-control">
+                <label>Marca</label>
+                <input type="color" id="pickerPrimary" class="form-control-color-sm" title="Cor Principal">
+            </div>
+            <div class="color-control">
+                <label>Fundo</label>
+                <input type="color" id="pickerBg" class="form-control-color-sm" title="Cor de Fundo">
+            </div>
+            <div class="color-control">
+                <label>Texto</label>
+                <input type="color" id="pickerText" class="form-control-color-sm" title="Cor do Texto">
+            </div>
+            <div class="color-control" id="individualColorWrapper" style="display:none; border: 1px solid var(--primary);">
+                <label>Cor do Item</label>
+                <input type="color" id="pickerIndividualText" class="form-control-color-sm" title="Cor do Item Selecionado">
+            </div>
+            <div class="color-control">
+                <label>Estilo</label>
+                <select id="pickerFont">
+                    <option value="'Montserrat', sans-serif">Moderno</option>
+                    <option value="'Playfair Display', serif">Clássico</option>
+                    <option value="'Open Sans', sans-serif">Clean</option>
+                    <option value="'Raleway', sans-serif">Elegante</option>
+                    <option value="'Dancing Script', cursive">Romântico</option>
+                </select>
+            </div>
+            <button id="btnReset" class="btn btn-outline-danger btn-sm ms-2" title="Resetar Design">
+                <i class="bi bi-trash"></i>
+            </button>
+            <button id="btnDownload" class="btn btn-outline-light btn-sm ms-2" title="Baixar Código Fonte (Restrito)">
+                <i class="bi bi-code-slash"></i>
+            </button>
+            <button id="btnFinalize" class="btn btn-primary btn-sm fw-bold ms-2">
+                <i class="bi bi-whatsapp me-1"></i> Finalizar e Enviar
+            </button>
+        </div>
+        <div class="d-none d-lg-block text-white-50 small">Clique nos textos para editar</div>
+    </div>
 
     <section id="hero">
         <div class="hero-overlay"></div>
@@ -311,7 +386,41 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+            // 0. Prioridade 1: Dados embutidos (versão baixada)
+            let data = window.bakedData || null;
+
+            // 1. Prioridade 2: Dados da URL (Fragmento # ou Query ?)
+            if (!data) {
+                // Tenta pegar do fragmento (#s=) primeiro para evitar erro 431
+                let stateParam = null;
+                if (window.location.hash.startsWith('#s=')) {
+                    stateParam = window.location.hash.substring(3);
+                } else {
+                    // Fallback para o método antigo (?s=)
+                    stateParam = new URLSearchParams(window.location.search).get('s');
+                }
+
+                if (stateParam) {
+                    try {
+                        const binary = atob(stateParam);
+                        const bytes = new Uint8Array(binary.length);
+                        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                        data = JSON.parse(new TextDecoder().decode(bytes));
+
+                        // Feedback visual de que é um design compartilhado
+                        const toolbar = document.querySelector('.studio-toolbar');
+                        if(toolbar) toolbar.innerHTML += `<span class="badge bg-warning ms-2 text-dark" style="font-size:10px">Design do Cliente</span>`;
+                    } catch (e) {
+                        console.error("Erro ao carregar design da URL:", e);
+                    }
+                }
+            }
+
+            // 2. Se não houver URL válida, carrega do localStorage
+            if (!data) {
+                data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+            }
+
             if (!data) {
                 alert('Nenhum dado encontrado. Volte e gere novamente.');
                 return;
@@ -322,12 +431,13 @@
         });
 
         function renderSite(data) {
+            const saveToLocal = () => {
+                localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
+            };
+
             // 1. Configurar Cores e Variáveis CSS
             if (data.colors) {
                 const root = document.documentElement;
-                
-                // Função de Segurança: Calcula contraste automaticamente (YIQ)
-                // Se o fundo for escuro, retorna branco. Se for claro, retorna preto.
                 const getContrastYIQ = (hexcolor) => {
                     if (!hexcolor) return '#212529';
                     hexcolor = hexcolor.replace('#', '');
@@ -342,11 +452,8 @@
                 root.style.setProperty('--secondary', data.colors.secondary);
                 root.style.setProperty('--accent', data.colors.accent || data.colors.primary);
                 root.style.setProperty('--bg-page', data.colors.background || '#f8f9fa');
-                
-                // Força a cor do texto baseada no cálculo matemático de contraste, ignorando a IA se necessário
                 const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
                 root.style.setProperty('--text-main', safeTextColor);
-                
                 root.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             }
 
@@ -369,35 +476,38 @@
             }
 
             // 4. Preencher Conteúdo de Texto
-            const elements = {
-                'brandName': data.brandName,
-                'navBrand': data.brandName,
-                'footerBrand': data.brandName,
-                'heroTitle': data.hero?.title,
-                'heroSubtitle': data.hero?.subtitle,
-                'heroCTA': data.hero?.cta,
-                'aboutTitle': data.about?.title,
-                'aboutText': data.about?.text,
-                'contactAddress': data.contact?.address,
-                'contactEmail': data.contact?.email,
-                'contactPhone': data.contact?.phone,
-                'contactCTA': data.contact?.cta_text,
-                'footerYear': new Date().getFullYear(),
-                // Títulos Dinâmicos das Seções
-                'servicesTitle': data.sectionTitles?.services,
-                'servicesSubtitle': data.sectionTitles?.services_subtitle,
-                'portfolioTitle': data.sectionTitles?.portfolio,
-                'portfolioSubtitle': data.sectionTitles?.portfolio_subtitle,
-                'featuresTitle': data.sectionTitles?.features,
-                'testimonialsTitle': data.sectionTitles?.testimonials,
-                'contactTitle': data.sectionTitles?.contact,
-                'contactSubtitle': data.sectionTitles?.contact_subtitle
-            };
+            const textMappings = [
+                { id: 'navBrand', path: 'brandName' },
+                { id: 'footerBrand', path: 'brandName' },
+                { id: 'heroTitle', path: 'hero.title' },
+                { id: 'heroSubtitle', path: 'hero.subtitle' },
+                { id: 'heroCTA', path: 'hero.cta' },
+                { id: 'aboutTitle', path: 'about.title' },
+                { id: 'aboutText', path: 'about.text' },
+                { id: 'contactAddress', path: 'contact.address' },
+                { id: 'contactEmail', path: 'contact.email' },
+                { id: 'contactPhone', path: 'contact.phone' },
+                { id: 'contactCTA', path: 'contact.cta_text' },
+                { id: 'servicesTitle', path: 'sectionTitles.services' },
+                { id: 'servicesSubtitle', path: 'sectionTitles.services_subtitle' },
+                { id: 'portfolioTitle', path: 'sectionTitles.portfolio' },
+                { id: 'portfolioSubtitle', path: 'sectionTitles.portfolio_subtitle' },
+                { id: 'featuresTitle', path: 'sectionTitles.features' },
+                { id: 'testimonialsTitle', path: 'sectionTitles.testimonials' },
+                { id: 'contactTitle', path: 'sectionTitles.contact' },
+                { id: 'contactSubtitle', path: 'sectionTitles.contact_subtitle' }
+            ];
 
-            Object.keys(elements).forEach(id => {
-                const el = document.getElementById(id);
-                if (el && elements[id]) el.textContent = elements[id];
+            textMappings.forEach(map => {
+                const el = document.getElementById(map.id);
+                if (el) {
+                    const val = map.path.split('.').reduce((o, i) => o?.[i], data);
+                    if (val) el.innerText = val;
+                    el.dataset.path = map.path;
+                    if (data.individualColors?.[map.path]) el.style.color = data.individualColors[map.path];
+                }
             });
+            if(document.getElementById('footerYear')) document.getElementById('footerYear').textContent = new Date().getFullYear();
 
             // 5. Layout do Hero (Ajuste Estrutural)
             const heroSection = document.getElementById('hero');
@@ -410,8 +520,8 @@
                             <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
                         </div>
                         <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
-                            <h1 class="display-3 fw-bold mb-4">${data.hero?.title}</h1>
-                            <p class="lead mb-4">${data.hero?.subtitle}</p>
+                            <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${data.hero?.title}</h1>
+                            <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${data.hero?.subtitle}</p>
                             <a href="#contact" class="btn-custom">${data.hero?.cta || 'Saiba Mais'}</a>
                         </div>
                     </div>
@@ -454,15 +564,17 @@
                 const servicesContainer = document.querySelector('#services .row') || document.getElementById('servicesGrid');
                 if (servicesContainer) {
                     servicesContainer.innerHTML = '';
-                    data.services.forEach(service => {
+                    data.services.forEach((service, idx) => {
                         const col = document.createElement('div');
                         col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
                         col.setAttribute('data-aos', 'fade-up');
+                        const titlePath = `services.${idx}.title`;
+                        const descPath = `services.${idx}.desc`;
                         col.innerHTML = `
                             <div class="service-box w-100">
                                 <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
-                                <h4>${service.title}</h4>
-                                <p class="text-muted">${service.desc}</p>
+                                <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${service.title}</h4>
+                                <p class="text-muted" data-path="${descPath}" style="color:${data.individualColors?.[descPath] || 'inherit'}">${service.desc}</p>
                             </div>
                         `;
                         servicesContainer.appendChild(col);
@@ -474,13 +586,14 @@
                 const featuresGrid = document.getElementById('featuresGrid');
                 if (featuresGrid) {
                     featuresGrid.innerHTML = '';
-                    data.features.forEach(feat => {
+                    data.features.forEach((feat, idx) => {
+                        const titlePath = `features.${idx}.title`;
                         featuresGrid.innerHTML += `
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
                                     <i class="bi ${feat.icon || 'bi-check-circle-fill'} fs-4 me-3" style="color: var(--primary);"></i>
                                     <div>
-                                        <h5 class="fw-bold">${feat.title}</h5>
+                                        <h5 class="fw-bold" data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${feat.title}</h5>
                                         <p class="small text-muted">${feat.desc}</p>
                                     </div>
                                 </div>
@@ -497,13 +610,14 @@
                     data.portfolio.forEach((item, index) => {
                         // Generate a random image for portfolio if not provided specifically
                         const pImg = data.images.portfolio ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
+                        const titlePath = `portfolio.${index}.title`;
                         
                         portfolioGrid.innerHTML += `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
                                     <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
                                     <div class="portfolio-info">
-                                        <h4>${item.title}</h4>
+                                        <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${item.title}</h4>
                                         <p>${item.category}</p>
                                     </div>
                                 </div>
@@ -517,14 +631,15 @@
                 const testGrid = document.getElementById('testimonialsGrid');
                 if (testGrid) {
                     testGrid.innerHTML = '';
-                    data.testimonials.forEach(t => {
+                    data.testimonials.forEach((t, idx) => {
+                        const textPath = `testimonials.${idx}.text`;
                         testGrid.innerHTML += `
                             <div class="col-md-4 mb-4" data-aos="fade-up">
                                 <div class="card border-0 shadow-sm h-100 p-4 text-center" style="background: var(--card-bg);">
                                     <div class="mb-3 text-warning">
                                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                     </div>
-                                    <p class="fst-italic">"${t.text}"</p>
+                                    <p class="fst-italic" data-path="${textPath}" style="color:${data.individualColors?.[textPath] || 'inherit'}">"${t.text}"</p>
                                     <h6 class="fw-bold mt-3 mb-0">${t.name}</h6>
                                     <small class="text-muted">${t.role || 'Cliente'}</small>
                                 </div>
@@ -553,7 +668,177 @@
             if (typeof AOS !== 'undefined') {
                 AOS.init();
             }
+
+            // 9. Habilitar Edição em Tempo Real (Diferencial Inove)
+            const editableSelectors = '[contenteditable="true"], h1, h2, h3, h4, h5, p, .nav-link, .btn-custom';
+            document.querySelectorAll(editableSelectors).forEach(el => {
+                if (el.children.length === 0 || (el.tagName === 'P' || el.tagName.startsWith('H'))) {
+                    el.setAttribute('contenteditable', 'true');
+                    el.setAttribute('spellcheck', 'false');
+                }
+            });
+
+            // 10. Controles de Cores em Tempo Real
+            const pPrimary = document.getElementById('pickerPrimary'), pBg = document.getElementById('pickerBg'), pText = document.getElementById('pickerText'), pFont = document.getElementById('pickerFont'), pIndividual = document.getElementById('pickerIndividualText'), individualWrapper = document.getElementById('individualColorWrapper'), btnFinalize = document.getElementById('btnFinalize'), btnDownload = document.getElementById('btnDownload'), btnReset = document.getElementById('btnReset');
+
+            document.addEventListener('input', (e) => {
+                const path = e.target.dataset.path;
+                if (path) {
+                    const keys = path.split('.');
+                    let obj = data;
+                    for (let i = 0; i < keys.length - 1; i++) { if(!obj[keys[i]]) obj[keys[i]] = {}; obj = obj[keys[i]]; }
+                    obj[keys[keys.length - 1]] = e.target.innerText;
+                    saveToLocal();
+                }
+            });
+
+            if (data.colors) {
+                pPrimary.value = data.colors.primary || '#0d6efd';
+                pBg.value = data.colors.background || '#f8f9fa';
+                pText.value = data.colors.text || '#212529';
+            }
+
+            // Lógica de Seleção de Elemento para Cor Individual
+            let lastFocusedEl = null;
+
+            document.addEventListener('focusin', (e) => {
+                if (e.target.hasAttribute('contenteditable')) {
+                    lastFocusedEl = e.target;
+                    individualWrapper.style.display = 'flex';
+                    
+                    // Pega a cor atual do elemento (convertendo para HEX para o input color)
+                    const rgb = window.getComputedStyle(lastFocusedEl).color;
+                    const hex = rgbToHex(rgb);
+                    pIndividual.value = hex;
+                } else {
+                    // Se clicar fora de um editável, esconde o seletor individual
+                    if (!e.target.closest('#individualColorWrapper')) {
+                        individualWrapper.style.display = 'none';
+                    }
+                }
+            });
+
+            function rgbToHex(rgb) {
+                const vals = rgb.match(/\d+/g);
+                if (!vals) return '#000000';
+                return "#" + vals.map(x => {
+                    const hex = parseInt(x).toString(16);
+                    return hex.length === 1 ? "0" + hex : hex;
+                }).slice(0,3).join("");
+            }
+
+            pPrimary.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--primary', val);
+                data.colors.primary = val;
+                saveToLocal();
+            });
+            pBg.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--bg-page', val);
+                data.colors.background = val;
+                saveToLocal();
+            });
+            pText.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--text-main', val);
+                data.colors.text = val;
+                saveToLocal();
+            });
+            pFont.addEventListener('change', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--font-heading', val);
+                document.documentElement.style.setProperty('--font-body', val);
+                data.fonts = { heading: val, body: val };
+                saveToLocal();
+            });
+
+            pIndividual.addEventListener('input', (e) => {
+                if (lastFocusedEl) {
+                    const val = e.target.value;
+                    lastFocusedEl.style.color = val;
+                    
+                    // Salva a cor individual no objeto data
+                    if (!data.individualColors) data.individualColors = {};
+                    const path = lastFocusedEl.dataset.path;
+                    if (path) {
+                        data.individualColors[path] = val;
+                        saveToLocal();
+                    }
+                }
+            });
+
+            // 11. Finalizar e Enviar (Captura o estado atual da tela)
+            btnFinalize.addEventListener('click', () => {
+                // Codifica o objeto DATA completo para a URL
+                const jsonStr = JSON.stringify(data);
+                const bytes = new TextEncoder().encode(jsonStr);
+                const encodedState = btoa(String.fromCharCode(...bytes));
+                
+                // Gera o link apenas com o estado codificado, preservando parâmetros como ?v=
+                const baseUrl = window.location.href.split('#')[0];
+                const shareLink = `${baseUrl}#s=${encodedState}`;
+                
+                window.open(`https://wa.me/5581989035561?text=${encodeURIComponent(shareLink)}`, '_blank');
+            });
+
+            // 11.5 Resetar Design
+            btnReset.addEventListener('click', () => {
+                if(confirm("Deseja descartar todas as suas alterações e voltar ao design original da IA?")) {
+                    localStorage.removeItem('aiWebsiteData_v3');
+                    window.location.href = window.location.href.split('#')[0].split('?')[0];
+                }
+            });
+
+            // 12. Download do Código Fonte (Protegido por Senha)
+            btnDownload.addEventListener('click', async () => {
+                const password = prompt("Digite a senha de desenvolvedor para baixar o código fonte:");
+                
+                if (!password) return;
+
+                // Função para gerar Hash SHA-256
+                const getHash = async (str) => {
+                    const msgBuffer = new TextEncoder().encode(str);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                };
+
+                const inputHash = await getHash(password);
+                // Verificação via Hash SHA-256 da senha Mg156810$
+                if (inputHash === "e1a7808c06bc66de3cb20a222f610349429d5e91e3c3e00112d4751ab4565cf6") {
+                    // Clona o documento para limpar elementos do Studio antes de baixar
+                    const exportDoc = document.documentElement.cloneNode(true);
+                    
+                    // Remove a barra de ferramentas e o badge de IA do arquivo exportado
+                    const toolbar = exportDoc.querySelector('.studio-toolbar');
+                    const badge = exportDoc.querySelector('.ai-badge');
+                    const scripts = exportDoc.querySelectorAll('script');
+                    
+                    if (toolbar) toolbar.remove();
+                    if (badge) badge.remove();
+                    
+                    // Injeta os dados atuais diretamente no arquivo baixado
+                    const dataScript = exportDoc.createElement('script');
+                    dataScript.textContent = `window.bakedData = ${JSON.stringify(data)};`;
+                    exportDoc.head.prepend(dataScript);
+                    
+                    // Gera o Blob do HTML limpo
+                    const htmlContent = "<!DOCTYPE html>\n" + exportDoc.outerHTML;
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `projeto-${data.brandName.toLowerCase().replace(/\s+/g, '-')}.html`;
+                    a.click();
+                } else if (password !== null) {
+                    alert("Acesso negado: Senha incorreta.");
+                }
+            });
         }
     </script>
+</body>
+</html>cript>
 </body>
 </html>

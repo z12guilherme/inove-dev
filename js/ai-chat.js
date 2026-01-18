@@ -95,7 +95,7 @@ async function generateSiteStructure(userInput, apiKey) {
         "projectType": "landing",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
-        "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
+        "themeStyle": "modern | creative | corporate | minimalist | tech | elegant | romantic",
         "layout": { 
             "heroStyle": "center | split-left | split-right", 
             "cardStyle": "shadow | border | flat", 
@@ -282,7 +282,16 @@ async function generateSiteStructure(userInput, apiKey) {
                 "casamento": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80",
                 "wedding": "https://images.unsplash.com/photo-1511285560982-1351cdeb9821?auto=format&fit=crop&w=1920&q=80",
                 "noiva": "https://images.unsplash.com/photo-1595838788845-30242ad81cf8?auto=format&fit=crop&w=1920&q=80",
-                "festa": "https://images.unsplash.com/photo-1519225421980-715cb0202128?auto=format&fit=crop&w=1920&q=80"
+                "festa": "https://images.unsplash.com/photo-1519225421980-715cb0202128?auto=format&fit=crop&w=1920&q=80",
+                "cerimonia": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1920&q=80",
+                "alianças": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1920&q=80",
+                "recepção": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1920&q=80",
+                "fotografia": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=1920&q=80",
+                "camera": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1920&q=80",
+                "estudio": "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1920&q=80",
+                "joias": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1920&q=80",
+                "luxo": "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1920&q=80",
+                "moda": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1920&q=80"
             };
 
             // --- FIX: Sistema Robusto de Imagens (Pollinations AI) ---

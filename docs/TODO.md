@@ -31,6 +31,8 @@
 - [x] Criar Template: Médico/Saúde (Portfólio Profissional)
 - [x] Criar Template: Restaurante/Gastronomia
 - [x] Criar Template: E-commerce Simples
+- [x] Criar Template: E-commerce Premium / Luxo (Inove AI Studio)
+- [x] Criar Template: Site de Casamento / Eventos (Inove AI Studio)
 - [ ] Integrar analytics (Google Analytics)
 
 ## Dependências e Setup
