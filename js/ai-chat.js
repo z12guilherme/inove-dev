@@ -1,6 +1,3 @@
-// Importa a chave do arquivo de configuração (que está ignorado pelo Git)
-import { API_KEY } from './config.js';
-
 const chatWindow = document.getElementById('aiChatWindow');
 const input = document.getElementById('aiInput');
 const sendBtn = document.getElementById('aiSendBtn');
@@ -35,155 +32,30 @@ async function handleUserResponse() {
     input.disabled = true;
     sendBtn.disabled = true;
 
-    // --- LÓGICA DE SEGURANÇA: Gerenciamento de Chave Dinâmica ---
-    // 1. Tenta usar a chave do arquivo config.js OU a salva no navegador
-    let effectiveKey = API_KEY;
-    if (!effectiveKey || effectiveKey === '') {
-        effectiveKey = localStorage.getItem('inove_user_api_key');
-    }
-
-    // 2. Se o usuário enviou algo que parece uma chave, salvamos
-    if (!effectiveKey && text.trim().startsWith('pplx-')) {
-        localStorage.setItem('inove_user_api_key', text.trim());
-        addMessage("✅ Chave de API salva com sucesso! Vamos começar.", 'bot');
-        addMessage("Qual é o nome do seu negócio e o que você faz?", 'bot');
-        input.disabled = false;
-        sendBtn.disabled = false;
-        return;
-    }
-
-    // 3. Se ainda não temos chave, pedimos ao usuário
-    // ALTERAÇÃO: Não bloqueamos mais se não tiver chave. 
-    // Se não tiver chave, tentaremos usar o Proxy do Netlify.
-    // if (!effectiveKey) { ... } -> Removido o bloqueio
-    
-    // -----------------------------------------------------------
-
     if (step === 0) {
-        userData.name = text; // Na verdade pegamos tudo junto no primeiro prompt para simplificar
+        userData.name = text;
         userData.details = text;
-        
+
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
-        
+
         try {
-            // Passamos a chave efetiva para a função de geração
-            await generateSiteStructure(userData.details, effectiveKey);
+            await generateSiteStructure(userData.details);
         } catch (error) {
             console.error(error);
-            addMessage("Ops! Tive um problema ao conectar com a IA. Verifique a API Key no código.", 'bot');
+            addMessage("Ops! Tive um problema ao processar sua solicitação. Tente novamente.", 'bot');
             input.disabled = false;
             sendBtn.disabled = false;
         }
     }
 }
 
-async function generateSiteStructure(userInput, apiKey) {
-    const systemPrompt = `
-    Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
-    Sua missão é criar o JSON estruturado para um projeto web moderno e responsivo.
-    
-    OBJETIVO VISUAL:
-    O design DEVE ser de altíssima qualidade, visualmente impactante e comparável aos melhores templates Premium do BootstrapMade (ex: 'Arsha', 'HeroBiz', 'Gp', 'OnePage', 'Day').
-    Não se limite ao básico. Use sombras suaves (box-shadow), gradientes modernos, bordas arredondadas e tipografia elegante através do campo 'customCss'.
-    
-    PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
-    1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
-    2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
-    
-    ESTRUTURA JSON PARA "landing":
-    {
-        "projectType": "landing",
-        "brandName": "Nome da Empresa",
-        "niche": "Nicho de mercado",
-        "themeStyle": "modern | creative | corporate | minimalist | tech | elegant | romantic",
-        "layout": { 
-            "heroStyle": "center | split-left | split-right", 
-            "cardStyle": "shadow | border | flat", 
-            "borderRadius": "rounded | rounded-pill | sharp" 
-        },
-        "colors": {
-            "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
-            "background": "#HEX (Fundo da página)", "text": "#HEX (Cor do texto - ALTO CONTRASTE)", "card_bg": "#HEX (Fundo dos cards)"
-        },
-        "sectionTitles": {
-            "services": "Título da Seção (ex: 'Cerimônia', 'Nossos Serviços')", 
-            "services_subtitle": "Subtítulo (ex: 'Detalhes do evento')",
-            "portfolio": "Título (ex: 'Galeria de Fotos', 'Portfólio')", 
-            "portfolio_subtitle": "Subtítulo",
-            "features": "Título (ex: 'Lista de Presentes', 'Diferenciais')",
-            "testimonials": "Título (ex: 'Mensagens dos Padrinhos', 'Depoimentos')",
-            "contact": "Título (ex: 'RSVP', 'Contato')", "contact_subtitle": "Subtítulo"
-        },
-        "fonts": {
-            "heading": "FontName (Google Fonts)", "body": "FontName (Google Fonts)"
-        },
-        "hero": { "title": "Headline", "subtitle": "Subhead", "cta": "Button Text" },
-        "about": { "title": "Sobre", "text": "Texto", "stats": [{"number": "10", "label": "Anos"}] },
-        "services": [{"title": "Serviço", "desc": "Desc", "icon": "bi-star"}],
-        "features": [{"title": "Feature", "desc": "Desc", "icon": "bi-check-circle"}],
-        "portfolio": [{"title": "Proj", "category": "Cat", "desc": "Desc"}],
-        "testimonials": [{"name": "Cliente", "role": "Cargo", "text": "Depoimento"}],
-        "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
-        "customCss": "CSS COMPLETO. IMPORTANTE: Se usar imagem de fundo no Hero, adicione 'text-shadow: 0 2px 10px rgba(0,0,0,0.8)' nos títulos para garantir leitura. Estilize botões com gradientes.",
-        "images": {
-            "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
-        }
-    }
-
-    ESTRUTURA JSON PARA "system":
-    {
-        "projectType": "system",
-        "brandName": "Nome do Sistema",
-        "themeColor": "#HEX (Cor Principal)",
-        "sidebarItems": [
-            {"label": "Dashboard", "icon": "bi-grid"},
-            {"label": "Menu 2", "icon": "bi-box"}
-        ],
-        "stats": [
-            {"label": "KPI 1", "value": "100", "icon": "bi-graph-up", "trend": "+10%", "color": "primary"},
-            {"label": "KPI 2", "value": "50", "icon": "bi-people", "trend": "-5%", "color": "danger"},
-            {"label": "KPI 3", "value": "R$ 1k", "icon": "bi-wallet", "trend": "+2%", "color": "success"},
-            {"label": "KPI 4", "value": "10", "icon": "bi-bell", "trend": "0%", "color": "warning"}
-        ],
-        "charts": {
-            "line": { "title": "Gráfico de Linha (ex: Vendas)", "labels": ["Jan", "Fev", "Mar", "Abr"], "data": [10, 20, 15, 30] },
-            "doughnut": { "title": "Gráfico de Rosca (ex: Categorias)", "labels": ["A", "B", "C"], "data": [30, 50, 20] }
-        },
-        "table": {
-            "title": "Listagem Principal",
-            "columns": ["ID", "Coluna 2", "Coluna 3", "Status"],
-            "rows": [
-                {"col1": "#001", "col2": "Dado A", "col3": "Dado B", "col4": "Ativo"},
-                {"col1": "#002", "col2": "Dado C", "col3": "Dado D", "col4": "Pendente"}
-            ]
-        }
-    }
-
-    REGRAS ESTRITAS:
-    1. Retorne APENAS o JSON cru.
-    2. Use aspas duplas.
-    3. NÃO use vírgulas no final de listas.
-    4. Escape aspas internas.
-    5. IMAGENS: Retorne descrições visuais do CONTEÚDO em INGLÊS (ex: "modern office workspace", "plate of pasta"). NÃO envie URLs.
-    6. CORES E CONTRASTE (CRÍTICO - LEIA COM ATENÇÃO): 
-       - A LEGIBILIDADE É A PRIORIDADE NÚMERO 1.
-       - Se 'background' for escuro (ex: #000, #1a1a1a, #0f172a), 'text' DEVE SER EXATAMENTE #FFFFFF.
-       - Se 'background' for claro (ex: #fff, #f8f9fa), 'text' DEVE SER EXATAMENTE #212529.
-       - NUNCA use cinza médio para texto principal.
-    7. FONTS: Use nomes reais do Google Fonts (ex: 'Poppins', 'Montserrat', 'Open Sans', 'Playfair Display', 'Roboto').
-    `;
-
-    // Verificação de segurança redundante
-    // REMOVIDO: Permitimos apiKey vazia para tentar o Proxy do Netlify
-    // if (!apiKey) { throw new Error("Chave de API não fornecida."); }
-
-    // Simulação de Progresso para UX
+async function generateSiteStructure(userInput) {
     const progressSteps = [
         "🔍 Analisando seu nicho de mercado...",
-        "🎨 Definindo paleta de cores e tipografia...",
-        "📐 Estruturando o layout da interface...",
-        "✍️ Criando copy persuasiva e conteúdo...",
-        "🚀 Finalizando protótipo e gerando código..."
+        "🧠 Identificando padrões com Machine Learning...",
+        "🌐 Buscando referências em StartBootstrap e BootstrapMade...",
+        "🎨 Adaptando paleta de cores e tipografia...",
+        "🚀 Gerando código exclusivo..."
     ];
     let stepIndex = 0;
     const progressInterval = setInterval(() => {
@@ -194,237 +66,39 @@ async function generateSiteStructure(userInput, apiKey) {
     }, 2500);
 
     try {
-        // LÓGICA HÍBRIDA: Direto ou Proxy
-        let apiUrl = 'https://api.perplexity.ai/chat/completions';
-        let headers = {
-            'Content-Type': 'application/json'
-        };
-
-        if (apiKey) {
-            // Se tem chave do usuário, vai direto
-            headers['Authorization'] = `Bearer ${apiKey}`;
-        } else {
-            // Se não tem chave, usa a função do Netlify (Proxy)
-            apiUrl = '/.netlify/functions/chat';
-        }
-
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                model: "sonar-pro", 
-                messages: [
-                    { role: "system", content: systemPrompt },
-                    { role: "user", content: userInput + "\n\n(Gere o JSON completo agora. Se a descrição for pouca, invente dados profissionais.)" }
-                ]
-            })
-        });
-
-        clearInterval(progressInterval); // Para a animação
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(`Erro API (${response.status}): ${errorData.error?.message || response.statusText}`);
-        }
-
-        const data = await response.json();
-        let text = data.choices[0].message.content;
+        // Simula um tempo de "pensamento" para UX (já que o JS local é instantâneo)
+        await new Promise(resolve => setTimeout(resolve, 2000));
         
-        console.log("🤖 Resposta Bruta da IA:", text); // Log para debug: Veja no Console (F12) o que a IA retornou
-
-        // Limpeza extra para garantir JSON válido
-        text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
-        const start = text.indexOf('{');
-        const end = text.lastIndexOf('}');
+        updateLastMessage(`🧠 Construindo arquitetura do projeto... <span class='typing-indicator'></span>`);
         
-        if (start === -1 || end === -1) {
-            throw new Error(`A resposta da IA não contém um JSON válido. Recebido: ${text.substring(0, 50)}...`);
-        }
-        
-        text = text.substring(start, end + 1);
-        
-        let siteData;
-        try {
-            // Correção automática para JSON mal formatado (vírgulas extras)
-            text = text.replace(/,(\s*[}\]])/g, '$1');
-            siteData = JSON.parse(text);
+        // --- IA LOCAL (JAVASCRIPT PURO) ---
+        // Processa o texto localmente sem depender de API externa
+        const siteData = LocalAI.process(userInput);
 
-            // Fallback de cores para garantir contraste se a IA falhar
-            if (!siteData.colors) {
-                siteData.colors = {
-                    "primary": "#0d6efd", "secondary": "#6c757d", "accent": "#0dcaf0", 
-                    "background": "#ffffff", "text": "#212529", "card_bg": "#f8f9fa"
-                };
-            }
+        clearInterval(progressInterval);
+        const timestamp = new Date().getTime();
 
-            // --- BANCO DE IMAGENS PREMIUM (TEMPLATES REAIS) ---
-            // Garante fotos de alta qualidade para nichos comuns, evitando "robôs" ou falhas da IA
-            const TEMPLATE_IMAGES = {
-                "advocacia": "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1920&q=80",
-                "direito": "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=1920&q=80",
-                "medico": "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1920&q=80",
-                "saude": "https://images.unsplash.com/photo-1505751172876-fa1923c5c528?auto=format&fit=crop&w=1920&q=80",
-                "clinica": "https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=1920&q=80",
-                "tech": "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1920&q=80",
-                "tecnologia": "https://images.unsplash.com/photo-1451187580459-43490279c0fa?auto=format&fit=crop&w=1920&q=80",
-                "marketing": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80",
-                "fitness": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80",
-                "academia": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80",
-                "restaurante": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80",
-                "comida": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80",
-                "cafe": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1920&q=80",
-                "ecommerce": "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=1920&q=80",
-                "loja": "https://images.unsplash.com/photo-1441986300917-64674bd600d8?auto=format&fit=crop&w=1920&q=80",
-                "arquitetura": "https://images.unsplash.com/photo-1487958449943-2429e8be8625?auto=format&fit=crop&w=1920&q=80",
-                "construcao": "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1920&q=80",
-                "educacao": "https://images.unsplash.com/photo-1523050854058-8df90110c9f1?auto=format&fit=crop&w=1920&q=80",
-                "escola": "https://images.unsplash.com/photo-1503676260728-1c00da094a0b?auto=format&fit=crop&w=1920&q=80",
-                "casamento": "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1920&q=80",
-                "wedding": "https://images.unsplash.com/photo-1511285560982-1351cdeb9821?auto=format&fit=crop&w=1920&q=80",
-                "noiva": "https://images.unsplash.com/photo-1595838788845-30242ad81cf8?auto=format&fit=crop&w=1920&q=80",
-                "festa": "https://images.unsplash.com/photo-1519225421980-715cb0202128?auto=format&fit=crop&w=1920&q=80",
-                "cerimonia": "https://images.unsplash.com/photo-1511795409834-ef04bbd61622?auto=format&fit=crop&w=1920&q=80",
-                "alianças": "https://images.unsplash.com/photo-1515934751635-c81c6bc9a2d8?auto=format&fit=crop&w=1920&q=80",
-                "recepção": "https://images.unsplash.com/photo-1519167758481-83f550bb49b3?auto=format&fit=crop&w=1920&q=80",
-                "fotografia": "https://images.unsplash.com/photo-1452587925148-ce544e77e70d?auto=format&fit=crop&w=1920&q=80",
-                "camera": "https://images.unsplash.com/photo-1516035069371-29a1b244cc32?auto=format&fit=crop&w=1920&q=80",
-                "estudio": "https://images.unsplash.com/photo-1520390138845-fd2d229dd553?auto=format&fit=crop&w=1920&q=80",
-                "joias": "https://images.unsplash.com/photo-1515562141207-7a88fb7ce338?auto=format&fit=crop&w=1920&q=80",
-                "luxo": "https://images.unsplash.com/photo-1513828583688-c52646db42da?auto=format&fit=crop&w=1920&q=80",
-                "moda": "https://images.unsplash.com/photo-1490481651871-ab68de25d43d?auto=format&fit=crop&w=1920&q=80"
-            };
+        localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
 
-            // --- FIX: Sistema Robusto de Imagens (Pollinations AI) ---
-            const fixImage = (description, type = 'landscape') => {
-                let prompt = description;
-                const nicheKey = (siteData.niche || "").toLowerCase();
-                
-                // 1. Validação e Fallback
-                if (!prompt || typeof prompt !== 'string' || prompt.length < 3) {
-                    prompt = `${siteData.niche || "business"} ${siteData.themeStyle || "modern"}`;
-                }
-                
-                // 2. Detecção Agressiva de URLs (Se a IA mandar link, ignoramos e usamos o nicho)
-                // Regex ajustado para evitar falsos positivos, mas pegar links reais
-                if (prompt.match(/(https?:\/\/|www\.|unsplash\.com|source\.unsplash|\.com|\.net|\.org)/i)) {
-                    prompt = `${siteData.niche || "modern business"} ${siteData.themeStyle || "professional"}`;
-                }
-                
-                // 3. Limpeza Inteligente
-                // Remove caracteres de código mas mantém acentos e pontuação básica
-                let cleanPrompt = prompt.replace(/[<>{}[\]\\\/]/g, '').trim();
-                
-                // 4. VERIFICAÇÃO DE TEMPLATE (Prioridade Máxima)
-                // Se o nicho do usuário bater com nosso banco de imagens, usamos a foto real (Unsplash)
-                // Isso evita o "robô" ou imagens estranhas da IA em nichos comuns.
-                for (const [key, url] of Object.entries(TEMPLATE_IMAGES)) {
-                    if (nicheKey.includes(key) || cleanPrompt.toLowerCase().includes(key)) {
-                        // Retorna a imagem de template se for compatível
-                        // Adiciona um parametro aleatório para evitar cache se usar a mesma imagem várias vezes
-                        return url + "&random=" + Math.floor(Math.random() * 1000);
-                    }
-                }
-
-                // 5. Engenharia de Prompt para Qualidade (Injeta realismo se não tiver template)
-                // Adiciona modificadores para garantir qualidade fotográfica
-                const enhancedPrompt = `${cleanPrompt}, realistic, 8k, cinematic lighting, high quality, professional photo`;
-                const encodedPrompt = encodeURIComponent(enhancedPrompt);
-                
-                const width = type === 'portrait' ? 600 : 1280;
-                const height = type === 'portrait' ? 800 : 720;
-                const seed = Math.floor(Math.random() * 10000);
-                
-                // Usa o modelo 'flux' para maior realismo e 'nologo' para limpar a imagem
-                return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true&model=flux&seed=${seed}`;
-            };
-
-            // Garantir que todas as imagens essenciais existam
-            if (!siteData.images) siteData.images = {};
-            
-            // 1. Processar TODAS as imagens que vieram no JSON (não apenas as required)
-            Object.keys(siteData.images).forEach(key => {
-                siteData.images[key] = fixImage(siteData.images[key]);
-            });
-
-            // 2. Garantir que as obrigatórias existam
-            const requiredImages = ['hero', 'about', 'feature', 'portfolio'];
-            requiredImages.forEach(key => {
-                if (!siteData.images[key]) {
-                    siteData.images[key] = fixImage((siteData.niche || "business") + " " + key);
-                }
-            });
-
-        } catch (e) {
-            console.warn("JSON inválido detectado. Tentando corrigir...", e);
-            try {
-                // 1. Remove vírgulas finais (trailing commas)
-                let fixedText = text.replace(/,(\s*[}\]])/g, '$1');
-                // 2. Tenta corrigir chaves sem aspas (ex: key: "value" -> "key": "value")
-                fixedText = fixedText.replace(/([{,]\s*)([a-zA-Z0-9_]+)(\s*:)/g, '$1"$2"$3');
-                
-                siteData = JSON.parse(fixedText);
-            } catch (e2) {
-                console.error("Falha na correção automática do JSON:", e2);
-                throw e; // Lança o erro original para o catch principal tratar
-            }
-        }
-        
-        const timestamp = new Date().getTime(); // Cria um código único para evitar cache
-        
-        if (siteData.projectType === 'system') {
-            // Lógica para SISTEMAS
-            localStorage.setItem('aiSystemData', JSON.stringify(siteData));
-            addMessage(`
-                <strong>Sistema Gerado!</strong> 🖥️<br>
-                Configurei o painel administrativo para <strong>${siteData.brandName}</strong>.<br>
-                <div class="text-center mt-3">
-                    <a href="generated-system.html?v=${timestamp}" target="_blank" class="btn btn-primary btn-sm">
-                        <i class="bi bi-speedometer2"></i> Acessar Sistema
-                    </a>
-                </div>
-            `, 'bot');
-        } else {
-            // Lógica para LANDING PAGES (Padrão)
-            localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
-            addMessage(`
-                <strong>Site Gerado!</strong> 🚀<br>
-                Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
-                <ul>
-                    <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
-                    <li>Foco: ${siteData.niche}</li>
-                </ul>
-                <div class="alert alert-info p-2 mt-2" style="font-size: 0.85em; border-left: 4px solid #00C7B7;">
-                    <strong>✨ Você é o Designer:</strong> No protótipo, você pode <strong>clicar em qualquer texto para editar</strong> e usar a barra superior para mudar cores e fontes. Quando terminar, me envie o link e eu receberei exatamente o que você criou!
-                </div>
-                <div class="text-center mt-3">
-                    <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
-                        <i class="bi bi-magic"></i> Ver Site Gerado
-                    </a>
-                </div>
-            `, 'bot');
-        }
+        addMessage(`
+            <strong>Site Gerado!</strong> 🚀<br>
+            Projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
+            <ul>
+                <li>Paleta: <span style="color:${siteData.colors?.primary || '#0d6efd'}">■</span> ${siteData.colors?.primary || '#0d6efd'} e <span style="color:${siteData.colors?.secondary || '#6c757d'}">■</span> ${siteData.colors?.secondary || '#6c757d'}</li>
+                <li>Foco: ${siteData.niche || 'genérico'}</li>
+                <li>Motor: Inove Native AI v1.0</li>
+            </ul>
+            <div class="text-center mt-3">
+                <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
+                    <i class="bi bi-magic"></i> Ver Site Gerado
+                </a>
+            </div>
+        `, 'bot');
 
     } catch (e) {
         clearInterval(progressInterval);
         console.error("Erro detalhado:", e);
-        let errorMsg = "Desculpe, não consegui gerar o site agora.";
-        
-        // Diagnóstico de erro para o usuário
-        if (e.toString().includes('403') || e.toString().includes('API key')) {
-            errorMsg = "Erro de Autenticação: Verifique se a API Key é válida e está habilitada no Google Cloud.";
-        } else if (e.toString().includes('429')) {
-            errorMsg = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
-        } else if (e.toString().includes('404')) {
-            errorMsg = "Erro 404: Não consegui acessar a Função do Netlify. Se estiver rodando localmente, use 'netlify dev' ou insira a chave no chat.";
-        } else if (e.toString().includes('502')) {
-            errorMsg = "Erro 502 (Bad Gateway): A função do servidor falhou ou excedeu o tempo limite (10s). Tente novamente.";
-        } else if (e.toString().includes('504')) {
-            errorMsg = "Erro 504 (Timeout): A IA demorou mais de 10s e o servidor encerrou. Dica: Cole sua chave 'pplx-' no chat para conectar direto (sem limite de tempo).";
-        } else if (e.toString().includes('405')) {
-            errorMsg = "Erro 405: Você está rodando no Live Server (local). As funções de servidor não funcionam aqui. Para testar, cole sua chave 'pplx-' diretamente no chat.";
-        }
-
-        addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
+        addMessage(`❌ ${e.message || "Erro ao gerar o site"} Tente novamente.`, 'bot');
         input.disabled = false;
         sendBtn.disabled = false;
     }
@@ -433,13 +107,12 @@ async function generateSiteStructure(userInput, apiKey) {
 sendBtn.addEventListener('click', handleUserResponse);
 input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleUserResponse() });
 
-// Botão Limpar
-if(clearBtn) {
+if (clearBtn) {
     clearBtn.addEventListener('click', () => {
         chatWindow.innerHTML = `
             <div class="ai-message bot">
                 Olá! Sou a IA da Inove. Posso criar um site completo para você agora mesmo.<br>
-                <strong>Qual é o nome do seu negócio e o que você faz?</strong>
+                <strong>Qual é o nome do seu negócio e o que você faz?</strong><br>
             </div>
         `;
         input.disabled = false;
@@ -449,13 +122,351 @@ if(clearBtn) {
     });
 }
 
-// Lógica para os botões de sugestão
 document.querySelectorAll('.suggestion-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const prompt = btn.getAttribute('data-prompt');
         input.value = prompt;
         input.focus();
-        // Opcional: Clicar automaticamente no enviar se desejar
-        // handleUserResponse();
     });
 });
+
+// --- CÉREBRO DA IA LOCAL (SEM API) ---
+const LocalAI = {
+    // Dicionário de Cores para Extração (NLP Simples)
+    colorMap: {
+        'azul': '#0d6efd', 'blue': '#0d6efd', 'marinho': '#001f3f',
+        'vermelho': '#dc3545', 'red': '#dc3545', 'vinho': '#800020',
+        'verde': '#198754', 'green': '#198754', 'limao': '#32cd32',
+        'preto': '#212529', 'black': '#000000', 'escuro': '#1a1a1a',
+        'branco': '#ffffff', 'white': '#ffffff', 'claro': '#f8f9fa',
+        'amarelo': '#ffc107', 'yellow': '#ffc107', 'ouro': '#ffd700',
+        'roxo': '#6f42c1', 'purple': '#6f42c1', 'lilas': '#e6e6fa',
+        'rosa': '#d63384', 'pink': '#d63384', 'magenta': '#ff00ff',
+        'laranja': '#fd7e14', 'orange': '#fd7e14',
+        'cinza': '#6c757d', 'gray': '#6c757d', 'prata': '#c0c0c0',
+        'marrom': '#795548', 'brown': '#795548', 'bege': '#f5f5dc'
+    },
+
+    // Biblioteca de Templates (Baseada em StartBootstrap, BootstrapMade, TemplateMonster)
+    templates: [
+        { id: 'medilab', name: 'Medilab (BootstrapMade)', fontHead: 'Raleway', fontBody: 'Open Sans', hero: 'split-right', css: '.service-box { border-radius: 20px; border: 1px solid #eef0f2; box-shadow: none; } .service-box:hover { background: var(--primary); color: #fff; } .service-box:hover h4, .service-box:hover p { color: #fff !important; } .service-box:hover .service-icon { background: #fff; color: var(--primary); }' },
+        { id: 'restaurantly', name: 'Restaurantly (BootstrapMade)', fontHead: 'Playfair Display', fontBody: 'Poppins', hero: 'center', css: 'body { background-color: #0c0b09; color: #fff; } .navbar { background: rgba(12, 11, 9, 0.9) !important; border-bottom: 1px solid #37332a; } .section-title h2::after { background: #cda45e; } .btn-custom { border: 2px solid #cda45e; color: #fff; border-radius: 50px; } .btn-custom:hover { background: #cda45e; }' },
+        { id: 'arsha', name: 'Arsha Tech (BootstrapMade)', fontHead: 'Jost', fontBody: 'Open Sans', hero: 'split-left', css: '.hero-img { animation: up-down 2s ease-in-out infinite alternate-reverse both; } @keyframes up-down{0%{transform:translateY(10px)}100%{transform:translateY(-10px)}} .btn-custom { border-radius: 50px; }' },
+        { id: 'agency', name: 'Agency (StartBootstrap)', fontHead: 'Montserrat', fontBody: 'Roboto Slab', hero: 'center', css: '.navbar { background: #212529 !important; } .btn-custom { border-radius: 4px; text-transform: uppercase; font-weight: 700; background-color: var(--primary); border: none; } .section-title h2 { text-transform: uppercase; }' },
+        { id: 'wedding-love', name: 'Wedding Love (TemplateMonster)', fontHead: 'Great Vibes', fontBody: 'Lato', hero: 'center', css: '.navbar { background: rgba(255,255,255,0.95) !important; } .section-title h2 { font-family: "Great Vibes", cursive; font-size: 3.5rem; text-transform: none; color: var(--primary); } .section-title h2::after { display: none; } .btn-custom { border-radius: 0; letter-spacing: 2px; }' },
+        { id: 'construction-pro', name: 'UpConstruction (BootstrapMade)', fontHead: 'Roboto Condensed', fontBody: 'Roboto', hero: 'split-right', css: '.service-box { background: #f5f6f7; } .card { border: none; } .btn-custom { border-radius: 2px; font-weight: bold; }' },
+        { id: 'fitness-gp', name: 'Gp Fitness (BootstrapMade)', fontHead: 'Exo 2', fontBody: 'Open Sans', hero: 'center', css: '.navbar { background: #000 !important; } .section-title h2 { font-style: italic; text-transform: uppercase; } .service-box { border: 1px solid #333; background: #111; }' },
+        { id: 'law-biz', name: 'BizPage Law (StartBootstrap)', fontHead: 'Cinzel', fontBody: 'Merriweather', hero: 'split-left', css: '.section-title h2::before { width: 60px; height: 3px; background: var(--primary); } .btn-custom { border-radius: 0; border: 1px solid #fff; }' },
+        { id: 'real-estate', name: 'EstateAgency (BootstrapMade)', fontHead: 'Poppins', fontBody: 'Nunito', hero: 'split-right', css: '.navbar-brand { color: var(--primary) !important; } .service-box { border: 1px solid #eee; transition: 0.4s; } .service-box:hover { border-color: var(--primary); }' },
+        { id: 'pet-lover', name: 'PetLover (Colorlib)', fontHead: 'Fredoka One', fontBody: 'Varela Round', hero: 'split-left', css: '.btn-custom { border-radius: 20px; border-width: 3px; } .service-icon { border-radius: 50%; background: var(--secondary); color: #fff; }' },
+        { id: 'modern-clean', name: 'Modern Clean (Generic)', fontHead: 'Montserrat', fontBody: 'Open Sans', hero: 'center', css: '.btn-custom { border-radius: 50px; letter-spacing: 1px; } .card { border: none; box-shadow: 0 10px 30px rgba(0,0,0,0.05); }' }
+    ],
+
+    // Dicionário de Nichos e Palavras-chave
+    niches: {
+        saude: {
+            keywords: ['medico', 'médico', 'doutor', 'clinica', 'clínica', 'saude', 'saúde', 'hospital', 'dentista', 'psicologo', 'terapia', 'nutricionista'],
+            colors: { primary: '#00b4d8', secondary: '#caf0f8', accent: '#0077b6', background: '#f0f8ff', card_bg: '#ffffff', text: '#2b2d42' },
+            hero: { title: "Cuidando do seu bem-estar com excelência", subtitle: "Profissionais dedicados à sua saúde e qualidade de vida.", cta: "Agendar Consulta" },
+            features: ["Agendamento Online", "Telemedicina", "Especialistas Qualificados"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1579684385127-1ef15d508118?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['medilab', 'agency']
+        },
+        gastronomia: {
+            keywords: ['restaurante', 'comida', 'lanche', 'pizza', 'hamburguer', 'sushi', 'cafe', 'café', 'bar', 'delivery', 'fome', 'gastronomia'],
+            colors: { primary: '#d90429', secondary: '#edf2f4', accent: '#ef233c', background: '#1a1a1a', card_bg: '#2b2b2b', text: '#ffffff' },
+            hero: { title: "Sabor inesquecível em cada prato", subtitle: "Ingredientes frescos e receitas tradicionais para você.", cta: "Ver Cardápio" },
+            features: ["Cardápio Digital", "Delivery Rápido", "Reservas de Mesa"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1559339352-11d035aa65de?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1414235077428-338989a2e8c0?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['restaurantly', 'agency']
+        },
+        tecnologia: {
+            keywords: ['tech', 'tecnologia', 'software', 'app', 'sistema', 'dev', 'computador', 'informatica', 'startup', 'digital', 'web'],
+            colors: { primary: '#4361ee', secondary: '#3f37c9', accent: '#4895ef', background: '#f8f9fa', card_bg: '#ffffff', text: '#212529' },
+            hero: { title: "Inovação tecnológica para o futuro", subtitle: "Soluções digitais que transformam o seu negócio.", cta: "Fale com Especialista" },
+            features: ["Suporte 24/7", "Alta Performance", "Segurança de Dados"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1553877615-30c73094c6af?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['arsha', 'agency']
+        },
+        direito: {
+            keywords: ['advogado', 'direito', 'lei', 'juridico', 'jurídico', 'escritorio', 'consultoria', 'legal'],
+            colors: { primary: '#1d3557', secondary: '#457b9d', accent: '#a8dadc', background: '#f1faee', card_bg: '#ffffff', text: '#1d3557' },
+            hero: { title: "Defendendo seus direitos com integridade", subtitle: "Assessoria jurídica especializada e comprometida.", cta: "Agendar Reunião" },
+            features: ["Consultoria Especializada", "Atendimento Personalizado", "Sigilo Absoluto"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1589829085413-56de8ae18c73?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1505664194779-8beaceb93744?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1450101499163-c8848c66ca85?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['law-biz', 'agency']
+        },
+        beleza: {
+            keywords: ['beleza', 'estetica', 'estética', 'salao', 'salão', 'cabelo', 'unha', 'maquiagem', 'spa', 'cosmetico'],
+            colors: { primary: '#ffb5a7', secondary: '#fcd5ce', accent: '#f08080', background: '#fff0f3', card_bg: '#ffffff', text: '#5e503f' },
+            hero: { title: "Realce sua beleza natural", subtitle: "Tratamentos exclusivos para você se sentir incrível.", cta: "Agendar Horário" },
+            features: ["Profissionais Experientes", "Ambiente Relaxante", "Produtos Premium"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1560750588-73207b1ef5b8?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1616394584738-fc6e612e71b9?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1522337660859-02fbefca4702?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['modern-clean', 'wedding-love']
+        },
+        construcao: {
+            keywords: ['obra', 'construcao', 'construção', 'reforma', 'engenheiro', 'arquiteto', 'casa', 'predio', 'imovel'],
+            colors: { primary: '#e76f51', secondary: '#2a9d8f', accent: '#f4a261', background: '#f4f4f9', card_bg: '#ffffff', text: '#264653' },
+            hero: { title: "Construindo sonhos, entregando realidade", subtitle: "Projetos de engenharia e arquitetura de alto padrão.", cta: "Solicitar Orçamento" },
+            features: ["Projetos Personalizados", "Gestão de Obras", "Materiais de Qualidade"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1503387762-592deb58ef4e?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1541888946425-d81bb19240f5?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1581094794329-cd1096a7a2e8?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['construction-pro', 'agency']
+        },
+        petshop: {
+            keywords: ['pet', 'cachorro', 'gato', 'veterinario', 'veterinário', 'banho', 'tosa', 'animal', 'ração'],
+            colors: { primary: '#fb8500', secondary: '#ffb703', accent: '#219ebc', background: '#fffcf2', card_bg: '#ffffff', text: '#023047' },
+            hero: { title: "Amor e cuidado para o seu melhor amigo", subtitle: "Serviços completos de estética e saúde animal.", cta: "Agendar Banho" },
+            features: ["Banho e Tosa", "Consultas Veterinárias", "Táxi Dog"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1450778869180-41d0601e046e?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1514888286974-6c03e2ca1dba?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1576201836106-db1758fd1c97?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['pet-lover', 'modern-clean']
+        },
+        academia: {
+            keywords: ['academia', 'fitness', 'treino', 'musculação', 'crossfit', 'personal', 'saudavel', 'esporte'],
+            colors: { primary: '#d00000', secondary: '#370617', accent: '#ffba08', background: '#03071e', card_bg: '#1a1a1a', text: '#ffffff' },
+            hero: { title: "Supere seus limites todos os dias", subtitle: "Estrutura completa para você alcançar seus objetivos.", cta: "Começar Agora" },
+            features: ["Equipamentos Modernos", "Aulas Coletivas", "Personal Trainer"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1571019614242-c5c5dee9f50b?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['fitness-gp', 'arsha']
+        },
+        imobiliaria: {
+            keywords: ['imobiliaria', 'imobiliária', 'imovel', 'imóvel', 'apartamento', 'casa', 'aluguel', 'venda', 'corretor'],
+            colors: { primary: '#2a9d8f', secondary: '#264653', accent: '#e9c46a', background: '#f1faee', card_bg: '#ffffff', text: '#264653' },
+            hero: { title: "Encontre o lar dos seus sonhos", subtitle: "As melhores oportunidades de imóveis na sua região.", cta: "Ver Imóveis" },
+            features: ["Avaliação Gratuita", "Financiamento Facilitado", "Assessoria Jurídica"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1560518883-ce09059eeffa?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1560520653-9e0e4c89eb11?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1582407947304-fd86f028f716?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['real-estate', 'agency']
+        },
+        casamento: {
+            keywords: ['casamento', 'noiva', 'noivo', 'matrimonio', 'cerimonia', 'festa', 'aliança', 'convite', 'bodas', 'casar', 'uniao', 'união'],
+            colors: { primary: '#b5838d', secondary: '#ffcdb2', accent: '#6d6875', background: '#fff0f3', card_bg: '#ffffff', text: '#6d6875' },
+            hero: { title: "Celebre o amor conosco", subtitle: "A contagem regressiva para o nosso grande dia começou.", cta: "Confirmar Presença" },
+            features: ["Lista de Presentes", "Confirmação de Presença (RSVP)", "Nossa História"],
+            images: {
+                hero: "https://images.unsplash.com/photo-1519741497674-611481863552?auto=format&fit=crop&w=1600&q=80",
+                about: "https://images.unsplash.com/photo-1511285560982-1351cdeb9821?auto=format&fit=crop&w=800&q=80",
+                feature: "https://images.unsplash.com/photo-1522673607200-1645062cd958?auto=format&fit=crop&w=800&q=80"
+            },
+            recommendedTemplates: ['wedding-love', 'modern-clean']
+        }
+    },
+
+    // Processamento Principal
+    process: function(text) {
+        const lowerText = text.toLowerCase();
+        
+        // 1. Identificar Nicho com Pontuação (Machine Learning Simplificado)
+        let detectedNiche = 'generico';
+        let maxScore = 0;
+
+        for (const [key, data] of Object.entries(this.niches)) {
+            let score = 0;
+            data.keywords.forEach(k => {
+                if (lowerText.includes(k)) score += 1; // Match simples
+                // Match exato ganha mais pontos (evita falsos positivos parciais)
+                const regex = new RegExp(`\\b${k}\\b`, 'i');
+                if (regex.test(text)) score += 2;
+            });
+            
+            if (score > maxScore) {
+                maxScore = score;
+                detectedNiche = key;
+            }
+        }
+        
+        let nicheData = this.niches[detectedNiche] || null;
+
+        // Fallback se não achar nicho
+        if (!nicheData) {
+            nicheData = {
+                colors: { primary: '#0d6efd', secondary: '#6c757d', accent: '#0dcaf0', background: '#f8f9fa', card_bg: '#ffffff', text: '#212529' },
+                hero: { title: "Soluções profissionais para seu negócio", subtitle: "Qualidade e excelência em cada detalhe.", cta: "Saiba Mais" },
+                features: ["Atendimento Premium", "Soluções Sob Medida", "Resultados Garantidos"],
+                images: {
+                    hero: "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1600&q=80",
+                    about: "https://images.unsplash.com/photo-1556761175-5973dc0f32e7?auto=format&fit=crop&w=800&q=80",
+                    feature: "https://images.unsplash.com/photo-1552664730-d307ca884978?auto=format&fit=crop&w=800&q=80"
+                }
+            };
+        }
+
+        // 1.5 Extração de Cores Personalizadas (Se o usuário pediu)
+        let customColors = null;
+        for (const [colorName, hex] of Object.entries(this.colorMap)) {
+            if (lowerText.includes(colorName)) {
+                if (!customColors) customColors = { ...nicheData.colors };
+                // Heurística: Primeira cor encontrada vira primária, segunda vira secundária
+                if (!customColors.modified) {
+                    customColors.primary = hex;
+                    customColors.modified = true;
+                } else {
+                    customColors.secondary = hex;
+                }
+            }
+        }
+        if (customColors) nicheData.colors = customColors;
+
+        // 1.6 Seleção de Template Visual (Baseado no Nicho)
+        let selectedTheme;
+        if (nicheData.recommendedTemplates && nicheData.recommendedTemplates.length > 0) {
+            // Tenta encontrar os templates recomendados na biblioteca
+            const possibleThemes = this.templates.filter(t => nicheData.recommendedTemplates.includes(t.id));
+            if (possibleThemes.length > 0) {
+                selectedTheme = possibleThemes[Math.floor(Math.random() * possibleThemes.length)];
+            }
+        }
+        
+        // Fallback se não houver recomendação ou não encontrar
+        if (!selectedTheme) {
+            selectedTheme = this.templates[Math.floor(Math.random() * this.templates.length)];
+        }
+
+        // 2. Tentar extrair nome do negócio (Heurística simples)
+        let brandName = "Sua Empresa";
+        
+        // Lógica específica para Casamento (Nome e Nome)
+        if (detectedNiche === 'casamento') {
+             const weddingPatterns = [
+                /(?:casamento|site)\s+(?:de|para|dos?)\s+([a-zA-ZÀ-ÿ]+\s+e\s+[a-zA-ZÀ-ÿ]+)/i,
+                /([a-zA-ZÀ-ÿ]+\s+e\s+[a-zA-ZÀ-ÿ]+)/i
+            ];
+            for (const pattern of weddingPatterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) {
+                    brandName = match[1].replace(/\b\w/g, l => l.toUpperCase());
+                    break;
+                }
+            }
+        }
+
+        // Procura padrões como "chama X", "chamada X", "nome é X"
+        const namePatterns = [
+            /chama\s+([A-Z][a-z0-9\s]+)/i,
+            /chamada\s+([A-Z][a-z0-9\s]+)/i,
+            /nome\s+(?:é|e)\s+([A-Z][a-z0-9\s]+)/i,
+            /empresa\s+([A-Z][a-z0-9\s]+)/i,
+            /sou\s+(?:o|a)\s+([A-Z][a-z0-9\s]+)/i
+        ];
+
+        if (brandName === "Sua Empresa") {
+            for (const pattern of namePatterns) {
+                const match = text.match(pattern);
+                if (match && match[1]) {
+                    // Pega as primeiras 3 palavras para não pegar frase inteira
+                    brandName = match[1].split(' ').slice(0, 3).join(' ').trim();
+                    break;
+                }
+            }
+        }
+
+        // Se o usuário digitou pouco texto e parece um nome (ex: "Pizzaria do João")
+        if (brandName === "Sua Empresa" && text.length < 40) {
+            brandName = text.split(' ').slice(0, 4).join(' ').trim();
+        }
+
+        // 3. Montar o JSON Final (Estrutura compatível com generated.html)
+        return {
+            brandName: brandName,
+            niche: detectedNiche,
+            templateSource: selectedTheme.name, // Para mostrar no chat
+            colors: nicheData.colors,
+            fonts: {
+                heading: selectedTheme.fontHead,
+                body: selectedTheme.fontBody
+            },
+            customCss: selectedTheme.css, // Injeta CSS do tema escolhido
+            hero: {
+                title: nicheData.hero.title,
+                subtitle: nicheData.hero.subtitle,
+                cta: nicheData.hero.cta
+            },
+            about: {
+                title: `Sobre a ${brandName}`,
+                text: `Somos referência em ${detectedNiche === 'generico' ? 'nossa área de atuação' : detectedNiche}. Nossa missão é entregar o melhor serviço com qualidade e dedicação total aos nossos clientes. Contamos com uma equipe preparada para atender suas necessidades.`,
+                stats: [
+                    { number: "100%", label: "Satisfação" },
+                    { number: "24/7", label: "Suporte" },
+                    { number: "50+", label: "Projetos" }
+                ]
+            },
+            services: nicheData.features.map((f, i) => ({
+                title: f,
+                desc: "Oferecemos este serviço com a máxima qualidade, utilizando as melhores práticas do mercado para garantir sua satisfação.",
+                icon: i === 0 ? "bi-star-fill" : (i === 1 ? "bi-lightning-fill" : "bi-shield-check")
+            })),
+            features: [
+                { title: "Experiência Comprovada", desc: "Anos de mercado entregando resultados consistentes.", icon: "bi-trophy" },
+                { title: "Foco no Cliente", desc: "Sua satisfação é nossa prioridade número um.", icon: "bi-heart" },
+                { title: "Tecnologia de Ponta", desc: "Utilizamos as ferramentas mais modernas.", icon: "bi-cpu" }
+            ],
+            portfolio: [
+                { title: "Projeto Alpha", category: "Destaque" },
+                { title: "Cliente Beta", category: "Recente" },
+                { title: "Case Gamma", category: "Premium" }
+            ],
+            testimonials: [
+                { text: "Serviço incrível! Superou minhas expectativas.", name: "Maria Silva", role: "Cliente" },
+                { text: "Profissionais altamente qualificados.", name: "João Santos", role: "Empresário" },
+                { text: "Recomendo a todos, qualidade impecável.", name: "Ana Costa", role: "Diretora" }
+            ],
+            contact: {
+                email: "contato@" + brandName.toLowerCase().replace(/[^a-z0-9]/g, '') + ".com.br",
+                phone: "(11) 99999-9999",
+                address: "Av. Principal, 1000 - Centro",
+                cta_text: "Falar no WhatsApp"
+            },
+            sectionTitles: {
+                services: "Nossos Serviços",
+                services_subtitle: "O que oferecemos de melhor para você",
+                portfolio: "Nosso Portfólio",
+                portfolio_subtitle: "Conheça nossos trabalhos recentes",
+                features: "Diferenciais",
+                testimonials: "Depoimentos",
+                contact: "Entre em Contato",
+                contact_subtitle: "Estamos prontos para te atender"
+            },
+            images: nicheData.images,
+            // Estrutura visual sugerida
+            layout: {
+                headerStyle: selectedTheme.hero === 'center' ? "transparent" : "solid",
+                heroHeight: "full",
+                heroStyle: selectedTheme.hero
+            }
+        };
+    }
+};

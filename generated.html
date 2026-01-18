@@ -138,7 +138,7 @@
         .studio-toolbar {
             background: #0D1B2A;
             color: white;
-            padding: 10px 20px;
+            padding: 5px 15px;
             position: fixed;
             top: 0;
             left: 0;
@@ -148,10 +148,11 @@
             justify-content: space-between;
             align-items: center;
             font-family: 'Montserrat', sans-serif;
-            font-size: 14px;
+            font-size: 12px;
             border-bottom: 2px solid var(--primary);
+            height: 45px;
         }
-        body { padding-top: 50px; }
+        body { padding-top: 45px; }
         [contenteditable="true"]:hover { outline: 2px dashed var(--primary); cursor: edit; }
         [contenteditable="true"]:focus { outline: 2px solid var(--primary); background: rgba(var(--primary-rgb), 0.05); }
         [contenteditable="true"] { transition: all 0.2s ease; }
@@ -159,22 +160,22 @@
         /* Pulse animation for instructions */
         @keyframes pulse-text {
             0% { opacity: 0.6; }
-            50% { opacity: 1; color: var(--accent); }
+            50% { opacity: 1; color: #fff; }
             100% { opacity: 0.6; }
         }
-        .instruction-pulse { animation: pulse-text 2s infinite; font-weight: 600; }
+        .instruction-pulse { animation: pulse-text 2s infinite; font-weight: 500; font-size: 11px; }
 
         /* Color Pickers Styling */
-        .color-control { display: flex; align-items: center; gap: 8px; background: rgba(255,255,255,0.1); padding: 2px 8px; border-radius: 5px; }
-        .color-control label { font-size: 10px; text-transform: uppercase; opacity: 0.7; margin: 0; font-weight: 600; }
-        .color-control select { background: transparent; color: white; border: none; font-size: 11px; cursor: pointer; outline: none; padding: 0; }
+        .color-control { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
+        .color-control label { font-size: 9px; text-transform: uppercase; opacity: 0.8; margin: 0; font-weight: 700; white-space: nowrap; }
+        .color-control select { background: transparent; color: white; border: none; font-size: 11px; cursor: pointer; outline: none; padding: 0 5px; }
         .color-control select option { background: #0D1B2A; color: white; }
-        .form-control-color-sm { width: 30px; height: 25px; padding: 0; border: none; background: none; cursor: pointer; }
+        .form-control-color-sm { width: 22px; height: 18px; padding: 0; border: none; background: none; cursor: pointer; border-radius: 2px; }
     </style>
 </head>
 <body>
 
-    <nav class="navbar navbar-expand-lg fixed-top" style="top: 45px;">
+    <nav class="navbar navbar-expand-lg fixed-top" style="top: 45px; padding: 10px 0;">
         <div class="container">
             <a class="navbar-brand fw-bold" href="#" id="navBrand">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -192,29 +193,30 @@
 
     <div class="studio-toolbar">
         <div class="d-flex align-items-center">
-            <i class="bi bi-stars text-primary me-2"></i>
-            <strong>Inove AI Studio</strong> <span class="badge bg-primary ms-2">Estúdio de Edição Ativo</span>
+            <i class="bi bi-stars text-primary me-1"></i>
+            <strong class="d-none d-sm-inline">Inove AI Studio</strong>
+            <span class="badge bg-primary ms-2" style="font-size: 9px; padding: 3px 6px;">EDIÇÃO ATIVA</span>
         </div>
         
-        <div class="d-flex align-items-center gap-3">
+        <div class="d-flex align-items-center gap-2">
             <div class="color-control">
-                <label>Marca</label>
+                <label title="Cor da Marca"><i class="bi bi-palette"></i></label>
                 <input type="color" id="pickerPrimary" class="form-control-color-sm" title="Cor Principal">
             </div>
             <div class="color-control">
-                <label>Fundo</label>
+                <label title="Cor de Fundo"><i class="bi bi-paint-bucket"></i></label>
                 <input type="color" id="pickerBg" class="form-control-color-sm" title="Cor de Fundo">
             </div>
             <div class="color-control">
-                <label>Texto</label>
+                <label title="Cor do Texto"><i class="bi bi-type"></i></label>
                 <input type="color" id="pickerText" class="form-control-color-sm" title="Cor do Texto">
             </div>
-            <div class="color-control" id="individualColorWrapper" style="display:none; border: 1px solid var(--primary);">
-                <label>Cor do Item</label>
+            <div class="color-control" id="individualColorWrapper" style="display:none; border-color: var(--primary); background: rgba(var(--primary-rgb), 0.2);">
+                <label><i class="bi bi-cursor-fill"></i> Item</label>
                 <input type="color" id="pickerIndividualText" class="form-control-color-sm" title="Cor do Item Selecionado">
             </div>
-            <div class="color-control">
-                <label>Estilo</label>
+            <div class="color-control d-none d-md-flex">
+                <label><i class="bi bi-font"></i></label>
                 <select id="pickerFont">
                     <option value="'Montserrat', sans-serif">Moderno</option>
                     <option value="'Playfair Display', serif">Clássico</option>
@@ -223,18 +225,18 @@
                     <option value="'Dancing Script', cursive">Romântico</option>
                 </select>
             </div>
-            <button id="btnReset" class="btn btn-outline-danger btn-sm ms-2" title="Resetar Design">
-                <i class="bi bi-trash"></i>
+            <button id="btnReset" class="btn btn-link text-danger p-0 ms-1" title="Resetar Design">
+                <i class="bi bi-trash" style="font-size: 16px;"></i>
             </button>
-            <button id="btnDownload" class="btn btn-outline-light btn-sm ms-2" title="Baixar Código Fonte (Restrito)">
-                <i class="bi bi-code-slash"></i>
+            <button id="btnDownload" class="btn btn-link text-white-50 p-0 ms-1" title="Baixar Código Fonte (Restrito)">
+                <i class="bi bi-code-slash" style="font-size: 16px;"></i>
             </button>
-            <button id="btnFinalize" class="btn btn-primary btn-sm fw-bold ms-2">
-                <i class="bi bi-whatsapp me-1"></i> Finalizar e Enviar
+            <button id="btnFinalize" class="btn btn-primary btn-sm fw-bold ms-2" style="font-size: 11px; padding: 4px 12px;">
+                <i class="bi bi-whatsapp me-1"></i> FINALIZAR
             </button>
         </div>
-        <div class="d-none d-lg-block text-white-50 small instruction-pulse">
-            <i class="bi bi-mouse me-1"></i> Clique em qualquer texto para personalizar!
+        <div class="d-none d-xl-block text-white-50 instruction-pulse">
+            <i class="bi bi-info-circle me-1"></i> Clique nos textos para editar
         </div>
     </div>
 
