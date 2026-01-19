@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Blog - InoveDev</title>
+    <meta name="description" content="Artigos, novidades e dicas sobre desenvolvimento web, tecnologia e marketing digital.">
+    
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://www.inovedev.com.br/blog.html">
+    <!-- Open Graph / Facebook / WhatsApp -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://www.inovedev.com.br/blog.html">
+    <meta property="og:title" content="Blog - InoveDev">
+    <meta property="og:description" content="Artigos, novidades e dicas sobre desenvolvimento web, tecnologia e marketing digital.">
+    <meta property="og:image" content="https://www.inovedev.com.br/assets/logo.png">
+
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="../assets/logo.png">
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap Icons -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="css/styles.css">
+
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-B68G4KMZW6"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-B68G4KMZW6');
+    </script>
+    <style>
+        /* Melhorias visuais para o Blog */
+        .blog .entry {
+            background: #fff;
+            padding: 30px;
+            margin-bottom: 60px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            transition: all 0.3s ease-in-out;
+        }
+        .blog .entry:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.15);
+        }
+        .blog .entry-img {
+            margin: -30px -30px 20px -30px;
+            overflow: hidden;
+            border-radius: 8px 8px 0 0;
+        }
+        .blog .entry-title {
+            font-size: 26px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+        .blog .entry-title a {
+            color: #2c4964;
+            text-decoration: none;
+        }
+        .blog .entry-title a:hover {
+            color: #0d6efd;
+        }
+        .sidebar {
+            padding: 30px;
+            margin: 0 0 60px 20px;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+            background: #fff;
+            border-radius: 8px;
+        }
+        .sidebar-title {
+            font-size: 20px;
+            font-weight: 700;
+            padding: 0 0 10px 0;
+            margin: 0 0 20px 0;
+            color: #2c4964;
+        }
+        .sidebar-item { margin-bottom: 30px; }
+        .whatsapp-float {
+            position: fixed; bottom: 40px; right: 40px;
+            background-color: #25d366; color: #FFF;
+            border-radius: 50px; width: 60px; height: 60px;
+            font-size: 30px; display: flex; align-items: center; justify-content: center;
+            box-shadow: 2px 2px 3px #999; z-index: 1000; text-decoration: none;
+        }
+        .whatsapp-float:hover { background-color: #128C7E; color: #FFF; }
+    </style>
+</head>
+<body>
+
+    <!-- Header -->
+    <header id="header" class="fixed-top d-flex align-items-center">
+        <div class="container d-flex justify-content-between align-items-center">
+            <div class="logo">
+                <h1><a href="index.html"><img src="../assets/logo.png" alt="InoveDev" class="img-fluid me-2" style="max-height: 40px;">InoveDev</a></h1>
+            </div>
+
+            <nav id="navbar" class="navbar">
+                <ul>
+                    <li><a class="nav-link scrollto" href="index.html#hero">Home</a></li>
+                    <li><a class="nav-link scrollto" href="index.html#about">Sobre</a></li>
+                    <li><a class="nav-link scrollto" href="index.html#services">Serviços</a></li>
+                    <li><a class="nav-link scrollto" href="index.html#portfolio">Portfólio</a></li>
+                    <li><a class="nav-link active" href="blog.html">Blog</a></li>
+                    <li><a class="nav-link scrollto" href="index.html#contact">Contato</a></li>
+                </ul>
+                <i class="bi bi-list mobile-nav-toggle"></i>
+            </nav>
+        </div>
+    </header>
+
+    <main id="main" style="margin-top: 80px;">
+
+        <!-- Breadcrumbs -->
+        <section class="breadcrumbs">
+            <div class="container">
+                <ol>
+                    <li><a href="index.html">Home</a></li>
+                    <li>Blog</li>
+                </ol>
+                <h2>Blog & Notícias</h2>
+            </div>
+        </section>
+
+        <!-- Blog Section -->
+        <section id="blog" class="blog">
+            <div class="container">
+                <div class="row">
+                    <!-- Entradas do Blog -->
+                    <div class="col-lg-8 entries" id="blogEntries">
+
+                        <!-- Conteúdo carregado via JS -->
+                        <div class="text-center py-5"><div class="spinner-border text-primary" role="status"></div></div>
+
+                        <!-- Paginação -->
+                        <div class="blog-pagination" id="pagination">
+                            <ul class="justify-content-center" id="paginationList">
+                                <!-- Gerado via JS -->
+                            </ul>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar -->
+                    <div class="col-lg-4">
+                        <div class="sidebar">
+                            <h3 class="sidebar-title">Buscar</h3>
+                            <div class="sidebar-item search-form">
+                                <form id="searchForm"><input type="text" id="searchInput" class="form-control" placeholder="Pesquisar..."><button type="submit" class="btn btn-primary mt-2 w-100"><i class="bi bi-search"></i> Buscar</button></form>
+                            </div>
+                            <h3 class="sidebar-title">Categorias</h3>
+                            <div class="sidebar-item categories">
+                                <ul>
+                                    <li><a href="#" onclick="filterByCategory('Negócios'); return false;">Negócios</a></li>
+                                    <li><a href="#" onclick="filterByCategory('Tecnologia'); return false;">Tecnologia</a></li>
+                                    <li><a href="#" onclick="filterByCategory('Marketing'); return false;">Marketing</a></li>
+                                    <li><a href="#" onclick="filterByCategory('E-commerce'); return false;">E-commerce</a></li>
+                                    <li><a href="#" onclick="filterByCategory('Segurança'); return false;">Segurança</a></li>
+                                    <li><a href="#" onclick="filterByCategory('Desenvolvimento'); return false;">Desenvolvimento</a></li>
+                                </ul>
+                            </div>
+                            <h3 class="sidebar-title">Posts Recentes</h3>
+                            <div class="sidebar-item recent-posts">
+                                <!-- Carregado via JS -->
+                            </div>
+                            <h3 class="sidebar-title">Tags</h3>
+                            <div class="sidebar-item tags">
+                                <ul>
+                                    <li><a href="#" onclick="filterByTag('web'); return false;">Web</a></li>
+                                    <li><a href="#" onclick="filterByTag('seo'); return false;">SEO</a></li>
+                                    <li><a href="#" onclick="filterByTag('marketing'); return false;">Marketing</a></li>
+                                    <li><a href="#" onclick="filterByTag('tecnologia'); return false;">Tecnologia</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" style="background: #f1f7fd;">
+        <div class="container py-4">
+            <div class="copyright text-center">
+                &copy; Copyright <strong><span>InoveDev</span></strong>. Todos os direitos reservados
+            </div>
+            <div class="credits text-center pt-1">
+                Design inspirado em <a href="https://bootstrapmade.com/">BootstrapMade</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/5581989035561?text=Ol%C3%A1!%20Vim%20pelo%20Blog%20e%20gostaria%20de%20saber%20mais." class="whatsapp-float" target="_blank" title="Falar no WhatsApp">
+        <i class="bi bi-whatsapp"></i>
+    </a>
+
+    <!-- Scripts (Caminhos relativos ajustados) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="js/blog-data.js"></script>
+    <script src="js/script.js"></script>
+    
+    <!-- Tawk.to Script -->
+    <script type="text/javascript">
+    var Tawk_API = Tawk_API || {};
+    var Tawk_LoadStart = new Date();
+    (function() {
+        var s1 = document.createElement("script"),
+            s0 = document.getElementsByTagName("script")[0];
+        s1.async = true;
+        s1.src = 'https://embed.tawk.to/68c6c8ac242109192a3134f0/1j547vp7a';
+        s1.charset = 'UTF-8';
+        s1.setAttribute('crossorigin', '*');
+        s0.parentNode.insertBefore(s1, s0);
+    })();
+    </script>
+
+    <script>
+        // Lógica de Blog (Busca, Filtro e Paginação)
+        document.addEventListener('DOMContentLoaded', () => {
+            // Usa a variável global blogPosts do arquivo js/blog-data.js
+            const itemsPerPage = 9; // Aumentado para mostrar mais posts na tela inicial
+            let currentPage = 1;
+            let filteredPosts = [...blogPosts].reverse(); // Mostra os mais recentes primeiro
+
+            // 2. Função de Busca
+            document.getElementById('searchForm').addEventListener('submit', (e) => {
+                e.preventDefault();
+                const term = document.getElementById('searchInput').value;
+                performSearch(term);
+            });
+
+            window.performSearch = function(term) {
+                term = term.toLowerCase();
+                filteredPosts = blogPosts.filter(post => {
+                    const title = post.title.toLowerCase();
+                    const content = post.summary.toLowerCase();
+                    return title.includes(term) || content.includes(term);
+                }).reverse(); // Mantém a ordem do mais recente
+                currentPage = 1;
+                renderPagination();
+                showPage(1);
+            };
+
+            // 3. Filtros
+            window.filterByCategory = function(cat) {
+                filteredPosts = blogPosts.filter(post => post.category === cat).reverse();
+                currentPage = 1;
+                renderPagination();
+                showPage(1);
+            };
+
+            window.filterByTag = function(tag) {
+                filteredPosts = blogPosts.filter(post => post.tags.includes(tag)).reverse();
+                currentPage = 1;
+                renderPagination();
+                showPage(1);
+            };
+
+            // 4. Paginação
+            function renderPosts(posts) {
+                const container = document.getElementById('blogEntries');
+                container.innerHTML = '';
+                
+                if(posts.length === 0) {
+                    container.innerHTML = '<div class="alert alert-info">Nenhum artigo encontrado.</div>';
+                    return;
+                }
+
+                posts.forEach(post => {
+                    const articleHTML = `
+                        <article class="entry">
+                            <div class="entry-img">
+                                <img src="${post.image}" alt="${post.title}" class="img-fluid">
+                            </div>
+                            <h2 class="entry-title">
+                                <a href="blog-post.html?id=${post.id}">${post.title}</a>
+                            </h2>
+                            <div class="entry-meta">
+                                <ul>
+                                    <li class="d-flex align-items-center"><i class="bi bi-person"></i> ${post.author}</li>
+                                    <li class="d-flex align-items-center"><i class="bi bi-clock"></i> <time>${post.date}</time></li>
+                                    <li class="d-flex align-items-center"><i class="bi bi-folder"></i> ${post.category}</li>
+                                </ul>
+                            </div>
+                            <div class="entry-content">
+                                <p>${post.summary}</p>
+                                <div class="read-more"><a href="blog-post.html?id=${post.id}">Ler Mais</a></div>
+                            </div>
+                        </article>
+                    `;
+                    container.innerHTML += articleHTML;
+                });
+                
+                // Re-anexar paginação ao final
+                container.appendChild(document.getElementById('pagination'));
+            }
+
+            function renderPagination() {
+                const totalPages = Math.ceil(filteredPosts.length / itemsPerPage);
+                const paginationList = document.getElementById('paginationList');
+                paginationList.innerHTML = '';
+
+                for (let i = 1; i <= totalPages; i++) {
+                    paginationList.innerHTML += `<li class="${i === currentPage ? 'active' : ''}"><a href="#" onclick="showPage(${i}); return false;">${i}</a></li>`;
+                }
+            }
+
+            window.showPage = function(page) {
+                currentPage = page;
+                const start = (page - 1) * itemsPerPage;
+                const end = start + itemsPerPage;
+                renderPosts(filteredPosts.slice(start, end));
+                renderPagination(); // Atualiza active state
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            };
+
+            // Função para renderizar posts recentes na sidebar
+            function renderRecentPosts() {
+                const recentContainer = document.querySelector('.sidebar-item.recent-posts');
+                if (!recentContainer) return;
+                recentContainer.innerHTML = '';
+                
+                const latest = [...blogPosts].reverse().slice(0, 3);
+                
+                latest.forEach(post => {
+                    recentContainer.innerHTML += `
+                        <div class="post-item clearfix mb-3">
+                            <img src="${post.image}" alt="" class="float-start me-3 rounded" style="width: 60px; height: 60px; object-fit: cover;">
+                            <h4 style="font-size: 15px; margin-bottom: 5px;">
+                                <a href="blog-post.html?id=${post.id}" class="text-dark text-decoration-none fw-bold">${post.title}</a>
+                            </h4>
+                            <time class="text-muted small">${post.date}</time>
+                        </div>
+                    `;
+                });
+            }
+
+            // 1. Inicialização (Movido para o final para garantir que funções existam)
+            const urlParams = new URLSearchParams(window.location.search);
+            const searchParam = urlParams.get('search');
+            
+            renderRecentPosts();
+
+            if (searchParam) {
+                document.getElementById('searchInput').value = searchParam;
+                performSearch(searchParam);
+            } else {
+                renderPagination();
+                showPage(1);
+            }
+        });
+    </script>
+</body>
+</html>

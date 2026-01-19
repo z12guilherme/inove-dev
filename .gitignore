@@ -1,0 +1,5 @@
+# Logs e Dependências
+node_modules/
+npm-debug.log
+
+# Arquivos de Configuração (Segurança)
