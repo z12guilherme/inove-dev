@@ -47,6 +47,16 @@
     <!-- Custom CSS (Caminho ajustado) -->
     <link rel="stylesheet" href="css/styles.css">
 
+    <style>
+        /* Padronização das imagens do portfólio */
+        .portfolio-wrap img {
+            width: 100%;
+            height: 260px; /* Altura fixa para alinhar os cards */
+            object-fit: cover; /* Cobre a área sem distorcer (ideal para prints de sites) */
+            object-position: top center;
+        }
+    </style>
+
     <!-- Google Analytics (GA4) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-B68G4KMZW6"></script>
     <script>
@@ -325,7 +335,7 @@
                     <!-- Projeto 1 -->
                     <div class="col-lg-4 col-md-6 portfolio-item">
                         <div class="portfolio-wrap">
-                            <img src="assets/logo.jpg" class="img-fluid" alt="Empório Paraibano" loading="lazy">
+                            <img src="assets/logo.jpg" class="img-fluid" alt="Empório Paraibano" loading="lazy" style="object-fit: contain; background-color: #fff; padding: 15px;">
                             <div class="portfolio-info">
                                 <h4>Empório Paraibano</h4>
                                 <p>E-commerce</p>
