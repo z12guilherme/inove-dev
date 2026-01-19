@@ -1,0 +1,3 @@
+# Redirecionamento 301 (Permanente) do subdomínio Netlify para o domínio oficial
+# Isso transfere a autoridade de SEO para o .com.br e remove o .netlify.app do Google com o tempo
+https://inovedev.netlify.app/* https://www.inovedev.com.br/:splat 301!

@@ -133,11 +133,56 @@
             border: 1px solid rgba(255,255,255,0.1);
             max-width: 300px;
         }
+<<<<<<< HEAD
+=======
+
+        /* Studio Toolbar */
+        .studio-toolbar {
+            background: #0D1B2A;
+            color: white;
+            padding: 5px 15px;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 10000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-family: 'Montserrat', sans-serif;
+            font-size: 12px;
+            border-bottom: 2px solid var(--primary);
+            height: 45px;
+        }
+        body { padding-top: 45px; }
+        [contenteditable="true"]:hover { outline: 2px dashed var(--primary); cursor: edit; }
+        [contenteditable="true"]:focus { outline: 2px solid var(--primary); background: rgba(var(--primary-rgb), 0.05); }
+        [contenteditable="true"] { transition: all 0.2s ease; }
+        
+        /* Pulse animation for instructions */
+        @keyframes pulse-text {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; color: #fff; }
+            100% { opacity: 0.6; }
+        }
+        .instruction-pulse { animation: pulse-text 2s infinite; font-weight: 500; font-size: 11px; }
+
+        /* Color Pickers Styling */
+        .color-control { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
+        .color-control label { font-size: 9px; text-transform: uppercase; opacity: 0.8; margin: 0; font-weight: 700; white-space: nowrap; }
+        .color-control select { background: transparent; color: white; border: none; font-size: 11px; cursor: pointer; outline: none; padding: 0 5px; }
+        .color-control select option { background: #0D1B2A; color: white; }
+        .form-control-color-sm { width: 22px; height: 18px; padding: 0; border: none; background: none; cursor: pointer; border-radius: 2px; }
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
     </style>
 </head>
 <body>
 
+<<<<<<< HEAD
     <nav class="navbar navbar-expand-lg fixed-top">
+=======
+    <nav class="navbar navbar-expand-lg fixed-top" style="top: 45px; padding: 10px 0;">
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
         <div class="container">
             <a class="navbar-brand fw-bold" href="#" id="navBrand">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -153,6 +198,58 @@
         </div>
     </nav>
 
+<<<<<<< HEAD
+=======
+    <div class="studio-toolbar">
+        <div class="d-flex align-items-center">
+            <i class="bi bi-stars text-primary me-1"></i>
+            <strong class="d-none d-sm-inline">Inove AI Studio</strong>
+            <span class="badge bg-primary ms-2" style="font-size: 9px; padding: 3px 6px;">EDIÇÃO ATIVA</span>
+        </div>
+        
+        <div class="d-flex align-items-center gap-2">
+            <div class="color-control">
+                <label title="Cor da Marca"><i class="bi bi-palette"></i></label>
+                <input type="color" id="pickerPrimary" class="form-control-color-sm" title="Cor Principal">
+            </div>
+            <div class="color-control">
+                <label title="Cor de Fundo"><i class="bi bi-paint-bucket"></i></label>
+                <input type="color" id="pickerBg" class="form-control-color-sm" title="Cor de Fundo">
+            </div>
+            <div class="color-control">
+                <label title="Cor do Texto"><i class="bi bi-type"></i></label>
+                <input type="color" id="pickerText" class="form-control-color-sm" title="Cor do Texto">
+            </div>
+            <div class="color-control" id="individualColorWrapper" style="display:none; border-color: var(--primary); background: rgba(var(--primary-rgb), 0.2);">
+                <label><i class="bi bi-cursor-fill"></i> Item</label>
+                <input type="color" id="pickerIndividualText" class="form-control-color-sm" title="Cor do Item Selecionado">
+            </div>
+            <div class="color-control d-none d-md-flex">
+                <label><i class="bi bi-font"></i></label>
+                <select id="pickerFont">
+                    <option value="'Montserrat', sans-serif">Moderno</option>
+                    <option value="'Playfair Display', serif">Clássico</option>
+                    <option value="'Open Sans', sans-serif">Clean</option>
+                    <option value="'Raleway', sans-serif">Elegante</option>
+                    <option value="'Dancing Script', cursive">Romântico</option>
+                </select>
+            </div>
+            <button id="btnReset" class="btn btn-link text-danger p-0 ms-1" title="Resetar Design">
+                <i class="bi bi-trash" style="font-size: 16px;"></i>
+            </button>
+            <button id="btnDownload" class="btn btn-link text-white-50 p-0 ms-1" title="Baixar Código Fonte (Restrito)">
+                <i class="bi bi-code-slash" style="font-size: 16px;"></i>
+            </button>
+            <button id="btnFinalize" class="btn btn-primary btn-sm fw-bold ms-2" style="font-size: 11px; padding: 4px 12px;">
+                <i class="bi bi-whatsapp me-1"></i> FINALIZAR
+            </button>
+        </div>
+        <div class="d-none d-xl-block text-white-50 instruction-pulse">
+            <i class="bi bi-info-circle me-1"></i> Clique nos textos para editar
+        </div>
+    </div>
+
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
     <section id="hero">
         <div class="hero-overlay"></div>
         <div class="container text-center">
@@ -311,7 +408,52 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
+<<<<<<< HEAD
             const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+=======
+            // 0. Prioridade 1: Dados embutidos (versão baixada)
+            let data = window.bakedData || null;
+
+            // 1. Prioridade 2: Dados da URL (Fragmento # ou Query ?)
+            if (!data) {
+                // Tenta pegar do fragmento (#s=) primeiro para evitar erro 431
+                let stateParam = null;
+                if (window.location.hash.startsWith('#s=')) {
+                    stateParam = window.location.hash.substring(3);
+                } else {
+                    // Fallback para o método antigo (?s=)
+                    stateParam = new URLSearchParams(window.location.search).get('s');
+                }
+
+                if (stateParam) {
+                    try {
+                        const binary = atob(stateParam);
+                        const bytes = new Uint8Array(binary.length);
+                        for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+                        data = JSON.parse(new TextDecoder().decode(bytes));
+
+                        // Feedback visual de que é um design compartilhado
+                        const toolbar = document.querySelector('.studio-toolbar');
+                        if(toolbar) toolbar.innerHTML += `<span class="badge bg-warning ms-2 text-dark" style="font-size:10px">Design do Cliente</span>`;
+                    } catch (e) {
+                        console.error("Erro ao carregar design da URL:", e);
+                    }
+                }
+            }
+
+            // 2. Se não houver URL válida, carrega do localStorage
+            if (!data) {
+                const urlParams = new URLSearchParams(window.location.search);
+                const siteId = urlParams.get('id');
+                if (siteId) {
+                    data = JSON.parse(localStorage.getItem(`ai_site_${siteId}`));
+                }
+                if (!data) {
+                    data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
+                }
+            }
+
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
             if (!data) {
                 alert('Nenhum dado encontrado. Volte e gere novamente.');
                 return;
@@ -322,12 +464,90 @@
         });
 
         function renderSite(data) {
+<<<<<<< HEAD
             // 1. Configurar Cores e Variáveis CSS
             if (data.colors) {
                 const root = document.documentElement;
                 
                 // Função de Segurança: Calcula contraste automaticamente (YIQ)
                 // Se o fundo for escuro, retorna branco. Se for claro, retorna preto.
+=======
+            const saveToLocal = () => {
+                localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
+            };
+
+            // --- LÓGICA DE PROXY DE TEMPLATE (NOVO) ---
+            // Se um template específico foi escolhido, carregamos ele em vez do layout padrão
+            if (data.templateSource && data.templateSource !== 'generic') {
+                const slug = data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '');
+                const templatePath = `templates/${slug}/index.html`;
+
+                console.log(`🤖 Tentando carregar template: ${templatePath}`);
+
+                fetch(templatePath)
+                    .then(response => {
+                        if (!response.ok) throw new Error("Template não encontrado");
+                        return response.text();
+                    })
+                    .then(html => {
+                        // 1. Corrigir caminhos relativos (assets/ -> templates/slug/assets/)
+                        const basePath = `templates/${slug}/`;
+                        let fixedHtml = html.replace(/(src|href)="'([^"']+)["']/g, (match, attr, url) => {
+                            // Se for script de integração ou script global, ajusta para a raiz
+                            if (url.includes('ai-integration.js') || url.includes('script.js')) {
+                                return `${attr}="js/${url.split('/').pop()}"`;
+                            }
+                            // Se for assets do template, adiciona o prefixo da pasta
+                            if (url.startsWith('assets/') || url.startsWith('css/') || url.startsWith('js/')) {
+                                return `${attr}="${basePath}${url}"`;
+                            }
+                            return match;
+                        });
+
+                        // 2. Injetar a Barra de Ferramentas do Studio no HTML do template
+                        const toolbarHtml = document.querySelector('.studio-toolbar').outerHTML;
+                        const badgeHtml = document.querySelector('.ai-badge').outerHTML;
+                        
+                        // Substitui o corpo do documento atual pelo do template
+                        document.open();
+                        document.write(fixedHtml);
+                        document.close();
+
+                        // Re-injeta a toolbar após o carregamento
+                        setTimeout(() => {
+                            const body = document.body;
+                            if (body) {
+                                const div = document.createElement('div');
+                                div.innerHTML = toolbarHtml + badgeHtml;
+                                body.prepend(div.firstChild); // Toolbar no topo
+                                body.appendChild(div.lastChild); // Badge no rodapé
+                                
+                                // Reativa os listeners da toolbar (pois o DOM mudou)
+                                // Nota: Em uma implementação ideal, a toolbar seria um iframe ou componente isolado,
+                                // mas para este protótipo, recarregar a página se necessário ou aceitar que a edição
+                                // visual pode ser limitada no modo template é aceitável.
+                            }
+                        }, 500);
+                        
+                        return; // Interrompe a renderização do layout padrão
+                    })
+                    .catch(e => {
+                        console.warn("⚠️ Falha ao carregar template, usando layout universal:", e);
+                        // Continua para o código abaixo (Layout Universal)
+                    });
+            }
+            // -------------------------------------------
+
+            // 0. Aplicar Classe do Template ao Body (Para permitir CSS específico)
+            if (data.templateSource) {
+                const themeClass = 'theme-' + data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '-');
+                document.body.classList.add(themeClass);
+            }
+
+            // 1. Configurar Cores e Variáveis CSS
+            if (data.colors) {
+                const root = document.documentElement;
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                 const getContrastYIQ = (hexcolor) => {
                     if (!hexcolor) return '#212529';
                     hexcolor = hexcolor.replace('#', '');
@@ -342,11 +562,16 @@
                 root.style.setProperty('--secondary', data.colors.secondary);
                 root.style.setProperty('--accent', data.colors.accent || data.colors.primary);
                 root.style.setProperty('--bg-page', data.colors.background || '#f8f9fa');
+<<<<<<< HEAD
                 
                 // Força a cor do texto baseada no cálculo matemático de contraste, ignorando a IA se necessário
                 const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
                 root.style.setProperty('--text-main', safeTextColor);
                 
+=======
+                const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
+                root.style.setProperty('--text-main', safeTextColor);
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                 root.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             }
 
@@ -369,6 +594,7 @@
             }
 
             // 4. Preencher Conteúdo de Texto
+<<<<<<< HEAD
             const elements = {
                 'brandName': data.brandName,
                 'navBrand': data.brandName,
@@ -398,6 +624,40 @@
                 const el = document.getElementById(id);
                 if (el && elements[id]) el.textContent = elements[id];
             });
+=======
+            const textMappings = [
+                { id: 'navBrand', path: 'brandName' },
+                { id: 'footerBrand', path: 'brandName' },
+                { id: 'heroTitle', path: 'hero.title' },
+                { id: 'heroSubtitle', path: 'hero.subtitle' },
+                { id: 'heroCTA', path: 'hero.cta' },
+                { id: 'aboutTitle', path: 'about.title' },
+                { id: 'aboutText', path: 'about.text' },
+                { id: 'contactAddress', path: 'contact.address' },
+                { id: 'contactEmail', path: 'contact.email' },
+                { id: 'contactPhone', path: 'contact.phone' },
+                { id: 'contactCTA', path: 'contact.cta_text' },
+                { id: 'servicesTitle', path: 'sectionTitles.services' },
+                { id: 'servicesSubtitle', path: 'sectionTitles.services_subtitle' },
+                { id: 'portfolioTitle', path: 'sectionTitles.portfolio' },
+                { id: 'portfolioSubtitle', path: 'sectionTitles.portfolio_subtitle' },
+                { id: 'featuresTitle', path: 'sectionTitles.features' },
+                { id: 'testimonialsTitle', path: 'sectionTitles.testimonials' },
+                { id: 'contactTitle', path: 'sectionTitles.contact' },
+                { id: 'contactSubtitle', path: 'sectionTitles.contact_subtitle' }
+            ];
+
+            textMappings.forEach(map => {
+                const el = document.getElementById(map.id);
+                if (el) {
+                    const val = map.path.split('.').reduce((o, i) => o?.[i], data);
+                    if (val) el.innerText = val;
+                    el.dataset.path = map.path;
+                    if (data.individualColors?.[map.path]) el.style.color = data.individualColors[map.path];
+                }
+            });
+            if(document.getElementById('footerYear')) document.getElementById('footerYear').textContent = new Date().getFullYear();
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
 
             // 5. Layout do Hero (Ajuste Estrutural)
             const heroSection = document.getElementById('hero');
@@ -410,8 +670,13 @@
                             <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
                         </div>
                         <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
+<<<<<<< HEAD
                             <h1 class="display-3 fw-bold mb-4">${data.hero?.title}</h1>
                             <p class="lead mb-4">${data.hero?.subtitle}</p>
+=======
+                            <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${data.hero?.title}</h1>
+                            <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${data.hero?.subtitle}</p>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                             <a href="#contact" class="btn-custom">${data.hero?.cta || 'Saiba Mais'}</a>
                         </div>
                     </div>
@@ -454,6 +719,7 @@
                 const servicesContainer = document.querySelector('#services .row') || document.getElementById('servicesGrid');
                 if (servicesContainer) {
                     servicesContainer.innerHTML = '';
+<<<<<<< HEAD
                     data.services.forEach(service => {
                         const col = document.createElement('div');
                         col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
@@ -463,6 +729,19 @@
                                 <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
                                 <h4>${service.title}</h4>
                                 <p class="text-muted">${service.desc}</p>
+=======
+                    data.services.forEach((service, idx) => {
+                        const col = document.createElement('div');
+                        col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
+                        col.setAttribute('data-aos', 'fade-up');
+                        const titlePath = `services.${idx}.title`;
+                        const descPath = `services.${idx}.desc`;
+                        col.innerHTML = `
+                            <div class="service-box w-100">
+                                <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
+                                <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${service.title}</h4>
+                                <p class="text-muted" data-path="${descPath}" style="color:${data.individualColors?.[descPath] || 'inherit'}">${service.desc}</p>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                             </div>
                         `;
                         servicesContainer.appendChild(col);
@@ -474,13 +753,22 @@
                 const featuresGrid = document.getElementById('featuresGrid');
                 if (featuresGrid) {
                     featuresGrid.innerHTML = '';
+<<<<<<< HEAD
                     data.features.forEach(feat => {
+=======
+                    data.features.forEach((feat, idx) => {
+                        const titlePath = `features.${idx}.title`;
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         featuresGrid.innerHTML += `
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
                                     <i class="bi ${feat.icon || 'bi-check-circle-fill'} fs-4 me-3" style="color: var(--primary);"></i>
                                     <div>
+<<<<<<< HEAD
                                         <h5 class="fw-bold">${feat.title}</h5>
+=======
+                                        <h5 class="fw-bold" data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${feat.title}</h5>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                                         <p class="small text-muted">${feat.desc}</p>
                                     </div>
                                 </div>
@@ -497,13 +785,21 @@
                     data.portfolio.forEach((item, index) => {
                         // Generate a random image for portfolio if not provided specifically
                         const pImg = data.images.portfolio ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
+<<<<<<< HEAD
+=======
+                        const titlePath = `portfolio.${index}.title`;
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         
                         portfolioGrid.innerHTML += `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
                                     <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
                                     <div class="portfolio-info">
+<<<<<<< HEAD
                                         <h4>${item.title}</h4>
+=======
+                                        <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${item.title}</h4>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                                         <p>${item.category}</p>
                                     </div>
                                 </div>
@@ -517,14 +813,23 @@
                 const testGrid = document.getElementById('testimonialsGrid');
                 if (testGrid) {
                     testGrid.innerHTML = '';
+<<<<<<< HEAD
                     data.testimonials.forEach(t => {
+=======
+                    data.testimonials.forEach((t, idx) => {
+                        const textPath = `testimonials.${idx}.text`;
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         testGrid.innerHTML += `
                             <div class="col-md-4 mb-4" data-aos="fade-up">
                                 <div class="card border-0 shadow-sm h-100 p-4 text-center" style="background: var(--card-bg);">
                                     <div class="mb-3 text-warning">
                                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                     </div>
+<<<<<<< HEAD
                                     <p class="fst-italic">"${t.text}"</p>
+=======
+                                    <p class="fst-italic" data-path="${textPath}" style="color:${data.individualColors?.[textPath] || 'inherit'}">"${t.text}"</p>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                                     <h6 class="fw-bold mt-3 mb-0">${t.name}</h6>
                                     <small class="text-muted">${t.role || 'Cliente'}</small>
                                 </div>
@@ -553,7 +858,183 @@
             if (typeof AOS !== 'undefined') {
                 AOS.init();
             }
+<<<<<<< HEAD
         }
     </script>
 </body>
+=======
+
+            // 9. Habilitar Edição em Tempo Real (Diferencial Inove)
+            const editableSelectors = '[contenteditable="true"], h1, h2, h3, h4, h5, p, .nav-link, .btn-custom';
+            document.querySelectorAll(editableSelectors).forEach(el => {
+                if (el.children.length === 0 || (el.tagName === 'P' || el.tagName.startsWith('H'))) {
+                    el.setAttribute('contenteditable', 'true');
+                    el.setAttribute('spellcheck', 'false');
+                }
+            });
+
+            // 10. Controles de Cores em Tempo Real
+            const pPrimary = document.getElementById('pickerPrimary'), pBg = document.getElementById('pickerBg'), pText = document.getElementById('pickerText'), pFont = document.getElementById('pickerFont'), pIndividual = document.getElementById('pickerIndividualText'), individualWrapper = document.getElementById('individualColorWrapper'), btnFinalize = document.getElementById('btnFinalize'), btnDownload = document.getElementById('btnDownload'), btnReset = document.getElementById('btnReset');
+
+            document.addEventListener('input', (e) => {
+                const path = e.target.dataset.path;
+                if (path) {
+                    const keys = path.split('.');
+                    let obj = data;
+                    for (let i = 0; i < keys.length - 1; i++) { if(!obj[keys[i]]) obj[keys[i]] = {}; obj = obj[keys[i]]; }
+                    obj[keys[keys.length - 1]] = e.target.innerText;
+                    saveToLocal();
+                }
+            });
+
+            if (data.colors) {
+                pPrimary.value = data.colors.primary || '#0d6efd';
+                pBg.value = data.colors.background || '#f8f9fa';
+                pText.value = data.colors.text || '#212529';
+            }
+
+            // Lógica de Seleção de Elemento para Cor Individual
+            let lastFocusedEl = null;
+
+            document.addEventListener('focusin', (e) => {
+                if (e.target.hasAttribute('contenteditable')) {
+                    lastFocusedEl = e.target;
+                    individualWrapper.style.display = 'flex';
+                    
+                    // Pega a cor atual do elemento (convertendo para HEX para o input color)
+                    const rgb = window.getComputedStyle(lastFocusedEl).color;
+                    const hex = rgbToHex(rgb);
+                    pIndividual.value = hex;
+                } else {
+                    // Se clicar fora de um editável, esconde o seletor individual
+                    if (!e.target.closest('#individualColorWrapper')) {
+                        individualWrapper.style.display = 'none';
+                    }
+                }
+            });
+
+            function rgbToHex(rgb) {
+                const vals = rgb.match(/\d+/g);
+                if (!vals) return '#000000';
+                return "#" + vals.map(x => {
+                    const hex = parseInt(x).toString(16);
+                    return hex.length === 1 ? "0" + hex : hex;
+                }).slice(0,3).join("");
+            }
+
+            pPrimary.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--primary', val);
+                data.colors.primary = val;
+                saveToLocal();
+            });
+            pBg.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--bg-page', val);
+                data.colors.background = val;
+                saveToLocal();
+            });
+            pText.addEventListener('input', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--text-main', val);
+                data.colors.text = val;
+                saveToLocal();
+            });
+            pFont.addEventListener('change', (e) => {
+                const val = e.target.value;
+                document.documentElement.style.setProperty('--font-heading', val);
+                document.documentElement.style.setProperty('--font-body', val);
+                data.fonts = { heading: val, body: val };
+                saveToLocal();
+            });
+
+            pIndividual.addEventListener('input', (e) => {
+                if (lastFocusedEl) {
+                    const val = e.target.value;
+                    lastFocusedEl.style.color = val;
+                    
+                    // Salva a cor individual no objeto data
+                    if (!data.individualColors) data.individualColors = {};
+                    const path = lastFocusedEl.dataset.path;
+                    if (path) {
+                        data.individualColors[path] = val;
+                        saveToLocal();
+                    }
+                }
+            });
+
+            // 11. Finalizar e Enviar (Captura o estado atual da tela)
+            btnFinalize.addEventListener('click', () => {
+                // Codifica o objeto DATA completo para a URL
+                const jsonStr = JSON.stringify(data);
+                const bytes = new TextEncoder().encode(jsonStr);
+                const encodedState = btoa(String.fromCharCode(...bytes));
+                
+                // Gera o link apenas com o estado codificado, preservando parâmetros como ?v=
+                const baseUrl = window.location.href.split('#')[0];
+                const shareLink = `${baseUrl}#s=${encodedState}`;
+                
+                window.open(`https://wa.me/5581989035561?text=${encodeURIComponent(shareLink)}`, '_blank');
+            });
+
+            // 11.5 Resetar Design
+            btnReset.addEventListener('click', () => {
+                if(confirm("Deseja descartar todas as suas alterações e voltar ao design original da IA?")) {
+                    localStorage.removeItem('aiWebsiteData_v3');
+                    window.location.href = window.location.href.split('#')[0].split('?')[0];
+                }
+            });
+
+            // 12. Download do Código Fonte (Protegido por Senha)
+            btnDownload.addEventListener('click', async () => {
+                const password = prompt("Digite a senha de desenvolvedor para baixar o código fonte:");
+                
+                if (!password) return;
+
+                // Função para gerar Hash SHA-256
+                const getHash = async (str) => {
+                    const msgBuffer = new TextEncoder().encode(str);
+                    const hashBuffer = await crypto.subtle.digest('SHA-256', msgBuffer);
+                    const hashArray = Array.from(new Uint8Array(hashBuffer));
+                    return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+                };
+
+                const inputHash = await getHash(password);
+                // Verificação via Hash SHA-256 da senha Mg156810$
+                if (inputHash === "e1a7808c06bc66de3cb20a222f610349429d5e91e3c3e00112d4751ab4565cf6") {
+                    // Clona o documento para limpar elementos do Studio antes de baixar
+                    const exportDoc = document.documentElement.cloneNode(true);
+                    
+                    // Remove a barra de ferramentas e o badge de IA do arquivo exportado
+                    const toolbar = exportDoc.querySelector('.studio-toolbar');
+                    const badge = exportDoc.querySelector('.ai-badge');
+                    const scripts = exportDoc.querySelectorAll('script');
+                    
+                    if (toolbar) toolbar.remove();
+                    if (badge) badge.remove();
+                    
+                    // Injeta os dados atuais diretamente no arquivo baixado
+                    const dataScript = exportDoc.createElement('script');
+                    dataScript.textContent = `window.bakedData = ${JSON.stringify(data)};`;
+                    exportDoc.head.prepend(dataScript);
+                    
+                    // Gera o Blob do HTML limpo
+                    const htmlContent = "<!DOCTYPE html>\n" + exportDoc.outerHTML;
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    const a = document.createElement('a');
+                    a.href = url;
+                    a.download = `projeto-${data.brandName.toLowerCase().replace(/\s+/g, '-')}.html`;
+                    a.click();
+                } else if (password !== null) {
+                    alert("Acesso negado: Senha incorreta.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>cript>
+</body>
+>>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
 </html>

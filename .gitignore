@@ -3,3 +3,6 @@ node_modules/
 npm-debug.log
 
 # Arquivos de Configuração (Segurança)
+.env
+# Local Netlify folder
+.netlify
