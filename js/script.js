@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 // Easter Egg: Console Log Message for developers
 console.log(
     "%cE aí, dev! 👋 Curioso para ver como as coisas funcionam por aqui?",
@@ -615,7 +614,6 @@ function initGhostMode() {
         }
     });
 }
-=======
 // Easter Egg: Console Log Message for developers
 console.log(
     "%cE aí, dev! 👋 Curioso para ver como as coisas funcionam por aqui?",
