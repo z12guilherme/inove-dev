@@ -123,6 +123,10 @@ async function generateSiteStructure(userInput) {
         "portfolio": [{"title": "Proj", "category": "Cat", "desc": "Desc"}],
         "testimonials": [{"name": "Cliente", "role": "Cargo", "text": "Depoimento"}],
         "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
+        "ui": {
+            "nav_home": "Início", "nav_about": "Sobre", "nav_services": "Serviços", "nav_portfolio": "Portfólio", "nav_contact": "Contato",
+            "btn_read_more": "Saiba Mais", "btn_submit": "Enviar Mensagem"
+        },
         "customCss": "CSS COMPLETO. IMPORTANTE: Se usar imagem de fundo no Hero, adicione 'text-shadow: 0 2px 10px rgba(0,0,0,0.8)' nos títulos para garantir leitura. Estilize botões com gradientes.",
         "images": {
             "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
@@ -171,6 +175,7 @@ async function generateSiteStructure(userInput) {
        - Se 'background' for claro (ex: #fff, #f8f9fa), 'text' DEVE SER EXATAMENTE #212529.
        - NUNCA use cinza médio para texto principal.
     7. FONTS: Use nomes reais do Google Fonts (ex: 'Poppins', 'Montserrat', 'Open Sans', 'Playfair Display', 'Roboto').
+    8. IDIOMA: O conteúdo deve ser 100% em Português do Brasil. O objeto 'ui' deve conter as traduções dos termos de navegação e botões adequados ao nicho (ex: 'Cardápio' em vez de 'Serviços' para restaurantes).
     `;
 
     // Simulação de Progresso para UX
@@ -385,6 +390,10 @@ async function generateSiteStructure(userInput) {
                 email: "contato@" + fallbackBrand.toLowerCase().replace(/[^a-z0-9]/g, '') + ".com.br", 
                 phone: "(11) 99999-0000", 
                 cta_text: "Solicite um Orçamento" 
+            },
+            ui: {
+                nav_home: "Início", nav_about: "Sobre", nav_services: "Serviços", nav_portfolio: "Portfólio", nav_contact: "Contato",
+                btn_read_more: "Saiba Mais", btn_submit: "Enviar Mensagem"
             },
             images: {}
         });

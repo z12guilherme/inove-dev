@@ -339,24 +339,24 @@ document.addEventListener('DOMContentLoaded', () => {
         { selector: '.subtitle', value: "Destaques" }, // LeadPage "Features" subtitle
         
         // Navegação (Tradução dos Menus)
-        { selector: 'nav a[href="#hero"], nav a[href="#home"], nav a[href="index.html"]', value: "Início" },
-        { selector: 'nav a[href="#about"]', value: "Sobre" },
-        { selector: 'nav a[href="#services"]', value: "Serviços" },
-        { selector: 'nav a[href="#portfolio"]', value: "Portfólio" },
-        { selector: 'nav a[href="#contact"]', value: "Contato" },
+        { selector: 'nav a[href="#hero"], nav a[href="#home"], nav a[href="index.html"]', value: data.ui?.nav_home || "Início" },
+        { selector: 'nav a[href="#about"]', value: data.ui?.nav_about || "Sobre" },
+        { selector: 'nav a[href="#services"]', value: data.ui?.nav_services || "Serviços" },
+        { selector: 'nav a[href="#portfolio"]', value: data.ui?.nav_portfolio || "Portfólio" },
+        { selector: 'nav a[href="#contact"]', value: data.ui?.nav_contact || "Contato" },
         { selector: 'nav a[href="#team"]', value: "Equipe" },
         { selector: 'nav a[href="#blog"]', value: "Blog" },
         
         // Botões Comuns
         { selector: '.btn-getstarted, .btn-get-started', value: data.hero?.cta || "Começar Agora" },
-        { selector: '.read-more, .readmore', value: "Saiba Mais" },
+        { selector: '.read-more, .readmore', value: data.ui?.btn_read_more || "Saiba Mais" },
 
         // Traduções de Formulários e Placeholders
         { selector: 'input[placeholder*="Name"]', attribute: 'placeholder', value: "Seu Nome" },
         { selector: 'input[placeholder*="Email"]', attribute: 'placeholder', value: "Seu Email" },
         { selector: 'input[placeholder*="Subject"]', attribute: 'placeholder', value: "Assunto" },
         { selector: 'textarea[placeholder*="Message"]', attribute: 'placeholder', value: "Sua Mensagem" },
-        { selector: 'button[type="submit"]', value: "Enviar Mensagem" },
+        { selector: 'button[type="submit"]', value: data.ui?.btn_submit || "Enviar Mensagem" },
         { selector: '.loading', value: "Carregando" },
         { selector: '.sent-message', value: "Sua mensagem foi enviada. Obrigado!" }
     ];
@@ -532,11 +532,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Varredura Final de Tradução (Fallback para textos soltos)
     const commonTranslations = {
-        "Home": "Início", "About": "Sobre", "About Us": "Sobre Nós",
-        "Services": "Serviços", "Portfolio": "Portfólio", "Contact": "Contato",
+        "Home": data.ui?.nav_home || "Início", 
+        "About": data.ui?.nav_about || "Sobre", 
+        "About Us": data.ui?.nav_about || "Sobre Nós",
+        "Services": data.ui?.nav_services || "Serviços", 
+        "Portfolio": data.ui?.nav_portfolio || "Portfólio", 
+        "Contact": data.ui?.nav_contact || "Contato",
         "Team": "Equipe", "Pricing": "Preços", "Blog": "Blog",
-        "Read More": "Leia Mais", "Learn More": "Saiba Mais", "Get Started": "Começar",
-        "Send Message": "Enviar Mensagem", "Subject": "Assunto", "Message": "Mensagem",
+        "Read More": data.ui?.btn_read_more || "Leia Mais", 
+        "Learn More": data.ui?.btn_read_more || "Saiba Mais", 
+        "Get Started": data.hero?.cta || "Começar",
+        "Send Message": data.ui?.btn_submit || "Enviar Mensagem", 
+        "Subject": "Assunto", "Message": "Mensagem",
         "Your Name": "Seu Nome", "Your Email": "Seu Email", "Call Us": "Ligue para nós",
         "Email Us": "Envie um email", "Location": "Localização", "Open Hours": "Horário",
         "Frequently Asked Questions": "Perguntas Frequentes", "Testimonials": "Depoimentos",
