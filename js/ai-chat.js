@@ -64,18 +64,19 @@ async function generateSiteStructure(userInput) {
     2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
     
     SELEÇÃO DE TEMPLATE (templateSource):
-    O sistema possui templates HTML estáticos prontos na pasta 'templates/'.
-    Você DEVE definir o campo "templateSource" com o nome exato da pasta para que o sistema carregue o arquivo 'index.html' correspondente.
+    ATENÇÃO: O sistema possui VÁRIOS templates na pasta 'templates/'. NÃO use apenas o 'generic'.
+    Você DEVE analisar o pedido do usuário e selecionar a pasta correta abaixo para garantir um design diferenciado.
     
-    OPÇÕES DISPONÍVEIS (Use apenas estas strings exatas):
-    - "generic"     -> Carrega: templates/strategy/index.html (Corporativo, Advogado, Startup, Geral)
-    - "nuptial"     -> Carrega: templates/nuptial/index.html (Casamento, Eventos, Festas)
-    - "medico"      -> Carrega: templates/medico/index.html (Saúde, Clínica, Dentista)
-    - "ecommerce"   -> Carrega: templates/ecommerce/index.html (Loja Virtual, Vendas)
-    - "erp"         -> Carrega: templates/erp/index.html (Dashboard, Sistema, Admin)
-    - "restaurante" -> Carrega: templates/restaurante/index.html (Comida, Bar, Café)
+    MAPA DE TEMPLATES (templateSource -> Pasta):
+    - "nuptial"     -> templates/nuptial/     (Obrigatório para: Casamentos, Festas, Eventos)
+    - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas)
+    - "restaurante" -> templates/restaurante/ (Obrigatório para: Restaurantes, Bares, Cafés)
+    - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio)
+    - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin)
+    - "generic"     -> templates/generic/     (Use APENAS para: Corporativo, Advocacia, Tech, Outros)
     
-    IMPORTANTE: Se o usuário pedir algo fora dessas categorias específicas, use "generic".
+    REGRA: Se o usuário pedir um site de casamento, é PROIBIDO usar "generic". Use "nuptial".
+    Se o usuário pedir uma loja, é PROIBIDO usar "generic". Use "ecommerce".
     
     CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
     - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
@@ -270,6 +271,10 @@ async function generateSiteStructure(userInput) {
             fallbackTemplate = "ecommerce";
             fallbackNiche = "E-commerce";
             fallbackBrand = "Minha Loja";
+        } else if (lowerInput.includes("restaurante") || lowerInput.includes("comida") || lowerInput.includes("cafe") || lowerInput.includes("bar")) {
+            fallbackTemplate = "restaurante";
+            fallbackNiche = "Gastronomia";
+            fallbackBrand = "Sabor & Arte";
         }
 
         text = JSON.stringify({
