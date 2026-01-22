@@ -11,18 +11,23 @@ exports.handler = async (event) => {
         const body = JSON.parse(event.body);
 
         // Pega as chaves do ambiente
-        const GROQ_API_KEY = process.env.GROQ_API_KEY ? process.env.GROQ_API_KEY.trim() : null;
+        let MISTRAL_API_KEY = process.env.MISTRAL_API_KEY ? process.env.MISTRAL_API_KEY.trim() : null;
 
-        if (!GROQ_API_KEY) {
+        // FALLBACK: Se não encontrar no ambiente, usa a chave fornecida diretamente (Correção para Localhost)
+        if (!MISTRAL_API_KEY) {
+            MISTRAL_API_KEY = "otFYtFdY9xu6WD0qQfKUpAIrHV4rSERK";
+        }
+
+        if (!MISTRAL_API_KEY) {
             return { 
                 statusCode: 401, 
-                body: JSON.stringify({ error: { message: "Chave Groq não configurada no servidor." } }) 
+                body: JSON.stringify({ error: { message: "Chave Mistral não configurada no servidor." } }) 
             };
         }
 
-        const provider = body.provider || 'groq';
+        const provider = body.provider || 'mistral';
 
-        if (provider === 'groq') {
+        if (provider === 'mistral') {
             const systemInst = body.messages.find(m => m.role === 'system')?.content || '';
             const userMsg = body.messages.find(m => m.role === 'user')?.content || '';
 
@@ -32,14 +37,14 @@ exports.handler = async (event) => {
                     throw new Error("Fetch API não encontrada. Atualize seu Node.js para v18+ ou instale 'node-fetch'.");
                 }
 
-                const response = await fetch('https://api.groq.com/openai/v1/chat/completions', {
+                const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
-                        'Authorization': `Bearer ${GROQ_API_KEY}`,
+                        'Authorization': `Bearer ${MISTRAL_API_KEY}`,
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        model: "llama-3.3-70b-versatile", // Modelo atualizado (Llama 3.3 70B)
+                        model: "mistral-small-latest", // Modelo rápido e eficiente da Mistral
                         messages: [
                             { role: "system", content: systemInst },
                             { role: "user", content: userMsg }
@@ -52,8 +57,8 @@ exports.handler = async (event) => {
 
                 if (!response.ok) {
                     const errText = await response.text();
-                    console.error(`Groq API Error Body: ${errText}`); // Log detalhado no terminal
-                    throw new Error(`Groq API Error (${response.status}): ${errText}`);
+                    console.error(`Mistral API Error Body: ${errText}`); // Log detalhado no terminal
+                    throw new Error(`Mistral API Error (${response.status}): ${errText}`);
                 }
 
                 const data = await response.json();
@@ -61,12 +66,12 @@ exports.handler = async (event) => {
                     statusCode: 200,
                     body: JSON.stringify({
                         choices: data.choices,
-                        model_used: "llama-3.3-70b-versatile"
+                        model_used: "mistral-small-latest"
                     })
                 };
 
             } catch (error) {
-                console.error("Erro na API Groq:", error);
+                console.error("Erro na API Mistral:", error);
                 return {
                     statusCode: 500,
                     body: JSON.stringify({ error: { message: error.message } })

@@ -396,7 +396,6 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-            const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
             // 0. Prioridade 1: Dados embutidos (versão baixada)
             let data = window.bakedData || null;
 
@@ -542,8 +541,6 @@
                 const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
                 root.style.setProperty('--text-main', safeTextColor);
                 
-                const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
-                root.style.setProperty('--text-main', safeTextColor);
                 root.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             }
 
@@ -699,21 +696,15 @@
                     data.portfolio.forEach((item, index) => {
                         // Generate a random image for portfolio if not provided specifically
                         const pImg = data.images.portfolio ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
-<<<<<<< HEAD
-=======
                         const titlePath = `portfolio.${index}.title`;
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         
                         portfolioGrid.innerHTML += `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
                                     <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
                                     <div class="portfolio-info">
-<<<<<<< HEAD
                                         <h4>${item.title}</h4>
-=======
                                         <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${item.title}</h4>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                                         <p>${item.category}</p>
                                     </div>
                                 </div>

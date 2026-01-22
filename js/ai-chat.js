@@ -1,6 +1,3 @@
-// Importa a chave do arquivo de configuração (que está ignorado pelo Git)
-import { API_KEY } from './config.js';
-
 const chatWindow = document.getElementById('aiChatWindow');
 const input = document.getElementById('aiInput');
 const sendBtn = document.getElementById('aiSendBtn');
@@ -35,30 +32,6 @@ async function handleUserResponse() {
     input.disabled = true;
     sendBtn.disabled = true;
 
-    // --- LÓGICA DE SEGURANÇA: Gerenciamento de Chave Dinâmica ---
-    // 1. Tenta usar a chave do arquivo config.js OU a salva no navegador
-    let effectiveKey = API_KEY;
-    if (!effectiveKey || effectiveKey === '') {
-        effectiveKey = localStorage.getItem('inove_user_api_key');
-    }
-
-    // 2. Se o usuário enviou algo que parece uma chave, salvamos
-    if (!effectiveKey && text.trim().startsWith('pplx-')) {
-        localStorage.setItem('inove_user_api_key', text.trim());
-        addMessage("✅ Chave de API salva com sucesso! Vamos começar.", 'bot');
-        addMessage("Qual é o nome do seu negócio e o que você faz?", 'bot');
-        input.disabled = false;
-        sendBtn.disabled = false;
-        return;
-    }
-
-    // 3. Se ainda não temos chave, pedimos ao usuário
-    // ALTERAÇÃO: Não bloqueamos mais se não tiver chave. 
-    // Se não tiver chave, tentaremos usar o Proxy do Netlify.
-    // if (!effectiveKey) { ... } -> Removido o bloqueio
-    
-    // -----------------------------------------------------------
-
     if (step === 0) {
         userData.name = text; // Na verdade pegamos tudo junto no primeiro prompt para simplificar
         userData.details = text;
@@ -66,8 +39,8 @@ async function handleUserResponse() {
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
         
         try {
-            // Passamos a chave efetiva para a função de geração
-            await generateSiteStructure(userData.details, effectiveKey);
+            // Chama a função de geração (agora usando Proxy/Groq)
+            await generateSiteStructure(userData.details);
         } catch (error) {
             console.error(error);
             addMessage("Ops! Tive um problema ao conectar com a IA. Verifique a API Key no código.", 'bot');
@@ -77,7 +50,7 @@ async function handleUserResponse() {
     }
 }
 
-async function generateSiteStructure(userInput, apiKey) {
+async function generateSiteStructure(userInput) {
     const systemPrompt = `
     Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
     Sua missão é criar o JSON estruturado para um projeto web moderno e responsivo.
@@ -90,9 +63,23 @@ async function generateSiteStructure(userInput, apiKey) {
     1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
     2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
     
+    SELEÇÃO DE TEMPLATE (templateSource):
+    Você DEVE selecionar um dos templates abaixo para servir de base estrutural. O sistema carregará o HTML da pasta templates/.
+    Analise o pedido do usuário e defina o campo "templateSource" com uma das opções:
+    
+    - "generic": (Caminho: templates/generic/) -> Use para sites corporativos, landing pages, startups, advogados, serviços gerais.
+    - "nuptial": (Caminho: templates/nuptial/) -> Use para casamentos, noivados, convites, eventos.
+    - "medico": (Caminho: templates/medico/) -> Use para clínicas, médicos, dentistas, saúde, estética.
+    - "ecommerce": (Caminho: templates/ecommerce/) -> Use para lojas virtuais, vendas de produtos, vitrines.
+    - "erp": (Caminho: templates/erp/) -> Use para sistemas, dashboards, painéis administrativos, CRM.
+    - "restaurante": (Caminho: templates/restaurante/) -> Use para restaurantes, bares, cafeterias, delivery.
+    
+    Se nenhuma categoria específica se aplicar, use "generic".
+    
     ESTRUTURA JSON PARA "landing":
     {
         "projectType": "landing",
+        "templateSource": "generic | nuptial | medico | ecommerce | restaurante",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
@@ -133,6 +120,7 @@ async function generateSiteStructure(userInput, apiKey) {
     ESTRUTURA JSON PARA "system":
     {
         "projectType": "system",
+        "templateSource": "erp | generic",
         "brandName": "Nome do Sistema",
         "themeColor": "#HEX (Cor Principal)",
         "sidebarItems": [
@@ -173,17 +161,12 @@ async function generateSiteStructure(userInput, apiKey) {
     7. FONTS: Use nomes reais do Google Fonts (ex: 'Poppins', 'Montserrat', 'Open Sans', 'Playfair Display', 'Roboto').
     `;
 
-    // Verificação de segurança redundante
-    // REMOVIDO: Permitimos apiKey vazia para tentar o Proxy do Netlify
-    // if (!apiKey) { throw new Error("Chave de API não fornecida."); }
-
     // Simulação de Progresso para UX
     const progressSteps = [
         "🔍 Analisando seu nicho de mercado...",
-        "🎨 Definindo paleta de cores e tipografia...",
-        "📐 Estruturando o layout da interface...",
-        "✍️ Criando copy persuasiva e conteúdo...",
-        "🚀 Finalizando protótipo e gerando código..."
+        "⚡ Conectando ao motor Mistral AI...",
+        "🎨 Criando design system e paleta...",
+        "🚀 Gerando código do site..."
     ];
     let stepIndex = 0;
     const progressInterval = setInterval(() => {
@@ -193,44 +176,116 @@ async function generateSiteStructure(userInput, apiKey) {
         }
     }, 2500);
 
-    try {
-        // LÓGICA HÍBRIDA: Direto ou Proxy
-        let apiUrl = 'https://api.perplexity.ai/chat/completions';
-        let headers = {
-            'Content-Type': 'application/json'
-        };
+    let text = null;
 
-        if (apiKey) {
-            // Se tem chave do usuário, vai direto
-            headers['Authorization'] = `Bearer ${apiKey}`;
-        } else {
-            // Se não tem chave, usa a função do Netlify (Proxy)
-            apiUrl = '/.netlify/functions/chat';
+    // TENTATIVA 1: Proxy Local (Ideal para Produção/Netlify)
+    if (!text) {
+        try {
+            const response = await fetch('/.netlify/functions/chat', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    provider: "mistral", // Força o uso da Mistral no backend
+                    messages: [
+                        { role: "system", content: systemPrompt },
+                        { role: "user", content: userInput + "\n\n(Gere o JSON completo agora.)" }
+                    ]
+                })
+            });
+            
+            if (response.ok) {
+                const data = await response.json();
+                // Suporte para resposta direta ou formato OpenAI
+                text = data.choices?.[0]?.message?.content || data.body || data;
+                if (typeof text !== 'string') text = JSON.stringify(text);
+            } else {
+                // Se der 404 ou 405, estamos em localhost sem Netlify Dev -> Força erro para cair no catch
+                if (response.status === 404 || response.status === 405) {
+                    throw new Error("Proxy indisponível (Localhost)");
+                }
+                console.error(`❌ Erro no Proxy (${response.status})`);
+            }
+        } catch (e) {
+            console.warn("⚠️ Proxy falhou, tentando conexão direta com Mistral...", e);
+            
+            // TENTATIVA 2: Conexão Direta (Fallback para Localhost)
+            try {
+                const MISTRAL_KEY = "otFYtFdY9xu6WD0qQfKUpAIrHV4rSERK"; // Chave de Dev
+                const directResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `Bearer ${MISTRAL_KEY}`
+                    },
+                    body: JSON.stringify({
+                        model: "mistral-small-latest",
+                        messages: [
+                            { role: "system", content: systemPrompt },
+                            { role: "user", content: userInput + "\n\n(Gere o JSON completo agora.)" }
+                        ],
+                        temperature: 0.7
+                    })
+                });
+
+                if (directResponse.ok) {
+                    const data = await directResponse.json();
+                    text = data.choices?.[0]?.message?.content;
+                } else {
+                    console.error("❌ Erro na conexão direta:", await directResponse.text());
+                }
+            } catch (directError) {
+                console.error("❌ Falha total na conexão:", directError);
+            }
         }
+    }
 
-        const response = await fetch(apiUrl, {
-            method: 'POST',
-            headers: headers,
-            body: JSON.stringify({
-                model: "sonar-pro", 
-                messages: [
-                    { role: "system", content: systemPrompt },
-                    { role: "user", content: userInput + "\n\n(Gere o JSON completo agora. Se a descrição for pouca, invente dados profissionais.)" }
-                ]
-            })
-        });
+    clearInterval(progressInterval); // Para a animação
 
-        clearInterval(progressInterval); // Para a animação
-
-        if (!response.ok) {
-            const errorData = await response.json().catch(() => ({}));
-            throw new Error(`Erro API (${response.status}): ${errorData.error?.message || response.statusText}`);
-        }
-
-        const data = await response.json();
-        let text = data.choices[0].message.content;
+    // 3. TENTATIVA: Fallback de Emergência (Nunca entregar erro)
+    if (!text) {
+        console.error("❌ Todas as IAs falharam. Gerando template de emergência.");
         
-        console.log("🤖 Resposta Bruta da IA:", text); // Log para debug: Veja no Console (F12) o que a IA retornou
+        // Detecção básica de intenção para o fallback (Melhoria UX)
+        let fallbackTemplate = "generic";
+        let fallbackNiche = "Geral";
+        let fallbackBrand = "Seu Negócio";
+        const lowerInput = (userInput || "").toLowerCase();
+
+        if (lowerInput.includes("casamento") || lowerInput.includes("noiva") || lowerInput.includes("wedding")) {
+            fallbackTemplate = "nuptial";
+            fallbackNiche = "Casamento";
+            fallbackBrand = "Casamento dos Sonhos";
+        } else if (lowerInput.includes("medico") || lowerInput.includes("clinica") || lowerInput.includes("saude") || lowerInput.includes("dentista")) {
+            fallbackTemplate = "medico";
+            fallbackNiche = "Saúde";
+            fallbackBrand = "Clínica Saúde";
+        } else if (lowerInput.includes("loja") || lowerInput.includes("ecommerce") || lowerInput.includes("venda")) {
+            fallbackTemplate = "ecommerce";
+            fallbackNiche = "E-commerce";
+            fallbackBrand = "Minha Loja";
+        }
+
+        text = JSON.stringify({
+            projectType: "landing",
+            templateSource: fallbackTemplate,
+            brandName: fallbackBrand,
+            niche: fallbackNiche,
+            themeStyle: "modern",
+            colors: { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" },
+            fonts: { heading: "Montserrat", body: "Open Sans" },
+            hero: { title: "Bem-vindo ao seu Site", subtitle: "A IA está indisponível no momento, mas geramos este layout base para você editar.", cta: "Saiba Mais" },
+            about: { title: "Sobre Nós", text: "Descreva sua empresa aqui. Este é um texto de preenchimento automático.", stats: [] },
+            services: [{ title: "Serviço Principal", desc: "Descrição do serviço.", icon: "bi-star" }, { title: "Outro Serviço", desc: "Descrição do serviço.", icon: "bi-gear" }],
+            features: [],
+            portfolio: [],
+            testimonials: [],
+            contact: { address: "Seu Endereço", email: "contato@empresa.com", phone: "(00) 0000-0000", cta_text: "Fale Conosco" },
+            images: {}
+        });
+    }
+
+    try {
+        console.log("🤖 Resposta Bruta da IA (ou Fallback):", text);
 
         // Limpeza extra para garantir JSON válido
         text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
