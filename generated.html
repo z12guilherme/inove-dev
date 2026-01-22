@@ -447,6 +447,18 @@
         });
 
         function renderSite(data) {
+            function escapeHtml(text) {
+                if (!text) return '';
+                var map = {
+                    '&': '&amp;',
+                    '<': '<',
+                    '>': '>',
+                    '"': '"',
+                    "'": '&#039;'
+                };
+                return text.replace(/[&<>"']/g, function(m) { return map[m]; });
+            }
+
             const saveToLocal = () => {
                 localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
             };
@@ -591,18 +603,7 @@
             const heroContainer = heroSection.querySelector('.container');
             
             if (data.layout?.heroStyle === 'split-left' || data.layout?.heroStyle === 'split-right') {
-                heroContainer.innerHTML = `
-                    <div class="row align-items-center">
-                        <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-2' : ''}">
-                            <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
-                        </div>
-                        <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
-                            <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${data.hero?.title}</h1>
-                            <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${data.hero?.subtitle}</p>
-                            <a href="#contact" class="btn-custom" contenteditable="true" data-path="hero.cta">${data.hero?.cta || 'Saiba Mais'}</a>
-                        </div>
-                    </div>
-                `;
+                heroContainer.innerHTML = '<div class="row align-items-center"><div class="col-lg-6 ' + (data.layout.heroStyle === 'split-right' ? 'order-lg-2' : '') + '"><img src="' + (data.images?.hero || '') + '" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in"></div><div class="col-lg-6 ' + (data.layout.heroStyle === 'split-right' ? 'order-lg-1' : '') + '"><h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">' + escapeHtml(data.hero?.title || '') + '</h1><p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">' + escapeHtml(data.hero?.subtitle || '') + '</p><a href="#contact" class="btn-custom" contenteditable="true" data-path="hero.cta">' + escapeHtml(data.hero?.cta || 'Saiba Mais') + '</a></div></div>';
                 // Remove overlay for split layout to make it cleaner
                 const overlay = heroSection.querySelector('.hero-overlay');
                 if(overlay) overlay.style.display = 'none';
@@ -906,7 +907,7 @@
                     
                     // Injeta os dados atuais diretamente no arquivo baixado
                     const dataScript = exportDoc.createElement('script');
-                    dataScript.textContent = `window.bakedData = ${JSON.stringify(data)};`;
+                    dataScript.textContent = 'window.bakedData = ' + JSON.stringify(data).replace(/'/g, "\\'") + ';';
                     exportDoc.head.prepend(dataScript);
                     
                     // Gera o Blob do HTML limpo
