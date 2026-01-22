@@ -211,11 +211,8 @@ async function generateSiteStructure(userInput) {
                 text = data.choices?.[0]?.message?.content || data.body || data;
                 if (typeof text !== 'string') text = JSON.stringify(text);
             } else {
-                // Se der 404 ou 405, estamos em localhost sem Netlify Dev -> Força erro para cair no catch
-                if (response.status === 404 || response.status === 405) {
-                    throw new Error("Proxy indisponível (Localhost)");
-                }
-                console.error(`❌ Erro no Proxy (${response.status})`);
+                // Se der erro (401, 404, 500), lança exceção para ativar o fallback (Tentativa 2)
+                throw new Error(`Erro no Proxy (${response.status})`);
             }
         } catch (e) {
             console.warn("⚠️ Proxy falhou, tentando conexão direta com Mistral...", e);
