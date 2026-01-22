@@ -454,6 +454,9 @@
             // --- LÓGICA DE PROXY DE TEMPLATE (NOVO) ---
             // Se um template específico foi escolhido, carregamos ele em vez do layout padrão
             if (data.templateSource) {
+                // Garante que os dados estejam salvos para o ai-integration.js ler no novo contexto
+                localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
+
                 const slug = data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '');
                 const templatePath = `templates/${slug}/index.html`;
 
@@ -467,7 +470,7 @@
                     .then(html => {
                         // 1. Corrigir caminhos relativos (assets/ -> templates/slug/assets/)
                         const basePath = `templates/${slug}/`;
-                        let fixedHtml = html.replace(/(src|href)="'([^"']+)["']/g, (match, attr, url) => {
+                        let fixedHtml = html.replace(/(src|href)=["']([^"']+)["']/g, (match, attr, url) => {
                             // Se for script de integração ou script global, ajusta para a raiz
                             if (url.includes('ai-integration.js') || url.includes('script.js')) {
                                 return `${attr}="js/${url.split('/').pop()}"`;
@@ -479,30 +482,17 @@
                             return match;
                         });
 
-                        // 2. Injetar a Barra de Ferramentas do Studio no HTML do template
-                        const toolbarHtml = document.querySelector('.studio-toolbar').outerHTML;
-                        const badgeHtml = document.querySelector('.ai-badge').outerHTML;
-                        
+                        // 2. Garantir que o script de integração (Studio) esteja presente
+                        // Isso garante que a barra de ferramentas e a edição funcionem no template carregado
+                        if (!fixedHtml.includes('ai-integration.js')) {
+                            fixedHtml = fixedHtml.replace('</body>', '<script src="js/ai-integration.js"></script></body>');
+                        }
+
                         // Substitui o corpo do documento atual pelo do template
                         document.open();
                         document.write(fixedHtml);
                         document.close();
 
-                        // Re-injeta a toolbar após o carregamento
-                        setTimeout(() => {
-                            const body = document.body;
-                            if (body) {
-                                const div = document.createElement('div');
-                                div.innerHTML = toolbarHtml + badgeHtml;
-                                body.prepend(div.firstChild); // Toolbar no topo
-                                body.appendChild(div.lastChild); // Badge no rodapé
-                                
-                                // Reativa os listeners da toolbar (pois o DOM mudou)
-                                // Nota: Em uma implementação ideal, a toolbar seria um iframe ou componente isolado,
-                                // mas para este protótipo, recarregar a página se necessário ou aceitar que a edição
-                                // visual pode ser limitada no modo template é aceitável.
-                            }
-                        }, 500);
                         
                         return; // Interrompe a renderização do layout padrão
                     })
