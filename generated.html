@@ -614,7 +614,7 @@
                 heroContainer.innerHTML = `
                     <div class="row align-items-center">
                         <div class="col-lg-6 ${imgOrder}">
-                            <img src="${heroImg}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
+                            <img src="${heroImg}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in" onerror="this.src='https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=800&q=80'">
                         </div>
                         <div class="col-lg-6 ${textOrder}">
                             <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${title}</h1>
@@ -718,7 +718,7 @@
                         const itemHtml = `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
-                                    <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
+                                    <img src="${pImg}" class="img-fluid" alt="${escapeHtml(item.title)}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
                                     <div class="portfolio-info">
                                         <h4 data-path="${titlePath}" style="color:${titleColor}">${item.title}</h4>
                                         <p>${item.category}</p>
