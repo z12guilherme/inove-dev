@@ -1,0 +1,6 @@
+# Arquivos de Ambiente (Segredos)
+.env
+
+# Dependências e Build
+node_modules/
+.netlify/

@@ -69,8 +69,9 @@ async function generateSiteStructure(userInput) {
     
     MAPA DE TEMPLATES (templateSource -> Pasta):
     - "nuptial"     -> templates/nuptial/     (Obrigatório para: Casamentos, Festas, Eventos)
+    - "strategy"    -> templates/strategy/    (Obrigatório para: Corporativo, Empresas, Negócios, Startups, Consultoria, Marketing)
     - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas)
-    - "restaurante" -> templates/restaurante/ (Obrigatório para: Restaurantes, Bares, Cafés)
+    - "pizza"       -> templates/pizza/ (Obrigatório para: pizzas, Bares, Cafés)
     - "pizza"       -> templates/pizza/       (Obrigatório para: Pizzarias, Delivery de Pizza)
     - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio)
     - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin)
@@ -80,7 +81,7 @@ async function generateSiteStructure(userInput) {
     REGRA: Se o usuário pedir um site de casamento, é PROIBIDO usar "generic". Use "nuptial".
     Se o usuário pedir uma loja, é PROIBIDO usar "generic". Use "ecommerce".
     Se o usuário pedir um portfólio, é PROIBIDO usar "generic". Use "iportfolio".
-    Se o usuário pedir uma pizzaria, é PROIBIDO usar "generic". Use "pizza".
+    Se o usuário pedir um site de empresa ou corporativo, é PROIBIDO usar "generic". Use "strategy".
     
     CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
     - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
@@ -91,7 +92,7 @@ async function generateSiteStructure(userInput) {
     ESTRUTURA JSON PARA "landing":
     {
         "projectType": "landing",
-        "templateSource": "generic | nuptial | medico | ecommerce | restaurante | iportfolio | pizza",
+        "templateSource": "generic | nuptial | medico | ecommerce | pizza | iportfolio | pizza",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
@@ -164,7 +165,7 @@ async function generateSiteStructure(userInput) {
     2. Use aspas duplas.
     3. NÃO use vírgulas no final de listas.
     4. Escape aspas internas.
-    5. IMAGENS: Retorne descrições visuais do CONTEÚDO em INGLÊS (ex: "modern office workspace", "plate of pasta"). NÃO envie URLs.
+    5. IMAGENS: Não gere descrições de imagens. Deixe os valores do objeto "images" como strings vazias "". O sistema usará o banco de imagens padrão.
     6. CORES E CONTRASTE (CRÍTICO - LEIA COM ATENÇÃO): 
        - A LEGIBILIDADE É A PRIORIDADE NÚMERO 1.
        - Se 'background' for escuro (ex: #000, #1a1a1a, #0f172a), 'text' DEVE SER EXATAMENTE #FFFFFF.
@@ -176,7 +177,7 @@ async function generateSiteStructure(userInput) {
     // Simulação de Progresso para UX
     const progressSteps = [
         "🔍 Analisando seu nicho de mercado...",
-        "⚡ Conectando ao motor Mistral AI...",
+        "⚡ Conectando ao motor Google Gemini...",
         "🎨 Criando design system e paleta...",
         "🚀 Gerando código do site..."
     ];
@@ -197,7 +198,7 @@ async function generateSiteStructure(userInput) {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({
-                    provider: "mistral", // Força o uso da Mistral no backend
+                    provider: "gemini", // Agora usamos Gemini como padrão
                     messages: [
                         { role: "system", content: systemPrompt },
                         { role: "user", content: userInput + "\n\n(Gere o JSON completo agora.)" }
@@ -208,37 +209,44 @@ async function generateSiteStructure(userInput) {
             if (response.ok) {
                 const data = await response.json();
                 // Suporte para resposta direta ou formato OpenAI
-                text = data.choices?.[0]?.message?.content || data.body || data;
-                if (typeof text !== 'string') text = JSON.stringify(text);
+                if (data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content) {
+                    text = data.choices[0].message.content;
+                } else if (typeof data === 'string') {
+                    text = data;
+                }
+                // Se não encontrar texto válido, 'text' continua null e aciona o fallback abaixo
             } else {
                 // Se der erro (401, 404, 500), lança exceção para ativar o fallback (Tentativa 2)
                 throw new Error(`Erro no Proxy (${response.status})`);
             }
         } catch (e) {
-            console.warn("⚠️ Proxy falhou, tentando conexão direta com Mistral...", e);
+            console.warn("⚠️ Proxy falhou, tentando conexão direta com Gemini...", e);
             
             // TENTATIVA 2: Conexão Direta (Fallback para Localhost)
             try {
-                const MISTRAL_KEY = ""; // Chave removida para segurança (Use Proxy em produção)
-                const directResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                // Chave de emergência para funcionamento local
+                const GEMINI_DIRECT_KEY = "AIzaSyCGL5FoVxsShJOHu5wtJutKQQEnWSF0T68"; 
+                
+                const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_DIRECT_KEY}`, {
                     method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'Authorization': `Bearer ${MISTRAL_KEY}`
-                    },
+                    headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        model: "mistral-small-latest",
-                        messages: [
-                            { role: "system", content: systemPrompt },
-                            { role: "user", content: userInput + "\n\n(Gere o JSON completo agora.)" }
-                        ],
-                        temperature: 0.7
+                        contents: [{ 
+                            role: "user", 
+                            parts: [{ text: userInput + "\n\n(Gere o JSON completo agora.)" }] 
+                        }],
+                        systemInstruction: {
+                            parts: [{ text: systemPrompt }]
+                        },
+                        generationConfig: {
+                            responseMimeType: "application/json"
+                        }
                     })
                 });
 
                 if (directResponse.ok) {
                     const data = await directResponse.json();
-                    text = data.choices?.[0]?.message?.content;
+                    text = data.candidates?.[0]?.content?.parts?.[0]?.text;
                 } else {
                     console.error("❌ Erro na conexão direta:", await directResponse.text());
                 }
@@ -257,33 +265,37 @@ async function generateSiteStructure(userInput) {
         // Detecção básica de intenção para o fallback (Melhoria UX)
         let fallbackTemplate = "generic";
         let fallbackNiche = "Geral";
-        let fallbackBrand = "Seu Negócio";
+        let fallbackBrand = "Nova Era Soluções";
         const lowerInput = (userInput || "").toLowerCase();
 
         if (lowerInput.includes("casamento") || lowerInput.includes("noiva") || lowerInput.includes("wedding")) {
             fallbackTemplate = "nuptial";
             fallbackNiche = "Casamento";
-            fallbackBrand = "Casamento dos Sonhos";
+            fallbackBrand = "Ana & Pedro";
+        } else if (lowerInput.includes("empresa") || lowerInput.includes("negocio") || lowerInput.includes("consultoria") || lowerInput.includes("corporativo")) {
+            fallbackTemplate = "strategy";
+            fallbackNiche = "Corporativo";
+            fallbackBrand = "Nexus Consultoria";
         } else if (lowerInput.includes("medico") || lowerInput.includes("clinica") || lowerInput.includes("saude") || lowerInput.includes("dentista")) {
             fallbackTemplate = "medico";
             fallbackNiche = "Saúde";
-            fallbackBrand = "Clínica Saúde";
+            fallbackBrand = "Vitalis Clínica";
         } else if (lowerInput.includes("loja") || lowerInput.includes("ecommerce") || lowerInput.includes("venda")) {
             fallbackTemplate = "ecommerce";
             fallbackNiche = "E-commerce";
-            fallbackBrand = "Minha Loja";
-        } else if (lowerInput.includes("restaurante") || lowerInput.includes("comida") || lowerInput.includes("cafe") || lowerInput.includes("bar")) {
-            fallbackTemplate = "restaurante";
+            fallbackBrand = "Urban Store";
+        } else if (lowerInput.includes("pizza") || lowerInput.includes("comida") || lowerInput.includes("cafe") || lowerInput.includes("bar")) {
+            fallbackTemplate = "pizza";
             fallbackNiche = "Gastronomia";
-            fallbackBrand = "Sabor & Arte";
+            fallbackBrand = "Bistrô Sabor & Arte";
         } else if (lowerInput.includes("pizza") || lowerInput.includes("pizzaria")) {
             fallbackTemplate = "pizza";
             fallbackNiche = "Pizzaria";
-            fallbackBrand = "Pizza Express";
+            fallbackBrand = "La Bella Pizza";
         } else if (lowerInput.includes("portfolio") || lowerInput.includes("curriculo") || lowerInput.includes("pessoal")) {
             fallbackTemplate = "iportfolio";
             fallbackNiche = "Portfólio";
-            fallbackBrand = "Meu Portfólio";
+            fallbackBrand = "João Silva Design";
         }
 
         text = JSON.stringify({
@@ -294,13 +306,40 @@ async function generateSiteStructure(userInput) {
             themeStyle: "modern",
             colors: { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" },
             fonts: { heading: "Montserrat", body: "Open Sans" },
-            hero: { title: "Bem-vindo ao seu Site", subtitle: "A IA está indisponível no momento, mas geramos este layout base para você editar.", cta: "Saiba Mais" },
-            about: { title: "Sobre Nós", text: "Descreva sua empresa aqui. Este é um texto de preenchimento automático.", stats: [] },
-            services: [{ title: "Serviço Principal", desc: "Descrição do serviço.", icon: "bi-star" }, { title: "Outro Serviço", desc: "Descrição do serviço.", icon: "bi-gear" }],
-            features: [],
-            portfolio: [],
-            testimonials: [],
-            contact: { address: "Seu Endereço", email: "contato@empresa.com", phone: "(00) 0000-0000", cta_text: "Fale Conosco" },
+            hero: { 
+                title: "Transformando Ideias em Realidade", 
+                subtitle: "Soluções inovadoras e estratégias personalizadas para levar o seu projeto ao próximo nível de excelência.", 
+                cta: "Conheça Nossos Serviços" 
+            },
+            about: { 
+                title: "Nossa História", 
+                text: "Somos uma equipe apaixonada por entregar resultados. Com anos de experiência no mercado, combinamos criatividade e tecnologia para oferecer o melhor para nossos clientes. Nossa missão é superar expectativas e construir parcerias duradouras.", 
+                stats: [{number: "10+", label: "Anos de Experiência"}, {number: "500+", label: "Projetos Entregues"}] 
+            },
+            services: [
+                { title: "Consultoria Especializada", desc: "Análise detalhada e planejamento estratégico para o seu crescimento.", icon: "bi-graph-up-arrow" }, 
+                { title: "Desenvolvimento Sob Medida", desc: "Soluções tecnológicas adaptadas exatamente às suas necessidades.", icon: "bi-laptop" },
+                { title: "Suporte Premium", desc: "Atendimento ágil e eficiente para garantir sua tranquilidade.", icon: "bi-headset" }
+            ],
+            features: [
+                { title: "Qualidade Garantida", desc: "Processos rigorosos para assegurar a excelência.", icon: "bi-check-circle-fill" },
+                { title: "Inovação Constante", desc: "Estamos sempre à frente das tendências do mercado.", icon: "bi-lightbulb-fill" }
+            ],
+            portfolio: [
+                { title: "Projeto Alpha", category: "Estratégia", desc: "Reestruturação completa de processos corporativos." },
+                { title: "Campanha Beta", category: "Marketing", desc: "Lançamento de produto com alcance nacional." },
+                { title: "Sistema Gama", category: "Tecnologia", desc: "Plataforma integrada de gestão." }
+            ],
+            testimonials: [
+                { name: "Carlos Mendes", role: "CEO da TechCorp", text: "A equipe demonstrou um profissionalismo incrível. O resultado final superou todas as nossas expectativas." },
+                { name: "Mariana Costa", role: "Diretora de Marketing", text: "Excelente atendimento e entrega no prazo. Recomendo fortemente para quem busca qualidade." }
+            ],
+            contact: { 
+                address: "Av. Empresarial, 1000 - Torre Sul, São Paulo - SP", 
+                email: "contato@" + fallbackBrand.toLowerCase().replace(/[^a-z0-9]/g, '') + ".com.br", 
+                phone: "(11) 99999-0000", 
+                cta_text: "Solicite um Orçamento" 
+            },
             images: {}
         });
     }
@@ -346,7 +385,7 @@ async function generateSiteStructure(userInput) {
                 "marketing": "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1920&q=80",
                 "fitness": "https://images.unsplash.com/photo-1534438327276-14e5300c3a48?auto=format&fit=crop&w=1920&q=80",
                 "academia": "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1920&q=80",
-                "restaurante": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80",
+                "pizza": "https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?auto=format&fit=crop&w=1920&q=80",
                 "comida": "https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=1920&q=80",
                 "cafe": "https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=1920&q=80",
                 "ecommerce": "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?auto=format&fit=crop&w=1920&q=80",
@@ -392,17 +431,8 @@ async function generateSiteStructure(userInput) {
                     }
                 }
 
-                // 5. Engenharia de Prompt para Qualidade (Injeta realismo se não tiver template)
-                // Adiciona modificadores para garantir qualidade fotográfica
-                const enhancedPrompt = `${cleanPrompt}, realistic, 8k, cinematic lighting, high quality, professional photo`;
-                const encodedPrompt = encodeURIComponent(enhancedPrompt);
-                
-                const width = type === 'portrait' ? 600 : 1280;
-                const height = type === 'portrait' ? 800 : 720;
-                const seed = Math.floor(Math.random() * 10000);
-                
-                // Usa o modelo 'flux' para maior realismo e 'nologo' para limpar a imagem
-                return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=${width}&height=${height}&nologo=true&model=flux&seed=${seed}`;
+                // 5. Fallback para imagem padrão (Evita geração por IA)
+                return "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80";
             };
 
             // Garantir que todas as imagens essenciais existam
@@ -452,25 +482,14 @@ async function generateSiteStructure(userInput) {
             `, 'bot');
         } else {
             // Lógica para LANDING PAGES (Padrão)
-            localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
+            // Salva com ID único para permitir múltiplos projetos e edição direta no template
+            const storageKey = `ai_site_${timestamp}`;
+            localStorage.setItem(storageKey, JSON.stringify(siteData));
             
-            // Lista de templates disponíveis (baseado nas pastas em templates/)
-            const templatesHtml = `
-                <div class="mt-3 pt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
-                    <small class="text-white-50 d-block mb-2" style="font-size: 0.85em;">Não gostou do layout? Tente outro modelo:</small>
-                    <div class="d-flex flex-wrap gap-2 justify-content-center">
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="generic" style="font-size: 0.75rem;">🏢 Corporativo</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="medico" style="font-size: 0.75rem;">🏥 Saúde</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="restaurante" style="font-size: 0.75rem;">🍽️ Restaurante</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="pizza" style="font-size: 0.75rem;">🍕 Pizzaria</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="nuptial" style="font-size: 0.75rem;">💍 Casamento</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="ecommerce" style="font-size: 0.75rem;">🛍️ Loja</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="erp" style="font-size: 0.75rem;">📊 Sistema</button>
-                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="iportfolio" style="font-size: 0.75rem;">👤 Portfólio</button>
-                    </div>
-                </div>
-            `;
-
+            // Define o caminho real do template
+            const templatePath = `templates/${siteData.templateSource || 'strategy'}/index.html`;
+            const viewUrl = `${templatePath}?id=${timestamp}`;
+            
             addMessage(`
                 <strong>Site Gerado!</strong> 🚀<br>
                 Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
@@ -482,11 +501,10 @@ async function generateSiteStructure(userInput) {
                     <i class="bi bi-exclamation-triangle"></i> <strong>Nota:</strong> As imagens são geradas por IA em tempo real e podem apresentar variações ou não corresponder exatamente ao contexto.
                 </div>
                 <div class="text-center mt-3">
-                    <a href="generated.html?v=${timestamp}" target="_blank" class="btn btn-success btn-sm">
+                    <a href="${viewUrl}" target="_blank" class="btn btn-success btn-sm">
                         <i class="bi bi-magic"></i> Ver Site Gerado
                     </a>
                 </div>
-                ${templatesHtml}
             `, 'bot');
         }
 
@@ -544,25 +562,4 @@ document.querySelectorAll('.suggestion-btn').forEach(btn => {
         // Opcional: Clicar automaticamente no enviar se desejar
         // handleUserResponse();
     });
-});
-
-// Listener Global para os botões de "Tentar com novo template" (Event Delegation)
-document.addEventListener('click', (e) => {
-    if (e.target.classList.contains('retry-template-btn')) {
-        const selectedTemplate = e.target.getAttribute('data-template');
-        const templateName = e.target.innerText;
-        
-        // Desabilita os botões para evitar múltiplos cliques
-        document.querySelectorAll('.retry-template-btn').forEach(btn => btn.disabled = true);
-        
-        // Adiciona mensagem do usuário simulada
-        addMessage(`Quero testar com o modelo <strong>${templateName}</strong>`, 'user');
-        addMessage(`Perfeito! Recriando o design usando o modelo ${templateName}... <span class='typing-indicator'></span>`, 'bot');
-
-        // Reconstrói o prompt forçando o template, mas mantendo os dados originais
-        // userData.details contém o pedido original do usuário
-        const forcedPrompt = `${userData.details}\n\n[SYSTEM INSTRUCTION: O usuário solicitou explicitamente REFAZER o JSON usando o templateSource: "${selectedTemplate}". Mantenha os mesmos dados de negócio, mas adapte estritamente para este template.]`;
-        
-        generateSiteStructure(forcedPrompt);
-    }
 });

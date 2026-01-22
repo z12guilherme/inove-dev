@@ -33,7 +33,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // --- FUNÇÃO DE SALVAMENTO ---
     const saveToLocal = () => {
-        localStorage.setItem(storageKey, JSON.stringify(data));
+        try {
+            localStorage.setItem(storageKey, JSON.stringify(data));
+        } catch (e) {
+            console.warn("Inove AI: Não foi possível salvar no LocalStorage (Bloqueado pelo navegador).");
+        }
     };
 
     // --- HELPER: Gerador de Seletor Único (Para persistência de edições livres) ---
@@ -284,7 +288,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mapeamento Inteligente (Tenta encontrar elementos comuns em templates Bootstrap)
     const mappings = [
         // Marca e Títulos
-        { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a', value: data.brandName, path: 'brandName' },
+        { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a, .sitename', value: data.brandName, path: 'brandName' },
         { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1', value: data.hero?.title, path: 'hero.title' },
         { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2', value: data.hero?.subtitle, path: 'hero.subtitle' },
         { selector: '#hero .btn-get-started, .hero .btn-primary', value: data.hero?.cta, path: 'hero.cta' },

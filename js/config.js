@@ -1,2 +1,2 @@
-export const GEMINI_API_KEY = 'AIzaSyCoZf-Pczwfb23ZdQqgjmHcyZM4cGkni3k';
-export const API_KEY = GEMINI_API_KEY;
+// A chave agora é gerenciada pelo servidor (Netlify Functions) por segurança.
+// Não exponha chaves API aqui.
