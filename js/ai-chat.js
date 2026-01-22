@@ -64,17 +64,18 @@ async function generateSiteStructure(userInput) {
     2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
     
     SELEÇÃO DE TEMPLATE (templateSource):
-    Você DEVE selecionar um dos templates abaixo para servir de base estrutural. O sistema carregará o HTML da pasta templates/.
-    Analise o pedido do usuário e defina o campo "templateSource" com uma das opções:
+    O sistema possui templates HTML estáticos prontos na pasta 'templates/'.
+    Você DEVE definir o campo "templateSource" com o nome exato da pasta para que o sistema carregue o arquivo 'index.html' correspondente.
     
-    - "generic": (Caminho: templates/generic/) -> Use para sites corporativos, landing pages, startups, advogados, serviços gerais. Caso não haja um template específico, simule o estilo de modelos Bootstrap populares (ex: Agency, Creative) via customCss.
-    - "nuptial": (Caminho: templates/nuptial/) -> Use para casamentos, noivados, convites, eventos.
-    - "medico": (Caminho: templates/medico/) -> Use para clínicas, médicos, dentistas, saúde, estética.
-    - "ecommerce": (Caminho: templates/ecommerce/) -> Use para lojas virtuais, vendas de produtos, vitrines.
-    - "erp": (Caminho: templates/erp/) -> Use para sistemas, dashboards, painéis administrativos, CRM.
-    - "restaurante": (Caminho: templates/restaurante/) -> Use para restaurantes, bares, cafeterias, delivery.
+    OPÇÕES DISPONÍVEIS (Use apenas estas strings exatas):
+    - "generic"     -> Carrega: templates/strategy/index.html (Corporativo, Advogado, Startup, Geral)
+    - "nuptial"     -> Carrega: templates/nuptial/index.html (Casamento, Eventos, Festas)
+    - "medico"      -> Carrega: templates/medico/index.html (Saúde, Clínica, Dentista)
+    - "ecommerce"   -> Carrega: templates/ecommerce/index.html (Loja Virtual, Vendas)
+    - "erp"         -> Carrega: templates/erp/index.html (Dashboard, Sistema, Admin)
+    - "restaurante" -> Carrega: templates/restaurante/index.html (Comida, Bar, Café)
     
-    Se nenhuma categoria específica se aplicar, use "generic".
+    IMPORTANTE: Se o usuário pedir algo fora dessas categorias específicas, use "generic".
     
     CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
     - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
