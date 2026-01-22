@@ -603,7 +603,25 @@
             const heroContainer = heroSection.querySelector('.container');
             
             if (data.layout?.heroStyle === 'split-left' || data.layout?.heroStyle === 'split-right') {
-                heroContainer.innerHTML = '<div class="row align-items-center"><div class="col-lg-6 ' + (data.layout.heroStyle === 'split-right' ? 'order-lg-2' : '') + '"><img src="' + (data.images?.hero || '') + '" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in"></div><div class="col-lg-6 ' + (data.layout.heroStyle === 'split-right' ? 'order-lg-1' : '') + '"><h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">' + escapeHtml(data.hero?.title || '') + '</h1><p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">' + escapeHtml(data.hero?.subtitle || '') + '</p><a href="#contact" class="btn-custom" contenteditable="true" data-path="hero.cta">' + escapeHtml(data.hero?.cta || 'Saiba Mais') + '</a></div></div>';
+                const isRight = data.layout.heroStyle === 'split-right';
+                const imgOrder = isRight ? 'order-lg-2' : '';
+                const textOrder = isRight ? 'order-lg-1' : '';
+                const heroImg = data.images?.hero || '';
+                const title = escapeHtml(data.hero?.title || '');
+                const subtitle = escapeHtml(data.hero?.subtitle || '');
+                const cta = escapeHtml(data.hero?.cta || 'Saiba Mais');
+
+                heroContainer.innerHTML = `
+                    <div class="row align-items-center">
+                        <div class="col-lg-6 ${imgOrder}">
+                            <img src="${heroImg}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
+                        </div>
+                        <div class="col-lg-6 ${textOrder}">
+                            <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${title}</h1>
+                            <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${subtitle}</p>
+                            <a href="#contact" class="btn-custom" contenteditable="true" data-path="hero.cta">${cta}</a>
+                        </div>
+                    </div>`;
                 // Remove overlay for split layout to make it cleaner
                 const overlay = heroSection.querySelector('.hero-overlay');
                 if(overlay) overlay.style.display = 'none';
@@ -697,7 +715,7 @@
                         const titlePath = `portfolio.${index}.title`;
                         const titleColor = (data.individualColors && data.individualColors[titlePath]) || 'inherit';
                         
-                        portfolioGrid.innerHTML += `
+                        const itemHtml = `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
                                     <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
@@ -708,6 +726,7 @@
                                 </div>
                             </div>
                         `;
+                        portfolioGrid.innerHTML += itemHtml;
                     });
                 }
             }
