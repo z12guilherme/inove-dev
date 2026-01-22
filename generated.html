@@ -597,11 +597,9 @@
                             <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
                         </div>
                         <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
-                            <h1 class="display-3 fw-bold mb-4">${data.hero?.title}</h1>
-                            <p class="lead mb-4">${data.hero?.subtitle}</p>
                             <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${data.hero?.title}</h1>
                             <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${data.hero?.subtitle}</p>
-                            <a href="#contact" class="btn-custom">${data.hero?.cta || 'Saiba Mais'}</a>
+                            <a href="#contact" class="btn-custom" contenteditable="true" data-path="hero.cta">${data.hero?.cta || 'Saiba Mais'}</a>
                         </div>
                     </div>
                 `;
@@ -694,7 +692,7 @@
                     portfolioGrid.innerHTML = '';
                     data.portfolio.forEach((item, index) => {
                         // Generate a random image for portfolio if not provided specifically
-                        const pImg = (data.images && data.images.portfolio) ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
+                        const pImg = (data.images && data.images.portfolio) ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${encodeURIComponent(data.niche || 'business')},${index}`;
                         const titlePath = `portfolio.${index}.title`;
                         const titleColor = (data.individualColors && data.individualColors[titlePath]) || 'inherit';
                         
