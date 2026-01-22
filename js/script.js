@@ -26,6 +26,22 @@ function enviarMensagemWhatsApp(mensagem) {
     }, 5000);
 }
 
+// Função para enviar notificação silenciosa ao Telegram (via Netlify Function)
+async function notificarTelegram(dados) {
+    try {
+        await fetch('/.netlify/functions/telegram-notify', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(dados)
+        });
+        // Não precisamos esperar resposta ou mostrar erro visual para o usuário
+        // pois é um processo de background para o dono do site.
+        console.log("Notificação Telegram enviada.");
+    } catch (e) {
+        console.warn("Falha ao notificar Telegram:", e);
+    }
+}
+
 // Clique no botão principal "Enviar Mensagem"
 if (btnEnviar) {
     btnEnviar.addEventListener('click', function (e) {
@@ -60,6 +76,9 @@ if (btnEnviar) {
         feedback.style.color = 'blue';
         btnEnviar.disabled = true;
         btnEnviar.textContent = 'Enviando...';
+
+        // Dispara notificação Telegram em paralelo (não bloqueia o fluxo principal)
+        notificarTelegram({ nome, email, telefone, mensagem });
 
         // Envio via EmailJS
         // Substitua 'service_id' e 'template_id' pelos seus IDs do EmailJS
