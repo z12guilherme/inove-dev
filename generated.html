@@ -133,8 +133,6 @@
             border: 1px solid rgba(255,255,255,0.1);
             max-width: 300px;
         }
-<<<<<<< HEAD
-=======
 
         /* Studio Toolbar */
         .studio-toolbar {
@@ -173,16 +171,10 @@
         .color-control select { background: transparent; color: white; border: none; font-size: 11px; cursor: pointer; outline: none; padding: 0 5px; }
         .color-control select option { background: #0D1B2A; color: white; }
         .form-control-color-sm { width: 22px; height: 18px; padding: 0; border: none; background: none; cursor: pointer; border-radius: 2px; }
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
     </style>
 </head>
 <body>
-
-<<<<<<< HEAD
-    <nav class="navbar navbar-expand-lg fixed-top">
-=======
     <nav class="navbar navbar-expand-lg fixed-top" style="top: 45px; padding: 10px 0;">
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
         <div class="container">
             <a class="navbar-brand fw-bold" href="#" id="navBrand">Logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav"><span class="navbar-toggler-icon"></span></button>
@@ -198,8 +190,6 @@
         </div>
     </nav>
 
-<<<<<<< HEAD
-=======
     <div class="studio-toolbar">
         <div class="d-flex align-items-center">
             <i class="bi bi-stars text-primary me-1"></i>
@@ -248,8 +238,6 @@
             <i class="bi bi-info-circle me-1"></i> Clique nos textos para editar
         </div>
     </div>
-
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
     <section id="hero">
         <div class="hero-overlay"></div>
         <div class="container text-center">
@@ -408,9 +396,7 @@
 
     <script>
         document.addEventListener('DOMContentLoaded', () => {
-<<<<<<< HEAD
             const data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
-=======
             // 0. Prioridade 1: Dados embutidos (versão baixada)
             let data = window.bakedData || null;
 
@@ -452,8 +438,6 @@
                     data = JSON.parse(localStorage.getItem('aiWebsiteData_v3'));
                 }
             }
-
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
             if (!data) {
                 alert('Nenhum dado encontrado. Volte e gere novamente.');
                 return;
@@ -464,14 +448,6 @@
         });
 
         function renderSite(data) {
-<<<<<<< HEAD
-            // 1. Configurar Cores e Variáveis CSS
-            if (data.colors) {
-                const root = document.documentElement;
-                
-                // Função de Segurança: Calcula contraste automaticamente (YIQ)
-                // Se o fundo for escuro, retorna branco. Se for claro, retorna preto.
-=======
             const saveToLocal = () => {
                 localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
             };
@@ -547,7 +523,6 @@
             // 1. Configurar Cores e Variáveis CSS
             if (data.colors) {
                 const root = document.documentElement;
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                 const getContrastYIQ = (hexcolor) => {
                     if (!hexcolor) return '#212529';
                     hexcolor = hexcolor.replace('#', '');
@@ -562,16 +537,13 @@
                 root.style.setProperty('--secondary', data.colors.secondary);
                 root.style.setProperty('--accent', data.colors.accent || data.colors.primary);
                 root.style.setProperty('--bg-page', data.colors.background || '#f8f9fa');
-<<<<<<< HEAD
                 
                 // Força a cor do texto baseada no cálculo matemático de contraste, ignorando a IA se necessário
                 const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
                 root.style.setProperty('--text-main', safeTextColor);
                 
-=======
                 const safeTextColor = getContrastYIQ(data.colors.background || '#f8f9fa');
                 root.style.setProperty('--text-main', safeTextColor);
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                 root.style.setProperty('--card-bg', data.colors.card_bg || '#ffffff');
             }
 
@@ -594,7 +566,6 @@
             }
 
             // 4. Preencher Conteúdo de Texto
-<<<<<<< HEAD
             const elements = {
                 'brandName': data.brandName,
                 'navBrand': data.brandName,
@@ -624,40 +595,6 @@
                 const el = document.getElementById(id);
                 if (el && elements[id]) el.textContent = elements[id];
             });
-=======
-            const textMappings = [
-                { id: 'navBrand', path: 'brandName' },
-                { id: 'footerBrand', path: 'brandName' },
-                { id: 'heroTitle', path: 'hero.title' },
-                { id: 'heroSubtitle', path: 'hero.subtitle' },
-                { id: 'heroCTA', path: 'hero.cta' },
-                { id: 'aboutTitle', path: 'about.title' },
-                { id: 'aboutText', path: 'about.text' },
-                { id: 'contactAddress', path: 'contact.address' },
-                { id: 'contactEmail', path: 'contact.email' },
-                { id: 'contactPhone', path: 'contact.phone' },
-                { id: 'contactCTA', path: 'contact.cta_text' },
-                { id: 'servicesTitle', path: 'sectionTitles.services' },
-                { id: 'servicesSubtitle', path: 'sectionTitles.services_subtitle' },
-                { id: 'portfolioTitle', path: 'sectionTitles.portfolio' },
-                { id: 'portfolioSubtitle', path: 'sectionTitles.portfolio_subtitle' },
-                { id: 'featuresTitle', path: 'sectionTitles.features' },
-                { id: 'testimonialsTitle', path: 'sectionTitles.testimonials' },
-                { id: 'contactTitle', path: 'sectionTitles.contact' },
-                { id: 'contactSubtitle', path: 'sectionTitles.contact_subtitle' }
-            ];
-
-            textMappings.forEach(map => {
-                const el = document.getElementById(map.id);
-                if (el) {
-                    const val = map.path.split('.').reduce((o, i) => o?.[i], data);
-                    if (val) el.innerText = val;
-                    el.dataset.path = map.path;
-                    if (data.individualColors?.[map.path]) el.style.color = data.individualColors[map.path];
-                }
-            });
-            if(document.getElementById('footerYear')) document.getElementById('footerYear').textContent = new Date().getFullYear();
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
 
             // 5. Layout do Hero (Ajuste Estrutural)
             const heroSection = document.getElementById('hero');
@@ -670,13 +607,10 @@
                             <img src="${data.images?.hero}" class="img-fluid rounded shadow-lg" alt="Hero Image" data-aos="zoom-in">
                         </div>
                         <div class="col-lg-6 ${data.layout.heroStyle === 'split-right' ? 'order-lg-1' : ''}">
-<<<<<<< HEAD
                             <h1 class="display-3 fw-bold mb-4">${data.hero?.title}</h1>
                             <p class="lead mb-4">${data.hero?.subtitle}</p>
-=======
                             <h1 class="display-3 fw-bold mb-4" contenteditable="true" data-path="hero.title">${data.hero?.title}</h1>
                             <p class="lead mb-4" contenteditable="true" data-path="hero.subtitle">${data.hero?.subtitle}</p>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                             <a href="#contact" class="btn-custom">${data.hero?.cta || 'Saiba Mais'}</a>
                         </div>
                     </div>
@@ -719,17 +653,6 @@
                 const servicesContainer = document.querySelector('#services .row') || document.getElementById('servicesGrid');
                 if (servicesContainer) {
                     servicesContainer.innerHTML = '';
-<<<<<<< HEAD
-                    data.services.forEach(service => {
-                        const col = document.createElement('div');
-                        col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
-                        col.setAttribute('data-aos', 'fade-up');
-                        col.innerHTML = `
-                            <div class="service-box w-100">
-                                <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
-                                <h4>${service.title}</h4>
-                                <p class="text-muted">${service.desc}</p>
-=======
                     data.services.forEach((service, idx) => {
                         const col = document.createElement('div');
                         col.className = 'col-lg-4 col-md-6 d-flex align-items-stretch mb-4';
@@ -741,7 +664,6 @@
                                 <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
                                 <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${service.title}</h4>
                                 <p class="text-muted" data-path="${descPath}" style="color:${data.individualColors?.[descPath] || 'inherit'}">${service.desc}</p>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                             </div>
                         `;
                         servicesContainer.appendChild(col);
@@ -753,12 +675,9 @@
                 const featuresGrid = document.getElementById('featuresGrid');
                 if (featuresGrid) {
                     featuresGrid.innerHTML = '';
-<<<<<<< HEAD
                     data.features.forEach(feat => {
-=======
                     data.features.forEach((feat, idx) => {
                         const titlePath = `features.${idx}.title`;
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         featuresGrid.innerHTML += `
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
@@ -768,7 +687,7 @@
                                         <h5 class="fw-bold">${feat.title}</h5>
 =======
                                         <h5 class="fw-bold" data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${feat.title}</h5>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
+>>>>>>> 84685c0d30771587f800460a762cafc87e69e5a
                                         <p class="small text-muted">${feat.desc}</p>
                                     </div>
                                 </div>
@@ -858,11 +777,6 @@
             if (typeof AOS !== 'undefined') {
                 AOS.init();
             }
-<<<<<<< HEAD
-        }
-    </script>
-</body>
-=======
 
             // 9. Habilitar Edição em Tempo Real (Diferencial Inove)
             const editableSelectors = '[contenteditable="true"], h1, h2, h3, h4, h5, p, .nav-link, .btn-custom';
@@ -1034,7 +948,4 @@
         }
     </script>
 </body>
-</html>cript>
-</body>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
 </html>
