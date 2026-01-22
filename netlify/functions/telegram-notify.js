@@ -17,9 +17,13 @@ exports.handler = async (event) => {
             return { statusCode: 500, body: JSON.stringify({ error: "Configuração de servidor ausente." }) };
         }
 
+        // Data e Hora formatada (Horário de Brasília)
+        const dataHora = new Date().toLocaleString('pt-BR', { timeZone: 'America/Sao_Paulo' });
+
         // Montar a mensagem formatada
         const text = `
 🔔 *Novo Contato pelo Site!*
+🕒 *Em:* ${dataHora}
 
 👤 *Nome:* ${nome}
 📧 *Email:* ${email}
