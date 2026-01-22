@@ -13,11 +13,6 @@ exports.handler = async (event) => {
         // Pega as chaves do ambiente
         let MISTRAL_API_KEY = process.env.MISTRAL_API_KEY ? process.env.MISTRAL_API_KEY.trim() : null;
 
-        // FALLBACK: Se não encontrar no ambiente, usa a chave fornecida diretamente (Correção para Localhost)
-        if (!MISTRAL_API_KEY) {
-            MISTRAL_API_KEY = "otFYtFdY9xu6WD0qQfKUpAIrHV4rSERK";
-        }
-
         if (!MISTRAL_API_KEY) {
             return { 
                 statusCode: 401, 

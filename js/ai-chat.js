@@ -67,7 +67,7 @@ async function generateSiteStructure(userInput) {
     Você DEVE selecionar um dos templates abaixo para servir de base estrutural. O sistema carregará o HTML da pasta templates/.
     Analise o pedido do usuário e defina o campo "templateSource" com uma das opções:
     
-    - "generic": (Caminho: templates/generic/) -> Use para sites corporativos, landing pages, startups, advogados, serviços gerais.
+    - "generic": (Caminho: templates/generic/) -> Use para sites corporativos, landing pages, startups, advogados, serviços gerais. Caso não haja um template específico, simule o estilo de modelos Bootstrap populares (ex: Agency, Creative) via customCss.
     - "nuptial": (Caminho: templates/nuptial/) -> Use para casamentos, noivados, convites, eventos.
     - "medico": (Caminho: templates/medico/) -> Use para clínicas, médicos, dentistas, saúde, estética.
     - "ecommerce": (Caminho: templates/ecommerce/) -> Use para lojas virtuais, vendas de produtos, vitrines.
@@ -75,6 +75,12 @@ async function generateSiteStructure(userInput) {
     - "restaurante": (Caminho: templates/restaurante/) -> Use para restaurantes, bares, cafeterias, delivery.
     
     Se nenhuma categoria específica se aplicar, use "generic".
+    
+    CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
+    - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
+    - Se for um SISTEMA ("system"), use cores que facilitem a leitura prolongada (fundo claro, contraste alto, azul/cinza corporativo).
+    - Se for LANDING PAGE ("landing"), use cores vibrantes para conversão, mas mantenha harmonia com a identidade visual sugerida.
+    - Garanta que 'primary', 'secondary' e 'accent' conversem entre si.
     
     ESTRUTURA JSON PARA "landing":
     {

@@ -453,7 +453,7 @@
 
             // --- LÓGICA DE PROXY DE TEMPLATE (NOVO) ---
             // Se um template específico foi escolhido, carregamos ele em vez do layout padrão
-            if (data.templateSource && data.templateSource !== 'generic') {
+            if (data.templateSource) {
                 const slug = data.templateSource.toLowerCase().replace(/[^a-z0-9]/g, '');
                 const templatePath = `templates/${slug}/index.html`;
 

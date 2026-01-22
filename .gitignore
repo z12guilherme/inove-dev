@@ -1,8 +1,6 @@
-# Logs e Dependências
-node_modules/
-npm-debug.log
-
-# Arquivos de Configuração (Segurança)
+node_modules
 .env
+.DS_Store
+netlify/functions/node_modules
 # Local Netlify folder
 .netlify
