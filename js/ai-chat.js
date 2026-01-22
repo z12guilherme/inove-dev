@@ -71,12 +71,16 @@ async function generateSiteStructure(userInput) {
     - "nuptial"     -> templates/nuptial/     (Obrigatório para: Casamentos, Festas, Eventos)
     - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas)
     - "restaurante" -> templates/restaurante/ (Obrigatório para: Restaurantes, Bares, Cafés)
+    - "pizza"       -> templates/pizza/       (Obrigatório para: Pizzarias, Delivery de Pizza)
     - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio)
     - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin)
+    - "iportfolio"  -> templates/iportfolio/  (Obrigatório para: Portfólios, Currículos, Freelancers, Pessoal)
     - "generic"     -> templates/generic/     (Use APENAS para: Corporativo, Advocacia, Tech, Outros)
     
     REGRA: Se o usuário pedir um site de casamento, é PROIBIDO usar "generic". Use "nuptial".
     Se o usuário pedir uma loja, é PROIBIDO usar "generic". Use "ecommerce".
+    Se o usuário pedir um portfólio, é PROIBIDO usar "generic". Use "iportfolio".
+    Se o usuário pedir uma pizzaria, é PROIBIDO usar "generic". Use "pizza".
     
     CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
     - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
@@ -87,7 +91,7 @@ async function generateSiteStructure(userInput) {
     ESTRUTURA JSON PARA "landing":
     {
         "projectType": "landing",
-        "templateSource": "generic | nuptial | medico | ecommerce | restaurante",
+        "templateSource": "generic | nuptial | medico | ecommerce | restaurante | iportfolio | pizza",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
@@ -275,6 +279,14 @@ async function generateSiteStructure(userInput) {
             fallbackTemplate = "restaurante";
             fallbackNiche = "Gastronomia";
             fallbackBrand = "Sabor & Arte";
+        } else if (lowerInput.includes("pizza") || lowerInput.includes("pizzaria")) {
+            fallbackTemplate = "pizza";
+            fallbackNiche = "Pizzaria";
+            fallbackBrand = "Pizza Express";
+        } else if (lowerInput.includes("portfolio") || lowerInput.includes("curriculo") || lowerInput.includes("pessoal")) {
+            fallbackTemplate = "iportfolio";
+            fallbackNiche = "Portfólio";
+            fallbackBrand = "Meu Portfólio";
         }
 
         text = JSON.stringify({
@@ -453,9 +465,11 @@ async function generateSiteStructure(userInput) {
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="generic" style="font-size: 0.75rem;">🏢 Corporativo</button>
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="medico" style="font-size: 0.75rem;">🏥 Saúde</button>
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="restaurante" style="font-size: 0.75rem;">🍽️ Restaurante</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="pizza" style="font-size: 0.75rem;">🍕 Pizzaria</button>
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="nuptial" style="font-size: 0.75rem;">💍 Casamento</button>
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="ecommerce" style="font-size: 0.75rem;">🛍️ Loja</button>
                         <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="erp" style="font-size: 0.75rem;">📊 Sistema</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="iportfolio" style="font-size: 0.75rem;">👤 Portfólio</button>
                     </div>
                 </div>
             `;
