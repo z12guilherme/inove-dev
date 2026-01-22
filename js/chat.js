@@ -5,7 +5,7 @@ export const handler = async (event) => {
     }
 
     // Pega a chave segura do ambiente do Netlify
-    const API_KEY = process.env.MISTRAL_API_KEY || "otFYtFdY9xu6WD0qQfKUpAIrHV4rSERK";
+    const API_KEY = process.env.MISTRAL_API_KEY;
 
     if (!API_KEY) {
         return { 

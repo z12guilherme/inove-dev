@@ -219,7 +219,7 @@ async function generateSiteStructure(userInput) {
             
             // TENTATIVA 2: Conexão Direta (Fallback para Localhost)
             try {
-                const MISTRAL_KEY = "otFYtFdY9xu6WD0qQfKUpAIrHV4rSERK"; // Chave de Dev
+                const MISTRAL_KEY = ""; // Chave removida para segurança (Use Proxy em produção)
                 const directResponse = await fetch('https://api.mistral.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
