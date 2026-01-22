@@ -675,7 +675,6 @@
                 const featuresGrid = document.getElementById('featuresGrid');
                 if (featuresGrid) {
                     featuresGrid.innerHTML = '';
-                    data.features.forEach(feat => {
                     data.features.forEach((feat, idx) => {
                         const titlePath = `features.${idx}.title`;
                         featuresGrid.innerHTML += `
@@ -683,11 +682,7 @@
                                 <div class="d-flex align-items-start">
                                     <i class="bi ${feat.icon || 'bi-check-circle-fill'} fs-4 me-3" style="color: var(--primary);"></i>
                                     <div>
-<<<<<<< HEAD
-                                        <h5 class="fw-bold">${feat.title}</h5>
-=======
                                         <h5 class="fw-bold" data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${feat.title}</h5>
->>>>>>> 84685c0d30771587f800460a762cafc87e69e5a
                                         <p class="small text-muted">${feat.desc}</p>
                                     </div>
                                 </div>
@@ -732,23 +727,15 @@
                 const testGrid = document.getElementById('testimonialsGrid');
                 if (testGrid) {
                     testGrid.innerHTML = '';
-<<<<<<< HEAD
-                    data.testimonials.forEach(t => {
-=======
                     data.testimonials.forEach((t, idx) => {
                         const textPath = `testimonials.${idx}.text`;
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                         testGrid.innerHTML += `
                             <div class="col-md-4 mb-4" data-aos="fade-up">
                                 <div class="card border-0 shadow-sm h-100 p-4 text-center" style="background: var(--card-bg);">
                                     <div class="mb-3 text-warning">
                                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                     </div>
-<<<<<<< HEAD
-                                    <p class="fst-italic">"${t.text}"</p>
-=======
                                     <p class="fst-italic" data-path="${textPath}" style="color:${data.individualColors?.[textPath] || 'inherit'}">"${t.text}"</p>
->>>>>>> 84685c0d307d71587f800460a762cafc87e69e5a
                                     <h6 class="fw-bold mt-3 mb-0">${t.name}</h6>
                                     <small class="text-muted">${t.role || 'Cliente'}</small>
                                 </div>
