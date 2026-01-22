@@ -142,19 +142,33 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // 3. Event Listeners da Toolbar
         document.getElementById('pickerPrimary').addEventListener('input', (e) => {
-            document.documentElement.style.setProperty('--primary', e.target.value);
-            data.colors.primary = e.target.value;
+            const val = e.target.value;
+            document.documentElement.style.setProperty('--primary', val);
+            // Suporte a Bootstrap 5 e Variáveis Comuns
+            document.documentElement.style.setProperty('--bs-primary', val);
+            document.documentElement.style.setProperty('--bs-link-color', val);
+            
+            data.colors.primary = val;
             saveToLocal();
         });
         document.getElementById('pickerBg').addEventListener('input', (e) => {
-            document.documentElement.style.setProperty('--bg-page', e.target.value); // Alguns templates usam vars diferentes
-            document.body.style.backgroundColor = e.target.value;
-            data.colors.background = e.target.value;
+            const val = e.target.value;
+            document.documentElement.style.setProperty('--bg-page', val);
+            // Suporte a Bootstrap 5
+            document.documentElement.style.setProperty('--bs-body-bg', val);
+            document.body.style.backgroundColor = val;
+            
+            data.colors.background = val;
             saveToLocal();
         });
         document.getElementById('pickerText').addEventListener('input', (e) => {
-            document.body.style.color = e.target.value;
-            data.colors.text = e.target.value;
+            const val = e.target.value;
+            document.documentElement.style.setProperty('--text-main', val);
+            // Suporte a Bootstrap 5
+            document.documentElement.style.setProperty('--bs-body-color', val);
+            document.body.style.color = val;
+            
+            data.colors.text = val;
             saveToLocal();
         });
 
@@ -288,13 +302,13 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Mapeamento Inteligente (Tenta encontrar elementos comuns em templates Bootstrap)
     const mappings = [
         // Marca e Títulos
-        { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a, .sitename', value: data.brandName, path: 'brandName' },
-        { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1', value: data.hero?.title, path: 'hero.title' },
-        { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2', value: data.hero?.subtitle, path: 'hero.subtitle' },
-        { selector: '#hero .btn-get-started, .hero .btn-primary', value: data.hero?.cta, path: 'hero.cta' },
+        { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a, .sitename, .sidebar-brand, .couple-name', value: data.brandName, path: 'brandName' },
+        { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1, header.masthead h1, .hero-title', value: data.hero?.title, path: 'hero.title' },
+        { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2, header.masthead p, .hero-subtitle', value: data.hero?.subtitle, path: 'hero.subtitle' },
+        { selector: '#hero .btn-get-started, .hero .btn-primary, header.masthead .btn-xl, .hero-btn', value: data.hero?.cta, path: 'hero.cta' },
         
         // Sobre
-        { selector: '#about h3, .about h3', value: data.about?.title, path: 'about.title' },
+        { selector: '#about h3, .about h3, #about h2, .about-title', value: data.about?.title, path: 'about.title' },
         { selector: '#about p, .about p', value: data.about?.text, path: 'about.text' },
         
         // Contato
@@ -308,10 +322,12 @@ document.addEventListener('DOMContentLoaded', () => {
         { cssVar: '--accent', value: data.colors?.accent },
 
         // Títulos de Seção (Tradução/Personalização)
-        { selector: '#services .section-title h2', value: data.sectionTitles?.services || "Nossos Serviços", path: 'sectionTitles.services' },
-        { selector: '#portfolio .section-title h2', value: data.sectionTitles?.portfolio || "Portfólio", path: 'sectionTitles.portfolio' },
+        { selector: '#services .section-title h2, #services h2, .services-title', value: data.sectionTitles?.services || "Nossos Serviços", path: 'sectionTitles.services' },
+        { selector: '#portfolio .section-title h2, #portfolio h2, .portfolio-title', value: data.sectionTitles?.portfolio || "Portfólio", path: 'sectionTitles.portfolio' },
         { selector: '#about .section-title h2', value: "Sobre Nós" },
-        { selector: '#contact .section-title h2', value: data.sectionTitles?.contact || "Fale Conosco", path: 'sectionTitles.contact' },
+        { selector: '#contact .section-title h2, #contact h2', value: data.sectionTitles?.contact || "Fale Conosco", path: 'sectionTitles.contact' },
+        { selector: '#menu .section-title h2, #menu h2', value: "Nosso Menu" }, // Restaurante
+        { selector: '#departments .section-title h2', value: "Departamentos" }, // Medico
         
         // Traduções Específicas de Templates (SnapFolio, Strategy, LeadPage)
         { selector: '.service-heading div:first-child', value: "Soluções de" },
@@ -385,7 +401,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Substituição de Imagens (Hero e Sobre)
     if (data.images) {
-        const heroBg = document.querySelector('#hero, .hero');
+        const heroBg = document.querySelector('#hero, .hero, header.masthead');
         if (heroBg && data.images.hero) {
             // Tenta aplicar como background-image
             heroBg.style.backgroundImage = `url('${data.images.hero}')`;
@@ -397,10 +413,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // 4. Preencher Listas (Serviços) - Modo Melhorado
+    // 4. Preencher Listas (Serviços, Menu, Departamentos) - Modo Melhorado
     if (data.services && data.services.length > 0) {
-        // Seleciona cards de serviço em vários templates
-        const serviceCards = document.querySelectorAll('.service-item, .service-card, .icon-box, .service-box');
+        // Seleciona cards de serviço em vários templates (Strategy, Medico, Pizza, etc)
+        const serviceCards = document.querySelectorAll('.service-item, .service-card, .icon-box, .service-box, #services .col-lg-3, .department-item, .menu-item, .feature-box');
         
         serviceCards.forEach((card, index) => {
             if (index >= data.services.length) return;
@@ -412,7 +428,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const service = data.services[index];
             
             // Título
-            const titleEl = card.querySelector('h3, h4, .title, .service-title');
+            const titleEl = card.querySelector('h3, h4, .title, .service-title, .h4, .menu-content a');
             if (titleEl) {
                 const link = titleEl.querySelector('a');
                 if (link) link.innerText = service.title;
@@ -424,7 +440,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
             
             // Descrição
-            const descEl = card.querySelector('p, .description, .service-description');
+            const descEl = card.querySelector('p, .description, .service-description, .text-muted, .ingredients');
             if (descEl) {
                 descEl.innerText = service.desc;
                 descEl.setAttribute('contenteditable', 'true');
@@ -433,9 +449,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // 4.1 Preencher Portfólio (Lógica similar para blocos)
+    // 4.1 Preencher Portfólio / Galeria / Produtos
     if (data.portfolio && data.portfolio.length > 0) {
-        const portfolioItems = document.querySelectorAll('.portfolio-item, .portfolio-wrap, .portfolio-card');
+        const portfolioItems = document.querySelectorAll('.portfolio-item, .portfolio-wrap, .portfolio-card, .portfolio-box, .gallery-item, .product-item');
         portfolioItems.forEach((item, index) => {
             if (index >= data.portfolio.length) return;
             
@@ -443,8 +459,8 @@ document.addEventListener('DOMContentLoaded', () => {
             item.setAttribute('data-list-index', index);
 
             const project = data.portfolio[index];
-            const titleEl = item.querySelector('h3, h4, .portfolio-title');
-            const catEl = item.querySelector('p, span, .portfolio-category');
+            const titleEl = item.querySelector('h3, h4, .portfolio-title, .project-name');
+            const catEl = item.querySelector('p, span, .portfolio-category, .project-category');
 
             if (titleEl) {
                 titleEl.innerText = project.title;
@@ -553,8 +569,9 @@ document.addEventListener('DOMContentLoaded', () => {
         '#portfolio img', '.portfolio-item img', '.portfolio-wrap img',
         '#team img', '.team-member img', '.member-img img',
         '#blog img', '.blog-item img', '.post-img img',
-        '#services img', '.service-item img',
-        '.hero-img img', '#hero img'
+        '#services img', '.service-item img', '.portfolio-box img',
+        '.hero-img img', '#hero img',
+        '.gallery-item img', '.product-item img', '.menu-item img', '.department-item img'
     ];
 
     const images = document.querySelectorAll(contentSelectors.join(','));

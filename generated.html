@@ -836,18 +836,24 @@
             pPrimary.addEventListener('input', (e) => {
                 const val = e.target.value;
                 document.documentElement.style.setProperty('--primary', val);
+                document.documentElement.style.setProperty('--bs-primary', val);
+                document.documentElement.style.setProperty('--bs-link-color', val);
                 data.colors.primary = val;
                 saveToLocal();
             });
             pBg.addEventListener('input', (e) => {
                 const val = e.target.value;
                 document.documentElement.style.setProperty('--bg-page', val);
+                document.documentElement.style.setProperty('--bs-body-bg', val);
+                document.body.style.backgroundColor = val;
                 data.colors.background = val;
                 saveToLocal();
             });
             pText.addEventListener('input', (e) => {
                 const val = e.target.value;
                 document.documentElement.style.setProperty('--text-main', val);
+                document.documentElement.style.setProperty('--bs-body-color', val);
+                document.body.style.color = val;
                 data.colors.text = val;
                 saveToLocal();
             });

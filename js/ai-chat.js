@@ -69,19 +69,18 @@ async function generateSiteStructure(userInput) {
     
     MAPA DE TEMPLATES (templateSource -> Pasta):
     - "nuptial"     -> templates/nuptial/     (Obrigatório para: Casamentos, Festas, Eventos)
-    - "strategy"    -> templates/strategy/    (Obrigatório para: Corporativo, Empresas, Negócios, Startups, Consultoria, Marketing)
-    - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas)
-    - "pizza"       -> templates/pizza/ (Obrigatório para: pizzas, Bares, Cafés)
-    - "pizza"       -> templates/pizza/       (Obrigatório para: Pizzarias, Delivery de Pizza)
-    - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio)
-    - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin)
-    - "iportfolio"  -> templates/iportfolio/  (Obrigatório para: Portfólios, Currículos, Freelancers, Pessoal)
-    - "generic"     -> templates/generic/     (Use APENAS para: Corporativo, Advocacia, Tech, Outros)
+    - "strategy"    -> templates/strategy/    (Obrigatório para: Corporativo, Empresas, Negócios, Startups, Consultoria, Marketing, Advocacia, Tech, Engenharia)
+    - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas, Psicólogos)
+    - "pizza"       -> templates/pizza/       (Obrigatório para: Pizzarias, Restaurantes, Bares, Cafés, Delivery)
+    - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio, Varejo)
+    - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin, CRM)
+    - "iportfolio"  -> templates/iportfolio/  (Obrigatório para: Portfólio, Currículos, Freelancers, Pessoal)
     
     REGRA: Se o usuário pedir um site de casamento, é PROIBIDO usar "generic". Use "nuptial".
     Se o usuário pedir uma loja, é PROIBIDO usar "generic". Use "ecommerce".
     Se o usuário pedir um portfólio, é PROIBIDO usar "generic". Use "iportfolio".
-    Se o usuário pedir um site de empresa ou corporativo, é PROIBIDO usar "generic". Use "strategy".
+    Se o usuário pedir um site de empresa, corporativo, advocacia ou tech, é PROIBIDO usar "generic". Use "strategy".
+    Se o usuário pedir comida, restaurante ou pizza, use "pizza".
     
     CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
     - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
@@ -92,7 +91,7 @@ async function generateSiteStructure(userInput) {
     ESTRUTURA JSON PARA "landing":
     {
         "projectType": "landing",
-        "templateSource": "generic | nuptial | medico | ecommerce | pizza | iportfolio | pizza",
+        "templateSource": "strategy | nuptial | medico | ecommerce | pizza | iportfolio",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
@@ -263,39 +262,86 @@ async function generateSiteStructure(userInput) {
         console.error("❌ Todas as IAs falharam. Gerando template de emergência.");
         
         // Detecção básica de intenção para o fallback (Melhoria UX)
-        let fallbackTemplate = "generic";
-        let fallbackNiche = "Geral";
+        let fallbackTemplate = "strategy";
+        let fallbackNiche = "Corporativo";
         let fallbackBrand = "Nova Era Soluções";
+        let fallbackColors = { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" };
+        
         const lowerInput = (userInput || "").toLowerCase();
 
+        // 1. Tenta extrair o nome da empresa do prompt (Entre aspas ou após "chamada")
+        const nameRegex = /(?:chamada|chama|nome|marca|empresa)\s*(?:de|é|e|se)?\s*[:]?\s*['"]([^'"]+)['"]/i;
+        const nameMatch = userInput.match(nameRegex);
+        if (nameMatch && nameMatch[1]) {
+            fallbackBrand = nameMatch[1];
+        }
+
+        // 2. Detecção de Cores Básica (Fallback Inteligente)
+        if (lowerInput.includes("marrom") || lowerInput.includes("café") || lowerInput.includes("rústico") || lowerInput.includes("creme")) {
+            fallbackColors = { primary: "#6F4E37", secondary: "#A1887F", accent: "#D7CCC8", background: "#EFEBE9", text: "#3E2723", card_bg: "#FFFFFF" };
+        } else if (lowerInput.includes("azul")) {
+            fallbackColors = { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" };
+        } else if (lowerInput.includes("verde") || lowerInput.includes("saúde") || lowerInput.includes("natureza")) {
+            fallbackColors = { primary: "#198754", secondary: "#146c43", accent: "#d1e7dd", background: "#ffffff", text: "#0f5132", card_bg: "#f8f9fa" };
+        } else if (lowerInput.includes("preto") || lowerInput.includes("dark") || lowerInput.includes("escuro")) {
+            fallbackColors = { primary: "#ffffff", secondary: "#adb5bd", accent: "#6c757d", background: "#212529", text: "#f8f9fa", card_bg: "#343a40" };
+        } else if (lowerInput.includes("rosa") || lowerInput.includes("feminino")) {
+            fallbackColors = { primary: "#d63384", secondary: "#ad1457", accent: "#f8d7da", background: "#fff0f3", text: "#880e4f", card_bg: "#ffffff" };
+        }
+
+        // 3. Seleção de Template e Nicho
         if (lowerInput.includes("casamento") || lowerInput.includes("noiva") || lowerInput.includes("wedding")) {
             fallbackTemplate = "nuptial";
             fallbackNiche = "Casamento";
-            fallbackBrand = "Ana & Pedro";
-        } else if (lowerInput.includes("empresa") || lowerInput.includes("negocio") || lowerInput.includes("consultoria") || lowerInput.includes("corporativo")) {
-            fallbackTemplate = "strategy";
-            fallbackNiche = "Corporativo";
-            fallbackBrand = "Nexus Consultoria";
+            if (!nameMatch) fallbackBrand = "Ana & Pedro";
         } else if (lowerInput.includes("medico") || lowerInput.includes("clinica") || lowerInput.includes("saude") || lowerInput.includes("dentista")) {
-            fallbackTemplate = "medico";
+            fallbackTemplate = "medinest";
             fallbackNiche = "Saúde";
-            fallbackBrand = "Vitalis Clínica";
+            if (!nameMatch) fallbackBrand = "Vitalis Clínica";
+        } else if (lowerInput.includes("curso") || lowerInput.includes("escola") || lowerInput.includes("educacao") || lowerInput.includes("aula")) {
+            fallbackTemplate = "learne";
+            fallbackNiche = "Educação";
+            if (!nameMatch) fallbackBrand = "Educa Mais";
+        } else if (lowerInput.includes("blog") || lowerInput.includes("noticia") || lowerInput.includes("artigo")) {
+            fallbackTemplate = "story";
+            fallbackNiche = "Blog";
+            if (!nameMatch) fallbackBrand = "Daily News";
+        } else if (lowerInput.includes("foto") || lowerInput.includes("fotografia") || lowerInput.includes("galeria")) {
+            fallbackTemplate = "snapfolio";
+            fallbackNiche = "Fotografia";
+            if (!nameMatch) fallbackBrand = "Click Studio";
+        } else if (lowerInput.includes("agencia") || lowerInput.includes("criativo") || lowerInput.includes("design")) {
+            fallbackTemplate = "craftivo";
+            fallbackNiche = "Agência";
+            if (!nameMatch) fallbackBrand = "Creative Minds";
+        } else if (lowerInput.includes("app") || lowerInput.includes("produto") || lowerInput.includes("landing")) {
+            fallbackTemplate = "leadpage";
+            fallbackNiche = "Produto";
+            if (!nameMatch) fallbackBrand = "App Launch";
         } else if (lowerInput.includes("loja") || lowerInput.includes("ecommerce") || lowerInput.includes("venda")) {
-            fallbackTemplate = "ecommerce";
+            fallbackTemplate = "leadpage"; // Fallback para venda
             fallbackNiche = "E-commerce";
-            fallbackBrand = "Urban Store";
-        } else if (lowerInput.includes("pizza") || lowerInput.includes("comida") || lowerInput.includes("cafe") || lowerInput.includes("bar")) {
-            fallbackTemplate = "pizza";
-            fallbackNiche = "Gastronomia";
-            fallbackBrand = "Bistrô Sabor & Arte";
+            if (!nameMatch) fallbackBrand = "Urban Store";
+        } else if (lowerInput.includes("cafe") || lowerInput.includes("cafeteria")) {
+            fallbackTemplate = "pizza"; // Usa estrutura de restaurante
+            fallbackNiche = "Cafeteria";
+            if (!nameMatch) fallbackBrand = "Aroma & Sabor";
         } else if (lowerInput.includes("pizza") || lowerInput.includes("pizzaria")) {
             fallbackTemplate = "pizza";
             fallbackNiche = "Pizzaria";
-            fallbackBrand = "La Bella Pizza";
+            if (!nameMatch) fallbackBrand = "La Bella Pizza";
+        } else if (lowerInput.includes("restaurante") || lowerInput.includes("comida") || lowerInput.includes("bar")) {
+            fallbackTemplate = "pizza";
+            fallbackNiche = "Gastronomia";
+            if (!nameMatch) fallbackBrand = "Bistrô Chef";
         } else if (lowerInput.includes("portfolio") || lowerInput.includes("curriculo") || lowerInput.includes("pessoal")) {
             fallbackTemplate = "iportfolio";
             fallbackNiche = "Portfólio";
-            fallbackBrand = "João Silva Design";
+            if (!nameMatch) fallbackBrand = "João Silva Design";
+        } else if (lowerInput.includes("empresa") || lowerInput.includes("negocio") || lowerInput.includes("consultoria") || lowerInput.includes("corporativo")) {
+            fallbackTemplate = "strategy";
+            fallbackNiche = "Corporativo";
+            if (!nameMatch) fallbackBrand = "Nexus Consultoria";
         }
 
         text = JSON.stringify({
@@ -304,7 +350,7 @@ async function generateSiteStructure(userInput) {
             brandName: fallbackBrand,
             niche: fallbackNiche,
             themeStyle: "modern",
-            colors: { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" },
+            colors: fallbackColors,
             fonts: { heading: "Montserrat", body: "Open Sans" },
             hero: { 
                 title: "Transformando Ideias em Realidade", 
