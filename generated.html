@@ -450,6 +450,9 @@
             const saveToLocal = () => {
                 localStorage.setItem('aiWebsiteData_v3', JSON.stringify(data));
             };
+            
+            // Garantir que objeto de imagens exista para evitar erros
+            if (!data.images) data.images = {};
 
             // --- LÓGICA DE PROXY DE TEMPLATE (NOVO) ---
             // Se um template específico foi escolhido, carregamos ele em vez do layout padrão
@@ -646,11 +649,15 @@
                         col.setAttribute('data-aos', 'fade-up');
                         const titlePath = `services.${idx}.title`;
                         const descPath = `services.${idx}.desc`;
+                        
+                        const titleColor = (data.individualColors && data.individualColors[titlePath]) || 'inherit';
+                        const descColor = (data.individualColors && data.individualColors[descPath]) || 'inherit';
+
                         col.innerHTML = `
                             <div class="service-box w-100">
                                 <div class="service-icon"><i class="bi ${service.icon || 'bi-check-circle'}"></i></div>
-                                <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${service.title}</h4>
-                                <p class="text-muted" data-path="${descPath}" style="color:${data.individualColors?.[descPath] || 'inherit'}">${service.desc}</p>
+                                <h4 data-path="${titlePath}" style="color:${titleColor}">${service.title}</h4>
+                                <p class="text-muted" data-path="${descPath}" style="color:${descColor}">${service.desc}</p>
                             </div>
                         `;
                         servicesContainer.appendChild(col);
@@ -664,12 +671,14 @@
                     featuresGrid.innerHTML = '';
                     data.features.forEach((feat, idx) => {
                         const titlePath = `features.${idx}.title`;
+                        const titleColor = (data.individualColors && data.individualColors[titlePath]) || 'inherit';
+                        
                         featuresGrid.innerHTML += `
                             <div class="col-md-6">
                                 <div class="d-flex align-items-start">
                                     <i class="bi ${feat.icon || 'bi-check-circle-fill'} fs-4 me-3" style="color: var(--primary);"></i>
                                     <div>
-                                        <h5 class="fw-bold" data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${feat.title}</h5>
+                                        <h5 class="fw-bold" data-path="${titlePath}" style="color:${titleColor}">${feat.title}</h5>
                                         <p class="small text-muted">${feat.desc}</p>
                                     </div>
                                 </div>
@@ -685,16 +694,16 @@
                     portfolioGrid.innerHTML = '';
                     data.portfolio.forEach((item, index) => {
                         // Generate a random image for portfolio if not provided specifically
-                        const pImg = data.images.portfolio ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
+                        const pImg = (data.images && data.images.portfolio) ? data.images.portfolio + `&i=${index}` : `https://source.unsplash.com/random/800x600?${data.niche},${index}`;
                         const titlePath = `portfolio.${index}.title`;
+                        const titleColor = (data.individualColors && data.individualColors[titlePath]) || 'inherit';
                         
                         portfolioGrid.innerHTML += `
                             <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="${index * 100}">
                                 <div class="portfolio-item shadow">
                                     <img src="${pImg}" class="img-fluid" alt="${item.title}" onerror="this.src='https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=800&q=80'">
                                     <div class="portfolio-info">
-                                        <h4>${item.title}</h4>
-                                        <h4 data-path="${titlePath}" style="color:${data.individualColors?.[titlePath] || 'inherit'}">${item.title}</h4>
+                                        <h4 data-path="${titlePath}" style="color:${titleColor}">${item.title}</h4>
                                         <p>${item.category}</p>
                                     </div>
                                 </div>
@@ -710,13 +719,15 @@
                     testGrid.innerHTML = '';
                     data.testimonials.forEach((t, idx) => {
                         const textPath = `testimonials.${idx}.text`;
+                        const textColor = (data.individualColors && data.individualColors[textPath]) || 'inherit';
+                        
                         testGrid.innerHTML += `
                             <div class="col-md-4 mb-4" data-aos="fade-up">
                                 <div class="card border-0 shadow-sm h-100 p-4 text-center" style="background: var(--card-bg);">
                                     <div class="mb-3 text-warning">
                                         <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
                                     </div>
-                                    <p class="fst-italic" data-path="${textPath}" style="color:${data.individualColors?.[textPath] || 'inherit'}">"${t.text}"</p>
+                                    <p class="fst-italic" data-path="${textPath}" style="color:${textColor}">"${t.text}"</p>
                                     <h6 class="fw-bold mt-3 mb-0">${t.name}</h6>
                                     <small class="text-muted">${t.role || 'Cliente'}</small>
                                 </div>
