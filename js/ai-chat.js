@@ -438,6 +438,22 @@ async function generateSiteStructure(userInput) {
         } else {
             // Lógica para LANDING PAGES (Padrão)
             localStorage.setItem('aiWebsiteData_v3', JSON.stringify(siteData));
+            
+            // Lista de templates disponíveis (baseado nas pastas em templates/)
+            const templatesHtml = `
+                <div class="mt-3 pt-3 border-top" style="border-color: rgba(255,255,255,0.1) !important;">
+                    <small class="text-white-50 d-block mb-2" style="font-size: 0.85em;">Não gostou do layout? Tente outro modelo:</small>
+                    <div class="d-flex flex-wrap gap-2 justify-content-center">
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="generic" style="font-size: 0.75rem;">🏢 Corporativo</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="medico" style="font-size: 0.75rem;">🏥 Saúde</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="restaurante" style="font-size: 0.75rem;">🍽️ Restaurante</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="nuptial" style="font-size: 0.75rem;">💍 Casamento</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="ecommerce" style="font-size: 0.75rem;">🛍️ Loja</button>
+                        <button class="btn btn-outline-light btn-sm retry-template-btn" data-template="erp" style="font-size: 0.75rem;">📊 Sistema</button>
+                    </div>
+                </div>
+            `;
+
             addMessage(`
                 <strong>Site Gerado!</strong> 🚀<br>
                 Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
@@ -453,6 +469,7 @@ async function generateSiteStructure(userInput) {
                         <i class="bi bi-magic"></i> Ver Site Gerado
                     </a>
                 </div>
+                ${templatesHtml}
             `, 'bot');
         }
 
@@ -510,4 +527,25 @@ document.querySelectorAll('.suggestion-btn').forEach(btn => {
         // Opcional: Clicar automaticamente no enviar se desejar
         // handleUserResponse();
     });
+});
+
+// Listener Global para os botões de "Tentar com novo template" (Event Delegation)
+document.addEventListener('click', (e) => {
+    if (e.target.classList.contains('retry-template-btn')) {
+        const selectedTemplate = e.target.getAttribute('data-template');
+        const templateName = e.target.innerText;
+        
+        // Desabilita os botões para evitar múltiplos cliques
+        document.querySelectorAll('.retry-template-btn').forEach(btn => btn.disabled = true);
+        
+        // Adiciona mensagem do usuário simulada
+        addMessage(`Quero testar com o modelo <strong>${templateName}</strong>`, 'user');
+        addMessage(`Perfeito! Recriando o design usando o modelo ${templateName}... <span class='typing-indicator'></span>`, 'bot');
+
+        // Reconstrói o prompt forçando o template, mas mantendo os dados originais
+        // userData.details contém o pedido original do usuário
+        const forcedPrompt = `${userData.details}\n\n[SYSTEM INSTRUCTION: O usuário solicitou explicitamente REFAZER o JSON usando o templateSource: "${selectedTemplate}". Mantenha os mesmos dados de negócio, mas adapte estritamente para este template.]`;
+        
+        generateSiteStructure(forcedPrompt);
+    }
 });
