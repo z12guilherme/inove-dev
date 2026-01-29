@@ -881,17 +881,48 @@
             });
 
             // 11. Finalizar e Enviar (Captura o estado atual da tela)
-            btnFinalize.addEventListener('click', () => {
+            btnFinalize.addEventListener('click', async () => {
+                // Feedback visual de carregamento
+                const originalText = btnFinalize.innerHTML;
+                btnFinalize.innerHTML = '<i class="spinner-border spinner-border-sm"></i> Gerando Link...';
+                btnFinalize.disabled = true;
+
                 // Codifica o objeto DATA completo para a URL
                 const jsonStr = JSON.stringify(data);
                 const bytes = new TextEncoder().encode(jsonStr);
                 const encodedState = btoa(String.fromCharCode(...bytes));
                 
-                // Gera o link apenas com o estado codificado, preservando parâmetros como ?v=
-                const baseUrl = window.location.href.split('#')[0];
-                const shareLink = `${baseUrl}#s=${encodedState}`;
+                // Gera o link base limpo
+                let baseUrl = window.location.href.split('#')[0].split('?')[0];
+
+                // Se houver um template definido, gera o link direto para ele (ex: templates/strategy/index.html)
+                if (data.templateSource) {
+                    const basePath = baseUrl.substring(0, baseUrl.lastIndexOf('/') + 1);
+                    baseUrl = `${basePath}templates/${data.templateSource}/index.html`;
+                }
+
+                let shareLink = `${baseUrl}#s=${encodedState}`;
                 
-                window.open(`https://wa.me/5581989035561?text=${encodeURIComponent(shareLink)}`, '_blank');
+                // Tenta encurtar o link (Netlify Function Interna)
+                try {
+                    const response = await fetch('/.netlify/functions/shorten', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ url: shareLink })
+                    });
+                    const data = await response.json();
+                    if (response.ok && data.result) {
+                        shareLink = data.result;
+                    }
+                } catch (e) {
+                    console.warn("Falha ao encurtar link, usando original:", e);
+                }
+
+                window.open(`https://wa.me/5581989035561?text=Olha%20o%20site%20que%20criei%20no%20Inove%20AI%20Studio:%20${encodeURIComponent(shareLink)}`, '_blank');
+                
+                // Restaura o botão
+                btnFinalize.innerHTML = originalText;
+                btnFinalize.disabled = false;
             });
 
             // 11.5 Resetar Design

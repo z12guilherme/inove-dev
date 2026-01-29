@@ -15,7 +15,21 @@ document.addEventListener('DOMContentLoaded', () => {
     let data = null;
     let storageKey = 'aiWebsiteData_v3'; // Chave padrão
 
-    if (siteId) {
+    // 1.1 Tenta recuperar estado da URL (Hash) - Para links compartilhados com modificações
+    if (window.location.hash.startsWith('#s=')) {
+        try {
+            const stateParam = window.location.hash.substring(3);
+            const binary = atob(stateParam);
+            const bytes = new Uint8Array(binary.length);
+            for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+            data = JSON.parse(new TextDecoder().decode(bytes));
+            console.log("🤖 Inove AI: Estado carregado da URL (Link Compartilhado).");
+        } catch (e) {
+            console.error("Erro ao decodificar estado da URL:", e);
+        }
+    }
+
+    if (siteId && !data) {
         storageKey = `ai_site_${siteId}`;
         data = JSON.parse(localStorage.getItem(storageKey));
     }
@@ -173,14 +187,35 @@ document.addEventListener('DOMContentLoaded', () => {
         });
 
         // Botão Finalizar (WhatsApp)
-        document.getElementById('btnFinalize').addEventListener('click', () => {
+        document.getElementById('btnFinalize').addEventListener('click', async function() {
+            const btn = this;
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '...';
+            btn.disabled = true;
+
             const jsonStr = JSON.stringify(data);
             const bytes = new TextEncoder().encode(jsonStr);
             const encodedState = btoa(String.fromCharCode(...bytes));
-            const baseUrl = window.location.href.split('?')[0].replace('templates/', '').replace(/\/[\w-]+\/index\.html/, '/generated.html'); 
-            // Tenta criar um link para o generated.html com o estado, pois templates locais não abrem em outros PCs
-            const shareLink = `${baseUrl}?s=${encodedState}`; // Simplificado para query param
+            // Usa a própria URL do template para o link compartilhado
+            const baseUrl = window.location.href.split('?')[0].split('#')[0];
+            let shareLink = `${baseUrl}#s=${encodedState}`; 
+
+            try {
+                const response = await fetch('/.netlify/functions/shorten', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ url: shareLink })
+                });
+                const resData = await response.json();
+                if (response.ok && resData.result) shareLink = resData.result;
+            } catch (e) {
+                console.warn("Erro ao encurtar link", e);
+            }
+
             window.open(`https://wa.me/5581989035561?text=Olha meu site: ${encodeURIComponent(shareLink)}`, '_blank');
+            
+            btn.innerHTML = originalText;
+            btn.disabled = false;
         });
 
         // Botão Download
