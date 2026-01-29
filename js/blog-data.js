@@ -134,5 +134,62 @@ const blogPosts = [
             <h3>Microsserviços</h3>
             <p>O sistema é dividido em pequenos serviços independentes que se comunicam entre si. Permite escalabilidade granular e uso de diferentes tecnologias, mas adiciona complexidade na gestão e deploy.</p>
         `
+    },
+    {
+        id: 8,
+        title: "Inteligência Artificial: Como ela está mudando o jogo para pequenas empresas",
+        category: "Inovação",
+        tags: ["ia", "negócios", "tecnologia"],
+        date: "Jan 22, 2026",
+        author: "Equipe Inove",
+        image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=800&q=80",
+        summary: "A IA não é mais coisa de filme de ficção científica. Descubra como ferramentas acessíveis de inteligência artificial podem otimizar o atendimento e as vendas do seu negócio...",
+        content: `
+            <p class="lead">A inteligência artificial deixou de ser uma tecnologia distante para se tornar uma ferramenta essencial no dia a dia das empresas, inclusive as pequenas.</p>
+            <h3>Atendimento Automatizado</h3>
+            <p>Chatbots inteligentes podem responder clientes 24/7, agendar horários e tirar dúvidas frequentes, liberando sua equipe para tarefas mais estratégicas.</p>
+            <h3>Criação de Conteúdo</h3>
+            <p>Ferramentas como o ChatGPT ajudam a criar textos para redes sociais, e-mails e blogs, acelerando a produção de marketing.</p>
+            <h3>Análise de Dados</h3>
+            <p>A IA pode analisar padrões de compra dos seus clientes e sugerir produtos ou momentos ideais para promoções.</p>
+        `
+    },
+    {
+        id: 9,
+        title: "UX Design: Por que a experiência do usuário define o sucesso do seu site",
+        category: "Design",
+        tags: ["ux", "web", "design"],
+        date: "Jan 25, 2026",
+        author: "Marcos G.",
+        image: "https://images.unsplash.com/photo-1586717791821-3f44a5638d48?auto=format&fit=crop&w=800&q=80",
+        summary: "Um site bonito não é suficiente. Se o usuário não conseguir navegar facilmente, ele vai embora. Entenda os princípios básicos de UX que convertem visitantes em clientes...",
+        content: `
+            <p class="lead">User Experience (UX) é sobre como uma pessoa se sente ao usar seu sistema. Um design focado no usuário remove barreiras e facilita a conversão.</p>
+            <h3>Navegação Intuitiva</h3>
+            <p>O usuário deve encontrar o que procura em no máximo 3 cliques. Menus claros e hierarquia visual são fundamentais.</p>
+            <h3>Velocidade e Responsividade</h3>
+            <p>A experiência no celular deve ser tão boa quanto no computador. Botões pequenos demais ou telas que travam frustram o cliente.</p>
+            <h3>Acessibilidade</h3>
+            <p>Seu site deve ser utilizável por todos, incluindo pessoas com deficiência visual ou motora. Isso não é só ético, é bom para o negócio e para o SEO.</p>
+        `
+    },
+    {
+        id: 10,
+        title: "Google Ads vs Facebook Ads: Onde investir seu dinheiro?",
+        category: "Marketing",
+        tags: ["marketing", "ads", "vendas"],
+        date: "Jan 28, 2026",
+        author: "Equipe Inove",
+        image: "https://images.unsplash.com/photo-1533750349088-cd871a92f312?auto=format&fit=crop&w=800&q=80",
+        summary: "A dúvida clássica de quem começa a anunciar online. Analisamos as diferenças entre as duas maiores plataformas de anúncios para ajudar você a decidir...",
+        content: `
+            <p class="lead">Ambas as plataformas são poderosas, mas funcionam de maneiras diferentes. A escolha depende do seu objetivo e do momento de compra do seu cliente.</p>
+            <h3>Google Ads: Intenção de Compra</h3>
+            <p>O Google captura o usuário no momento em que ele está pesquisando por uma solução. É ideal para vendas diretas e serviços de necessidade imediata (ex: "encanador 24h").</p>
+            <h3>Facebook/Instagram Ads: Descoberta e Atenção</h3>
+            <p>Nas redes sociais, você interrompe a navegação do usuário para mostrar algo interessante. É excelente para gerar desejo, reconhecimento de marca e vender produtos visuais.</p>
+            <h3>O Veredito</h3>
+            <p>Para a maioria dos negócios, uma estratégia combinada funciona melhor: Google para capturar a demanda existente e Facebook para gerar nova demanda.</p>
+        `
     }
 ];

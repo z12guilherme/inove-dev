@@ -11,6 +11,8 @@
     <meta property="og:type" content="article">
     <meta property="og:url" content="https://www.inovedev.com.br/blog-post.html">
     <meta property="og:image" content="https://www.inovedev.com.br/assets/logo.png">
+    <meta property="og:title" content="Blog InoveDev">
+    <meta property="og:description" content="Artigos sobre tecnologia e negócios">
     <meta name="description" content="Artigo do Blog InoveDev">
 
     <!-- Favicon -->
@@ -188,11 +190,11 @@
                 breadcrumb.textContent = post.title;
                 
                 // SEO Dinâmico: Atualiza Meta Tags e Open Graph
-                document.querySelector('meta[name="description"]').setAttribute("content", post.summary);
-                document.querySelector('meta[property="og:title"]').setAttribute("content", post.title);
-                document.querySelector('meta[property="og:description"]').setAttribute("content", post.summary);
-                document.querySelector('meta[property="og:image"]').setAttribute("content", post.image);
-                document.querySelector('link[rel="canonical"]').setAttribute("href", window.location.href);
+                document.querySelector('meta[name="description"]')?.setAttribute("content", post.summary);
+                document.querySelector('meta[property="og:title"]')?.setAttribute("content", post.title);
+                document.querySelector('meta[property="og:description"]')?.setAttribute("content", post.summary);
+                document.querySelector('meta[property="og:image"]')?.setAttribute("content", post.image);
+                document.querySelector('link[rel="canonical"]')?.setAttribute("href", window.location.href);
 
                 // SEO Dinâmico: Injeta Schema.org (Article)
                 const schemaScript = document.createElement('script');
