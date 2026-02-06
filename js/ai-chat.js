@@ -52,138 +52,74 @@ async function handleUserResponse() {
 
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
-    Atue como um Designer de Interface Premiado (nível Awwwards/Dribbble) e Especialista em UX.
-    Sua missão é criar o JSON estruturado para um site EXTREMAMENTE BONITO, visualmente impactante e de alta conversão.
+    Atue como um Desenvolvedor Frontend Sênior e Designer UI/UX Criativo.
+    Sua missão não é apenas preencher um template, mas TRANSFORMAR um esqueleto HTML em um site único e visualmente impressionante.
     
-    OBJETIVO VISUAL:
-    O design NÃO PODE SER GENÉRICO. Deve parecer um template Premium de $500.
+    VOCÊ TEM TOTAL LIBERDADE CRIATIVA PARA MODIFICAR O VISUAL VIA CSS.
     
-    DIRETRIZES DE ESTÉTICA (CRÍTICO):
-    1. REGRA 60-30-10: Use a cor 'background' (60%), 'primary' (30%) e 'accent' (10%) com harmonia absoluta.
-    2. WHITESPACE: O design deve "respirar". Use margens generosas.
-    3. TIPOGRAFIA: Escolha pares de fontes sofisticados (ex: 'Playfair Display' + 'Lato', 'Montserrat' + 'Open Sans', 'Oswald' + 'Roboto').
-    4. CUSTOM CSS: O campo 'customCss' é OBRIGATÓRIO para a beleza. Você deve injetar CSS para:
-       - Sombras suaves e difusas (ex: box-shadow: 0 15px 30px rgba(0,0,0,0.08)).
-       - Botões com gradientes sutis e efeito hover (transform: translateY(-2px)).
-       - Bordas arredondadas modernas (border-radius: 12px ou 20px).
+    1. ESCOLHA INTELIGENTE DE ESTRUTURA (templateSource):
+    Não escolha pelo nome da pasta, escolha pela ESTRUTURA DO LAYOUT que melhor atende o pedido:
     
-    PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
-    1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
-    2. "system": Se for sistema de gestão, ERP, CRM, dashboard, painel administrativo, controle de estoque, financeiro.
+    - "pizza": Use se precisar de CARDÁPIOS, LISTAS DE PREÇOS ou GRIDS DE PRODUTOS COM FOTO (Serve para: Restaurantes, Lojas Simples, Catálogos, Barbearias com serviços).
+    - "medico": Use se precisar de AGENDAMENTO, DEPARTAMENTOS ou LISTA DE ESPECIALISTAS (Serve para: Clínicas, Consultorias, Escritórios, Academias).
+    - "nuptial": Use se precisar de CONTAGEM REGRESSIVA, TIMELINE ou GALERIA DE EVENTOS (Serve para: Eventos, Lançamentos, Festas).
+    - "iportfolio": Use se for FOCADO NA PESSOA ou FREELANCER (Serve para: Portfólios, Bios, Influencers).
+    - "strategy": Use para CORPORATIVO PADRÃO (Hero grande + Serviços + Sobre + Time).
+    - "ecommerce": Use APENAS se for venda direta de múltiplos produtos com carrinho.
     
-    SELEÇÃO DE TEMPLATE (templateSource):
-    ATENÇÃO: O sistema possui VÁRIOS templates na pasta 'templates/'. NÃO use apenas o 'generic'.
-    Você DEVE analisar o pedido do usuário e selecionar a pasta correta abaixo para garantir um design diferenciado.
+    2. TRANSFORMAÇÃO VISUAL (CustomCSS - OBRIGATÓRIO):
+    Você deve escrever CSS real no campo 'customCss' para que o site não pareça um template pronto.
+    - Se for "Moderno/Tech": Use Glassmorphism (fundos translúcidos), gradientes neon, fontes sans-serif geométricas.
+    - Se for "Elegante/Luxo": Use fontes Serif (Playfair Display), cores douradas/pretas, muito whitespace.
+    - Se for "Criativo/Infantil": Use bordas arredondadas (border-radius: 20px), cores vibrantes, sombras lúdicas.
     
-    MAPA DE TEMPLATES (templateSource -> Pasta):
-    - "nuptial"     -> templates/nuptial/     (Obrigatório para: Casamentos, Festas, Eventos)
-    - "strategy"    -> templates/strategy/    (Obrigatório para: Corporativo, Empresas, Negócios, Startups, Consultoria, Marketing, Advocacia, Tech, Engenharia)
-    - "medico"      -> templates/medico/      (Obrigatório para: Saúde, Clínicas, Dentistas, Psicólogos)
-    - "pizza"       -> templates/pizza/       (Obrigatório para: Pizzarias, Restaurantes, Bares, Cafés, Delivery)
-    - "ecommerce"   -> templates/ecommerce/   (Obrigatório para: Lojas, Vendas, Comércio, Varejo)
-    - "erp"         -> templates/erp/         (Obrigatório para: Sistemas, Dashboards, Admin, CRM)
-    - "iportfolio"  -> templates/iportfolio/  (Obrigatório para: Portfólio, Currículos, Freelancers, Pessoal)
+    Exemplo de CustomCSS para injetar:
+    ".hero { background: linear-gradient(135deg, var(--primary) 0%, #000 100%); } .btn-get-started { border-radius: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); } .icon-box { transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }"
+
+    3. IMAGENS E CONTEXTO:
+    - Gere 'imageKeywords' muito específicas em inglês para buscar imagens reais (ex: "luxury interior design living room" em vez de "house").
+    - Escreva textos (Copywriting) que vendam, não textos genéricos.
     
-    REGRA: Se o usuário pedir um site de casamento, é PROIBIDO usar "generic". Use "nuptial".
-    Se o usuário pedir uma loja, é PROIBIDO usar "generic". Use "ecommerce".
-    Se o usuário pedir um portfólio, é PROIBIDO usar "generic". Use "iportfolio".
-    Se o usuário pedir um site de empresa, corporativo, advocacia ou tech, é PROIBIDO usar "generic". Use "strategy".
-    Se o usuário pedir comida, restaurante ou pizza, use "pizza".
-    
-    CORES E IDENTIDADE VISUAL (CONGRUÊNCIA):
-    - As cores devem ser profissionais e congruentes com o nicho e com a interface do sistema.
-    - Se for um SISTEMA ("system"), use cores que facilitem a leitura prolongada (fundo claro, contraste alto, azul/cinza corporativo).
-    - Se for LANDING PAGE ("landing"), use cores vibrantes para conversão, mas mantenha harmonia com a identidade visual sugerida.
-    - Garanta que 'primary', 'secondary' e 'accent' conversem entre si.
-    
-    ESTRUTURA JSON PARA "landing":
+    ESTRUTURA DE RESPOSTA (JSON):
     {
-        "projectType": "landing",
-        "templateSource": "strategy | nuptial | medico | pizza | iportfolio",
-        "brandName": "Nome da Empresa",
-        "niche": "Nicho de mercado",
-        "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
-        "layout": { 
-            "heroStyle": "center | split-left | split-right", 
-            "cardStyle": "shadow | border | flat", 
-            "borderRadius": "rounded | rounded-pill | sharp" 
-        },
+        "projectType": "landing" | "system",
+        "templateSource": "strategy" | "pizza" | "medico" | "nuptial" | "ecommerce" | "iportfolio",
+        "brandName": "Nome da Marca",
+        "niche": "Nicho Específico",
+        "themeStyle": "modern | minimalist | bold | luxury | retro | cyber",
         "colors": {
-            "primary": "#HEX", "secondary": "#HEX", "accent": "#HEX", 
-            "background": "#HEX (Fundo da página)", "text": "#HEX (Cor do texto - ALTO CONTRASTE)", "card_bg": "#HEX (Fundo dos cards)"
+            "primary": "#HEX",
+            "secondary": "#HEX",
+            "accent": "#HEX",
+            "background": "#HEX",
+            "text": "#HEX",
+            "card_bg": "#HEX"
         },
-        "sectionTitles": {
-            "services": "Título da Seção (ex: 'Cerimônia', 'Nossos Serviços')", 
-            "services_subtitle": "Subtítulo (ex: 'Detalhes do evento')",
-            "portfolio": "Título (ex: 'Galeria de Fotos', 'Portfólio')", 
-            "portfolio_subtitle": "Subtítulo",
-            "features": "Título (ex: 'Lista de Presentes', 'Diferenciais')",
-            "testimonials": "Título (ex: 'Mensagens dos Padrinhos', 'Depoimentos')",
-            "contact": "Título (ex: 'RSVP', 'Contato')", "contact_subtitle": "Subtítulo"
+        "fonts": { 
+            "heading": "Nome da Fonte Google (ex: Playfair Display)", 
+            "body": "Nome da Fonte Google (ex: Lato)" 
         },
-        "fonts": {
-            "heading": "FontName (Google Fonts)", "body": "FontName (Google Fonts)"
-        },
-        "hero": { "title": "Headline", "subtitle": "Subhead", "cta": "Button Text" },
-        "about": { "title": "Sobre", "text": "Texto", "stats": [{"number": "10", "label": "Anos"}] },
-        "services": [{"title": "Serviço", "desc": "Desc", "icon": "bi-star"}],
-        "features": [{"title": "Feature", "desc": "Desc", "icon": "bi-check-circle"}],
-        "portfolio": [{"title": "Proj", "category": "Cat", "desc": "Desc"}],
-        "testimonials": [{"name": "Cliente", "role": "Cargo", "text": "Depoimento"}],
-        "contact": { "address": "Endereço", "email": "Email", "phone": "Tel", "cta_text": "CTA" },
+        "hero": { "title": "Headline Impactante", "subtitle": "Subtítulo Persuasivo", "cta": "Call to Action" },
+        "about": { "title": "Título Sobre", "text": "História da empresa...", "stats": [{"number": "10+", "label": "Anos"}] },
+        "services": [
+            {"title": "Nome do Serviço", "desc": "Descrição curta e vendedora", "icon": "bi-star"}
+        ],
+        "portfolio": [
+            {"title": "Nome do Projeto", "category": "Categoria", "desc": "Breve descrição"}
+        ],
+        "contact": { "address": "Endereço Fictício", "email": "Email", "phone": "Telefone", "cta_text": "CTA" },
         "ui": {
             "nav_home": "Início", "nav_about": "Sobre", "nav_services": "Serviços", "nav_portfolio": "Portfólio", "nav_contact": "Contato",
             "btn_read_more": "Saiba Mais", "btn_submit": "Enviar Mensagem"
         },
-        "customCss": "CSS OBRIGATÓRIO AQUI. Ex: .btn-get-started { background: linear-gradient(45deg, var(--primary), var(--accent)); border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); } .icon-box { transition: all 0.3s; border-radius: 15px; } .icon-box:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); } h1, h2 { letter-spacing: -0.5px; }",
-        "images": {
-            "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
-        }
+        "imageKeywords": "keywords in english for image search (ex: coffee shop interior cozy)",
+        "customCss": "CSS VÁLIDO PARA PERSONALIZAR O SITE (Não use markdown aqui, apenas string CSS)"
     }
 
-    ESTRUTURA JSON PARA "system":
-    {
-        "projectType": "system",
-        "templateSource": "erp | generic",
-        "brandName": "Nome do Sistema",
-        "themeColor": "#HEX (Cor Principal)",
-        "sidebarItems": [
-            {"label": "Dashboard", "icon": "bi-grid"},
-            {"label": "Menu 2", "icon": "bi-box"}
-        ],
-        "stats": [
-            {"label": "KPI 1", "value": "100", "icon": "bi-graph-up", "trend": "+10%", "color": "primary"},
-            {"label": "KPI 2", "value": "50", "icon": "bi-people", "trend": "-5%", "color": "danger"},
-            {"label": "KPI 3", "value": "R$ 1k", "icon": "bi-wallet", "trend": "+2%", "color": "success"},
-            {"label": "KPI 4", "value": "10", "icon": "bi-bell", "trend": "0%", "color": "warning"}
-        ],
-        "charts": {
-            "line": { "title": "Gráfico de Linha (ex: Vendas)", "labels": ["Jan", "Fev", "Mar", "Abr"], "data": [10, 20, 15, 30] },
-            "doughnut": { "title": "Gráfico de Rosca (ex: Categorias)", "labels": ["A", "B", "C"], "data": [30, 50, 20] }
-        },
-        "table": {
-            "title": "Listagem Principal",
-            "columns": ["ID", "Coluna 2", "Coluna 3", "Status"],
-            "rows": [
-                {"col1": "#001", "col2": "Dado A", "col3": "Dado B", "col4": "Ativo"},
-                {"col1": "#002", "col2": "Dado C", "col3": "Dado D", "col4": "Pendente"}
-            ]
-        }
-    }
-
-    REGRAS ESTRITAS:
+    REGRAS FINAIS:
     1. Retorne APENAS o JSON cru.
-    2. Use aspas duplas.
-    3. NÃO use vírgulas no final de listas.
-    4. Escape aspas internas.
-    5. IMAGENS: Não gere descrições de imagens. Deixe os valores do objeto "images" como strings vazias "". O sistema usará o banco de imagens padrão.
-    6. CORES E CONTRASTE (SEGURANÇA VISUAL): 
-       - A LEGIBILIDADE É A PRIORIDADE NÚMERO 1.
-       - Se 'background' for escuro (ex: #000, #1a1a1a, #0f172a), 'text' DEVE SER EXATAMENTE #FFFFFF.
-       - Se 'background' for claro (ex: #fff, #f8f9fa), 'text' DEVE SER EXATAMENTE #212529.
-       - NUNCA use cinza médio para texto principal.
-    7. FONTS: Use nomes reais do Google Fonts (ex: 'Poppins', 'Montserrat', 'Open Sans', 'Playfair Display', 'Roboto').
-    8. IDIOMA: O conteúdo deve ser 100% em Português do Brasil. O objeto 'ui' deve conter as traduções dos termos de navegação e botões adequados ao nicho (ex: 'Cardápio' em vez de 'Serviços' para restaurantes).
+    2. O conteúdo deve ser em PORTUGUÊS DO BRASIL.
+    3. SEJA OUSADO NO DESIGN. Use o customCss para mudar a cara do template.
     `;
 
     // Simulação de Progresso para UX
