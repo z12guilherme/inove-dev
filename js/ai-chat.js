@@ -39,7 +39,7 @@ async function handleUserResponse() {
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
         
         try {
-            // Chama a função de geração (agora usando Proxy/Groq)
+            // Chama a função de geração (agora usando Netlify Functions/Gemini)
             await generateSiteStructure(userData.details);
         } catch (error) {
             console.error(error);
@@ -584,17 +584,17 @@ async function generateSiteStructure(userInput) {
         
         // Diagnóstico de erro para o usuário
         if (e.toString().includes('403') || e.toString().includes('API key')) {
-            errorMsg = "Erro de Autenticação: Verifique se a API Key é válida e está habilitada no Google Cloud.";
+            errorMsg = "Erro de Autenticação: Verifique se a API Key está configurada corretamente no Netlify.";
         } else if (e.toString().includes('429')) {
-            errorMsg = "Muitas requisições. Aguarde alguns instantes e tente novamente.";
+            errorMsg = "Muitas requisições (Cota excedida). Aguarde alguns instantes.";
         } else if (e.toString().includes('404')) {
-            errorMsg = "Erro 404: Não consegui acessar a Função do Netlify. Se estiver rodando localmente, use 'netlify dev' ou insira a chave no chat.";
+            errorMsg = "Erro 404: Backend não encontrado. Se estiver local, use 'netlify dev'.";
         } else if (e.toString().includes('502')) {
-            errorMsg = "Erro 502 (Bad Gateway): A função do servidor falhou ou excedeu o tempo limite (10s). Tente novamente.";
+            errorMsg = "Erro 502: O servidor demorou para responder. Tente novamente.";
         } else if (e.toString().includes('504')) {
-            errorMsg = "Erro 504 (Timeout): A IA demorou mais de 10s e o servidor encerrou. Dica: Cole sua chave 'pplx-' no chat para conectar direto (sem limite de tempo).";
+            errorMsg = "Erro 504: Timeout. A IA demorou muito. Tente um pedido mais simples.";
         } else if (e.toString().includes('405')) {
-            errorMsg = "Erro 405: Você está rodando no Live Server (local). As funções de servidor não funcionam aqui. Para testar, cole sua chave 'pplx-' diretamente no chat.";
+            errorMsg = "Erro 405: Ambiente local sem backend. Use 'netlify dev' para testar com a IA.";
         }
 
         addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
