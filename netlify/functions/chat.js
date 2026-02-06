@@ -13,7 +13,7 @@ exports.handler = async (event) => {
         // Pega as chaves do ambiente
         let MISTRAL_API_KEY = process.env.MISTRAL_API_KEY ? process.env.MISTRAL_API_KEY.trim() : null;
         // Fallback: Se não achar no env, usa a chave fornecida diretamente (Correção para erro 401 local)
-        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : 'AIzaSyCGL5FoVxsShJOHu5wtJutKQQEnWSF0T68';
+        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : null;
 
         // Define o provedor padrão como Gemini (mais rápido e estável para JSON)
         const provider = body.provider || 'gemini';
@@ -102,7 +102,7 @@ exports.handler = async (event) => {
                     };
                 }
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(geminiBody)
@@ -119,7 +119,7 @@ exports.handler = async (event) => {
                     statusCode: 200,
                     body: JSON.stringify({
                         choices: [{ message: { content: text } }],
-                        model_used: "gemini-1.5-flash"
+                        model_used: "gemini-2.5-flash"
                     })
                 };
             } catch (error) {

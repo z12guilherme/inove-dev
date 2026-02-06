@@ -160,9 +160,13 @@ document.querySelectorAll('section').forEach(section => {
 
 // Initialize Swiper for Testimonials
 if (document.querySelector('.testimonials-slider')) {
+    // Verifica se há slides suficientes para o loop (evita aviso do Swiper)
+    const slideCount = document.querySelectorAll('.testimonials-slider .swiper-slide').length;
+    const enableLoop = slideCount > 2;
+
     new Swiper('.testimonials-slider', {
         speed: 600,
-        loop: true,
+        loop: enableLoop,
         autoplay: {
             delay: 5000,
             disableOnInteraction: false

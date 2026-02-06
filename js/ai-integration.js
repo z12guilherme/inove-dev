@@ -604,8 +604,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 6. Substituição Global de Imagens (Baseada no Nicho)
     const imgKeywords = data.imageKeywords || data.niche || 'business';
-    // Limpa as keywords para formato de URL (remove espaços extras)
-    const keywordQuery = imgKeywords.replace(/\s*,\s*/g, ',').replace(/\s+/g, ',');
 
     const contentSelectors = [
         '#portfolio img', '.portfolio-item img', '.portfolio-wrap img',
@@ -622,11 +620,12 @@ document.addEventListener('DOMContentLoaded', () => {
         // Evita substituir logo ou ícones muito pequenos
         if (img.closest('.logo') || img.classList.contains('logo') || img.width < 50 || img.height < 50) return;
         
-        // Se já foi substituída (contém unsplash), pula
-        if (img.src.includes('unsplash.com')) return;
+        // Se já foi substituída (contém unsplash ou pollinations), pula
+        if (img.src.includes('unsplash.com') || img.src.includes('pollinations.ai')) return;
 
-        // Usa Unsplash Source com sig para evitar repetição de imagens
-        img.src = `https://source.unsplash.com/random/?${keywordQuery}&sig=${index}`;
+        // Usa Pollinations AI para gerar imagens reais baseadas no nicho
+        const prompt = encodeURIComponent(`${imgKeywords} ${index} professional photography, realistic, 4k`);
+        img.src = `https://image.pollinations.ai/prompt/${prompt}?width=800&height=600&nologo=true&seed=${index}`;
     });
 
     // Injetar Badge discreto para confirmar que a IA está ativa neste template

@@ -52,12 +52,20 @@ async function handleUserResponse() {
 
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
-    Atue como um Arquiteto de Soluções Web Sênior e Especialista em UX/UI.
-    Sua missão é criar o JSON estruturado para um projeto web moderno e responsivo.
+    Atue como um Designer de Interface Premiado (nível Awwwards/Dribbble) e Especialista em UX.
+    Sua missão é criar o JSON estruturado para um site EXTREMAMENTE BONITO, visualmente impactante e de alta conversão.
     
     OBJETIVO VISUAL:
-    O design DEVE ser de altíssima qualidade, visualmente impactante e comparável aos melhores templates Premium do BootstrapMade (ex: 'Arsha', 'HeroBiz', 'Gp', 'OnePage', 'Day').
-    Não se limite ao básico. Use sombras suaves (box-shadow), gradientes modernos, bordas arredondadas e tipografia elegante através do campo 'customCss'.
+    O design NÃO PODE SER GENÉRICO. Deve parecer um template Premium de $500.
+    
+    DIRETRIZES DE ESTÉTICA (CRÍTICO):
+    1. REGRA 60-30-10: Use a cor 'background' (60%), 'primary' (30%) e 'accent' (10%) com harmonia absoluta.
+    2. WHITESPACE: O design deve "respirar". Use margens generosas.
+    3. TIPOGRAFIA: Escolha pares de fontes sofisticados (ex: 'Playfair Display' + 'Lato', 'Montserrat' + 'Open Sans', 'Oswald' + 'Roboto').
+    4. CUSTOM CSS: O campo 'customCss' é OBRIGATÓRIO para a beleza. Você deve injetar CSS para:
+       - Sombras suaves e difusas (ex: box-shadow: 0 15px 30px rgba(0,0,0,0.08)).
+       - Botões com gradientes sutis e efeito hover (transform: translateY(-2px)).
+       - Bordas arredondadas modernas (border-radius: 12px ou 20px).
     
     PRIMEIRO, DECIDA O TIPO DE PROJETO COM BASE NO PEDIDO:
     1. "landing": Se for site institucional, landing page, portfólio, loja virtual (vitrine).
@@ -91,7 +99,7 @@ async function generateSiteStructure(userInput) {
     ESTRUTURA JSON PARA "landing":
     {
         "projectType": "landing",
-        "templateSource": "strategy | nuptial | medico | ecommerce | pizza | iportfolio",
+        "templateSource": "strategy | nuptial | medico | pizza | iportfolio",
         "brandName": "Nome da Empresa",
         "niche": "Nicho de mercado",
         "themeStyle": "modern | creative | corporate | minimalist | tech | elegant",
@@ -127,7 +135,7 @@ async function generateSiteStructure(userInput) {
             "nav_home": "Início", "nav_about": "Sobre", "nav_services": "Serviços", "nav_portfolio": "Portfólio", "nav_contact": "Contato",
             "btn_read_more": "Saiba Mais", "btn_submit": "Enviar Mensagem"
         },
-        "customCss": "CSS COMPLETO. IMPORTANTE: Se usar imagem de fundo no Hero, adicione 'text-shadow: 0 2px 10px rgba(0,0,0,0.8)' nos títulos para garantir leitura. Estilize botões com gradientes.",
+        "customCss": "CSS OBRIGATÓRIO AQUI. Ex: .btn-get-started { background: linear-gradient(45deg, var(--primary), var(--accent)); border: none; box-shadow: 0 4px 15px rgba(0,0,0,0.2); } .icon-box { transition: all 0.3s; border-radius: 15px; } .icon-box:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(0,0,0,0.1); } h1, h2 { letter-spacing: -0.5px; }",
         "images": {
             "hero": "description", "about": "description", "feature": "description", "portfolio": "description"
         }
@@ -169,7 +177,7 @@ async function generateSiteStructure(userInput) {
     3. NÃO use vírgulas no final de listas.
     4. Escape aspas internas.
     5. IMAGENS: Não gere descrições de imagens. Deixe os valores do objeto "images" como strings vazias "". O sistema usará o banco de imagens padrão.
-    6. CORES E CONTRASTE (CRÍTICO - LEIA COM ATENÇÃO): 
+    6. CORES E CONTRASTE (SEGURANÇA VISUAL): 
        - A LEGIBILIDADE É A PRIORIDADE NÚMERO 1.
        - Se 'background' for escuro (ex: #000, #1a1a1a, #0f172a), 'text' DEVE SER EXATAMENTE #FFFFFF.
        - Se 'background' for claro (ex: #fff, #f8f9fa), 'text' DEVE SER EXATAMENTE #212529.
@@ -220,8 +228,10 @@ async function generateSiteStructure(userInput) {
                 }
                 // Se não encontrar texto válido, 'text' continua null e aciona o fallback abaixo
             } else {
+                // Tenta ler a mensagem de erro do servidor
+                const errorData = await response.json().catch(() => ({}));
                 // Se der erro (401, 404, 500), lança exceção para ativar o fallback (Tentativa 2)
-                throw new Error(`Erro no Proxy (${response.status})`);
+                throw new Error(`Erro no Proxy (${response.status}): ${errorData.error?.message || response.statusText}`);
             }
         } catch (e) {
             console.warn("⚠️ Proxy falhou, tentando conexão direta com Gemini...", e);
@@ -229,9 +239,11 @@ async function generateSiteStructure(userInput) {
             // TENTATIVA 2: Conexão Direta (Fallback para Localhost)
             try {
                 // Chave de emergência para funcionamento local
-                const GEMINI_DIRECT_KEY = "AIzaSyCGL5FoVxsShJOHu5wtJutKQQEnWSF0T68"; 
+                const GEMINI_DIRECT_KEY = ""; // REMOVIDO: Use variáveis de ambiente no Netlify
                 
-                const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash-exp:generateContent?key=${GEMINI_DIRECT_KEY}`, {
+                if (!GEMINI_DIRECT_KEY) throw new Error("Chave de API direta não configurada. Verifique o backend.");
+
+                const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_DIRECT_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
@@ -486,8 +498,10 @@ async function generateSiteStructure(userInput) {
                     }
                 }
 
-                // 5. Fallback para imagem padrão (Evita geração por IA)
-                return "https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=1920&q=80";
+                // 5. GERAÇÃO REAL VIA POLLINATIONS AI (Se não tiver template)
+                // Gera uma imagem única baseada no prompt
+                const encodedPrompt = encodeURIComponent(cleanPrompt + " high quality, realistic, 4k, professional photography");
+                return `https://image.pollinations.ai/prompt/${encodedPrompt}?width=1920&height=1080&nologo=true&seed=${Math.floor(Math.random() * 1000)}`;
             };
 
             // Garantir que todas as imagens essenciais existam
