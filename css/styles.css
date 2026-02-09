@@ -35,7 +35,7 @@ h1, h2, h3, h4, h5, h6 {
 #header {
     height: 80px;
     transition: all 0.5s;
-    z-index: 997;
+    z-index: 997; /* Z-index menor que o do menu mobile (9999) */
     background: #fff;
     box-shadow: 0px 2px 15px rgba(0, 0, 0, 0.1);
 }
@@ -108,7 +108,7 @@ h1, h2, h3, h4, h5, h6 {
     line-height: 0;
     transition: 0.5s;
     padding: 5px;
-    margin-left: 10px;
+    margin-right: 15px; /* Afastamento da borda direita */
 }
 
 @media (max-width: 991px) {
@@ -120,6 +120,7 @@ h1, h2, h3, h4, h5, h6 {
         display: none;
     }
     
+    /* Container Escuro (Fundo) */
     .navbar-mobile {
         position: fixed;
         overflow: hidden;
@@ -127,13 +128,13 @@ h1, h2, h3, h4, h5, h6 {
         right: 0;
         left: 0;
         bottom: 0;
-        background: rgba(13, 27, 42, 0.7);
+        background: rgba(13, 27, 42, 0.6); /* Azul escuro transparente */
         transition: 0.3s;
-        z-index: 9999;
-        backdrop-filter: blur(5px);
-        animation: fadeInBg 0.3s;
+        z-index: 9998; /* Fica acima de tudo, mas abaixo do menu branco */
+        backdrop-filter: blur(4px);
     }
     
+    /* A Lista (Parte Branca Lateral) */
     .navbar-mobile ul {
         display: block !important;
         position: absolute;
@@ -143,52 +144,47 @@ h1, h2, h3, h4, h5, h6 {
         left: auto;
         width: 300px;
         max-width: 90%;
-        padding: 60px 20px 20px 20px;
-        background-color: #fff;
+        padding: 50px 20px 20px 20px;
+        background-color: #fff !important; /* FORÇA O FUNDO BRANCO */
         overflow-y: auto;
         transition: 0.3s;
-        border-radius: 0;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Sombra suave */
-        animation: slideIn 0.3s;
+        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+        z-index: 9999; /* Fica acima do fundo escuro */
         height: 100vh;
     }
 
     .navbar-mobile li {
         display: block !important;
+        width: 100%; /* Garante largura total */
     }
     
+    /* Links do Menu */
     .navbar-mobile a {
         padding: 15px 20px;
         font-size: 16px;
-        color: #2c4964 !important;
-        border-bottom: 1px solid #eee; /* Separadores sutis */
+        color: #2c4964 !important; /* COR ESCURA PARA APARECER NO BRANCO */
         font-weight: 600;
-        display: block; /* Garante que o link ocupe a linha inteira */
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-bottom: 1px solid #eee;
     }
     
-    .navbar-mobile a:hover, .navbar-mobile .active, .navbar-mobile li:hover > a {
-        color: #00C7B7;
+    .navbar-mobile a:hover, 
+    .navbar-mobile .active, 
+    .navbar-mobile li:hover > a {
+        color: #00C7B7 !important;
         background: #f9f9fa;
-        padding-left: 25px; /* Efeito de movimento ao passar o mouse */
     }
     
+    /* Botão de Fechar (X) dentro do menu aberto */
     .navbar-mobile .mobile-nav-toggle {
         position: absolute;
-        top: 20px;
-        right: 20px;
-        color: #2c4964;
-        z-index: 10001; /* Garante que o botão de fechar fique sobre o menu */
+        top: 15px;
+        right: 15px;
+        color: #2c4964 !important; /* Força cor escura para contraste */
+        z-index: 10000; /* Fica acima da lista branca */
     }
-}
-
-@keyframes slideIn {
-    from { transform: translateX(100%); }
-    to { transform: translateX(0); }
-}
-
-@keyframes fadeInBg {
-    from { opacity: 0; }
-    to { opacity: 1; }
 }
 
 /* Hero Section */
