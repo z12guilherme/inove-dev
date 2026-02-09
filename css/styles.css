@@ -137,6 +137,9 @@ h1, h2, h3, h4, h5, h6 {
     /* A Lista (Parte Branca Lateral) */
     .navbar-mobile ul {
         display: block !important;
+        display: flex !important;
+        flex-direction: column !important;
+        justify-content: flex-start !important;
         position: absolute;
         top: 0;
         right: 0;
@@ -145,17 +148,21 @@ h1, h2, h3, h4, h5, h6 {
         width: 300px;
         max-width: 90%;
         padding: 50px 20px 20px 20px;
+        padding: 60px 20px 60px 20px;
         background-color: #fff !important; /* FORÇA O FUNDO BRANCO */
         overflow-y: auto;
         transition: 0.3s;
         box-shadow: -5px 0 15px rgba(0,0,0,0.1);
         z-index: 9999; /* Fica acima do fundo escuro */
         height: 100vh;
+        height: 100% !important;
     }
 
     .navbar-mobile li {
         display: block !important;
         width: 100%; /* Garante largura total */
+        margin: 0 !important;
+        padding: 0 !important;
     }
     
     /* Links do Menu */
@@ -167,7 +174,9 @@ h1, h2, h3, h4, h5, h6 {
         display: flex;
         align-items: center;
         justify-content: space-between;
+        display: block !important;
         border-bottom: 1px solid #eee;
+        line-height: 1.5;
     }
     
     .navbar-mobile a:hover, 
