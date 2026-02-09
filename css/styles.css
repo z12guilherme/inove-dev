@@ -112,84 +112,42 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 @media (max-width: 991px) {
+    #header {
+        height: auto;
+        padding: 15px 0;
+    }
+
+    #header .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
     .mobile-nav-toggle {
-        display: block;
+        display: none;
     }
 
     .navbar ul {
-        display: none;
-    }
-    
-    /* Container Escuro (Fundo) */
-    .navbar-mobile {
-        position: fixed;
-        overflow: hidden;
-        top: 0;
-        right: 0;
-        left: 0;
-        bottom: 0;
-        background: rgba(13, 27, 42, 0.6); /* Azul escuro transparente */
-        transition: 0.3s;
-        z-index: 9998; /* Fica acima de tudo, mas abaixo do menu branco */
-        backdrop-filter: blur(4px);
-    }
-    
-    /* A Lista (Parte Branca Lateral) */
-    .navbar-mobile ul {
-        display: flex !important;
-        flex-direction: column !important;
-        justify-content: flex-start !important;
-        position: absolute;
-        display: block !important;
-        position: fixed;
-        top: 0;
-        right: 0;
-        bottom: 0;
-        left: auto;
-        width: 300px;
-        max-width: 90%;
-        padding: 60px 20px 60px 20px;
-        background-color: #fff !important; /* FORÇA O FUNDO BRANCO */
-        overflow-y: auto;
-        transition: 0.3s;
-        box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-        z-index: 9999; /* Fica acima do fundo escuro */
-        height: 100% !important;
-        height: 100vh !important;
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        padding: 10px 0 0 0;
+        width: 100%;
+        gap: 5px;
     }
 
-    .navbar-mobile li {
-        display: block !important;
-        width: 100%; /* Garante largura total */
-        margin: 0 !important;
-        padding: 0 !important;
-    }
-    
-    /* Links do Menu */
-    .navbar-mobile a {
-        padding: 15px 20px;
-        font-size: 16px;
-        color: #2c4964 !important; /* COR ESCURA PARA APARECER NO BRANCO */
-        font-weight: 600;
-        display: block !important;
-        border-bottom: 1px solid #eee;
-        line-height: 1.5;
-    }
-    
-    .navbar-mobile a:hover, 
-    .navbar-mobile .active, 
-    .navbar-mobile li:hover > a {
-        color: #00C7B7 !important;
+    .navbar a {
+        padding: 8px 12px;
+        font-size: 14px;
         background: #f9f9fa;
+        border-radius: 4px;
+        margin-bottom: 5px;
+        color: #444;
     }
-    
-    /* Botão de Fechar (X) dentro do menu aberto */
-    .navbar-mobile .mobile-nav-toggle {
-        position: absolute;
-        top: 15px;
-        right: 15px;
-        color: #2c4964 !important; /* Força cor escura para contraste */
-        z-index: 10000; /* Fica acima da lista branca */
+
+    .navbar a:hover, .navbar .active, .navbar .active:focus {
+        background: #00C7B7;
+        color: #fff;
     }
 }
 
