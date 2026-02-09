@@ -1408,6 +1408,7 @@ h1, h2, h3, h4, h5, h6 {
 /* Mobile Navigation */
 .mobile-nav-toggle {
     color: #2c4964;
+    color: #00C7B7;
     font-size: 32px;
     cursor: pointer;
     display: none;
@@ -1434,8 +1435,12 @@ h1, h2, h3, h4, h5, h6 {
         left: 0;
         bottom: 0;
         background: rgba(13, 27, 42, 0.5); /* Fundo semi-transparente (Backdrop) */
+        background: rgba(13, 27, 42, 0.7); /* Fundo semi-transparente (Backdrop) */
         transition: 0.3s;
         z-index: 999;
+        z-index: 9999;
+        backdrop-filter: blur(5px);
+        animation: fadeInBg 0.3s;
     }
     
     .navbar-mobile ul {
@@ -1447,12 +1452,15 @@ h1, h2, h3, h4, h5, h6 {
         bottom: 0;
         left: auto;
         width: 280px; /* Largura fixa da janela lateral */
+        width: 300px; /* Largura fixa da janela lateral */
+        max-width: 90%;
         padding: 60px 20px 20px 20px;
         background-color: #fff;
         overflow-y: auto;
         transition: 0.3s;
         border-radius: 0;
         box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Sombra suave */
+        animation: slideIn 0.3s;
     }
     
     .navbar-mobile a {
@@ -1473,7 +1481,18 @@ h1, h2, h3, h4, h5, h6 {
         position: absolute;
         top: 20px;
         right: 20px;
+        color: #2c4964;
     }
+}
+
+@keyframes slideIn {
+    from { transform: translateX(100%); }
+    to { transform: translateX(0); }
+}
+
+@keyframes fadeInBg {
+    from { opacity: 0; }
+    to { opacity: 1; }
 }
 
 /* Hero Section */
