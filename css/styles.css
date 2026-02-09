@@ -136,15 +136,23 @@ h1, h2, h3, h4, h5, h6 {
         padding: 0 0 10px 0;
         width: 100%;
         gap: 10px;
+        -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
+    }
+
+    /* Forçar e Estilizar Barra de Rolagem */
+    .navbar ul::-webkit-scrollbar {
+        height: 4px; /* Altura da barra */
+    }
+    .navbar ul::-webkit-scrollbar-track {
+        background: #f1f1f1;
+        border-radius: 10px;
+    }
+    .navbar ul::-webkit-scrollbar-thumb {
+        background: #00C7B7; /* Cor da marca */
+        border-radius: 10px;
     }
 
     .navbar a {
-        padding: 8px 12px;
-        font-size: 14px;
-        background: #f9f9fa;
-        border-radius: 4px;
-        margin-bottom: 5px;
-        color: #444;
         padding: 6px 15px;
         font-size: 13px;
         background: transparent; /* Mais disfarçado */
