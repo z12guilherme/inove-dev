@@ -125,49 +125,51 @@ h1, h2, h3, h4, h5, h6 {
     }
 
     .mobile-nav-toggle {
-        display: none;
+        display: block;
+        color: #00C7B7;
+        font-size: 28px;
+        cursor: pointer;
+        line-height: 0;
+        padding: 5px;
+        margin-right: 15px;
     }
 
     .navbar ul {
-        display: flex;
-        flex-wrap: nowrap; /* Não empilha, fica lado a lado */
-        overflow-x: auto; /* Barra de rolagem horizontal */
-        justify-content: flex-start;
-        padding: 0 0 10px 0;
-        width: 100%;
-        gap: 10px;
-        -webkit-overflow-scrolling: touch; /* Rolagem suave no iOS */
+        display: none;
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        background: rgba(13, 27, 42, 0.95);
+        backdrop-filter: blur(10px);
+        flex-direction: column;
+        padding: 20px 0;
+        margin: 0;
+        z-index: 999;
+        border-radius: 0 0 8px 8px;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
     }
 
-    /* Forçar e Estilizar Barra de Rolagem */
-    .navbar ul::-webkit-scrollbar {
-        height: 4px; /* Altura da barra */
-    }
-    .navbar ul::-webkit-scrollbar-track {
-        background: #f1f1f1;
-        border-radius: 10px;
-    }
-    .navbar ul::-webkit-scrollbar-thumb {
-        background: #00C7B7; /* Cor da marca */
-        border-radius: 10px;
+    .navbar.navbar-mobile ul {
+        display: flex;
     }
 
     .navbar a {
-        padding: 6px 15px;
-        font-size: 13px;
-        background: transparent; /* Mais disfarçado */
-        border: 1px solid #eee;
-        border-radius: 50px; /* Estilo Pílula */
-        margin-bottom: 0;
-        color: #666;
-        white-space: nowrap; /* Texto não quebra */
-        flex-shrink: 0; /* Garante que o item não encolha */
+        padding: 12px 20px;
+        font-size: 16px;
+        color: #fff;
+        border: none;
+        border-radius: 0;
+        margin: 0;
+        text-align: left;
+        display: block;
+        width: 100%;
+        transition: background 0.3s;
     }
 
     .navbar a:hover, .navbar .active, .navbar .active:focus {
         background: #00C7B7;
         color: #fff;
-        border-color: #00C7B7;
     }
 }
 
@@ -1515,4 +1517,42 @@ section {
     .portfolio .row > [class*="col"] {
         min-width: 280px;
     }
+}
+/* --- Barra de Progresso de Leitura (No Menu) --- */
+#progress-container {
+    width: 100%;
+    height: 4px; /* Altura da linha */
+    background: rgba(255, 255, 255, 0.1);
+    position: absolute;
+    bottom: 0; /* Fica na parte de baixo do header */
+    left: 0;
+    z-index: 998;
+}
+
+#progress-bar {
+    height: 4px;
+    background: #00C7B7; /* Verde Neon da marca */
+    width: 0%; /* Começa em 0 */
+    transition: width 0.1s;
+    box-shadow: 0 0 10px #00C7B7; /* Efeito Glow */
+}
+
+/* --- Estilização da Barra de Rolagem (Scrollbar Personalizada) --- */
+/* Funciona no Chrome, Edge e Safari */
+::-webkit-scrollbar {
+    width: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: #0D1B2A; /* Fundo escuro */
+}
+
+::-webkit-scrollbar-thumb {
+    background: #00C7B7; /* A barra verde */
+    border-radius: 5px;
+    border: 2px solid #0D1B2A; /* Borda para separar */
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #009f92; /* Verde mais escuro ao passar o mouse */
 }
