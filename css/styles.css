@@ -1461,6 +1461,7 @@ h1, h2, h3, h4, h5, h6 {
         border-radius: 0;
         box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Sombra suave */
         animation: slideIn 0.3s;
+        display: flex !important; /* Garante que os itens apareçam */
     }
     
     .navbar-mobile a {
@@ -1482,6 +1483,7 @@ h1, h2, h3, h4, h5, h6 {
         top: 20px;
         right: 20px;
         color: #2c4964;
+        z-index: 10001; /* Garante que o botão de fechar fique sobre o menu */
     }
 }
 
