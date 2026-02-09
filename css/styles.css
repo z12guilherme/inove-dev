@@ -139,6 +139,7 @@ h1, h2, h3, h4, h5, h6 {
         display: flex !important;
         flex-direction: column;
         justify-content: flex-start;
+        display: block !important;
         position: absolute;
         top: 0;
         right: 0;
@@ -153,12 +154,18 @@ h1, h2, h3, h4, h5, h6 {
         border-radius: 0;
         box-shadow: -5px 0 15px rgba(0,0,0,0.1); /* Sombra suave */
         animation: slideIn 0.3s;
+        height: 100vh;
+    }
+
+    .navbar-mobile li {
+        display: block !important;
     }
     
     .navbar-mobile a {
         padding: 15px 20px;
         font-size: 16px;
         color: #00C7B7;
+        color: #2c4964 !important;
         border-bottom: 1px solid #eee; /* Separadores sutis */
         font-weight: 600;
         display: block; /* Garante que o link ocupe a linha inteira */
