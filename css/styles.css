@@ -101,7 +101,6 @@ h1, h2, h3, h4, h5, h6 {
 
 /* Mobile Navigation */
 .mobile-nav-toggle {
-    color: #2c4964;
     color: #00C7B7;
     font-size: 32px;
     cursor: pointer;
@@ -163,7 +162,6 @@ h1, h2, h3, h4, h5, h6 {
     .navbar-mobile a {
         padding: 15px 20px;
         font-size: 16px;
-        color: #00C7B7;
         color: #2c4964 !important;
         border-bottom: 1px solid #eee; /* Separadores sutis */
         font-weight: 600;
