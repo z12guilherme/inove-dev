@@ -140,6 +140,8 @@ h1, h2, h3, h4, h5, h6 {
         flex-direction: column !important;
         justify-content: flex-start !important;
         position: absolute;
+        display: block !important;
+        position: fixed;
         top: 0;
         right: 0;
         bottom: 0;
@@ -153,6 +155,7 @@ h1, h2, h3, h4, h5, h6 {
         box-shadow: -5px 0 15px rgba(0,0,0,0.1);
         z-index: 9999; /* Fica acima do fundo escuro */
         height: 100% !important;
+        height: 100vh !important;
     }
 
     .navbar-mobile li {
