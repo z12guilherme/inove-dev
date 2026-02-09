@@ -130,20 +130,13 @@ h1, h2, h3, h4, h5, h6 {
 
     .navbar ul {
         display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        padding: 10px 0 0 0;
         flex-wrap: nowrap; /* Não empilha, fica lado a lado */
         overflow-x: auto; /* Barra de rolagem horizontal */
         justify-content: flex-start;
         padding: 0 0 10px 0;
         width: 100%;
-        gap: 5px;
         gap: 10px;
-        scrollbar-width: none; /* Esconde barra no Firefox */
-        -ms-overflow-style: none; /* Esconde barra no IE/Edge */
     }
-    .navbar ul::-webkit-scrollbar { display: none; /* Esconde barra no Chrome/Safari */ }
 
     .navbar a {
         padding: 8px 12px;
