@@ -120,6 +120,7 @@ h1, h2, h3, h4, h5, h6 {
     #header .container {
         display: flex;
         flex-direction: column;
+        flex-direction: column-reverse; /* Menu acima do Logo */
         align-items: center;
     }
 
@@ -132,9 +133,17 @@ h1, h2, h3, h4, h5, h6 {
         flex-wrap: wrap;
         justify-content: center;
         padding: 10px 0 0 0;
+        flex-wrap: nowrap; /* Não empilha, fica lado a lado */
+        overflow-x: auto; /* Barra de rolagem horizontal */
+        justify-content: flex-start;
+        padding: 0 0 10px 0;
         width: 100%;
         gap: 5px;
+        gap: 10px;
+        scrollbar-width: none; /* Esconde barra no Firefox */
+        -ms-overflow-style: none; /* Esconde barra no IE/Edge */
     }
+    .navbar ul::-webkit-scrollbar { display: none; /* Esconde barra no Chrome/Safari */ }
 
     .navbar a {
         padding: 8px 12px;
@@ -143,11 +152,21 @@ h1, h2, h3, h4, h5, h6 {
         border-radius: 4px;
         margin-bottom: 5px;
         color: #444;
+        padding: 6px 15px;
+        font-size: 13px;
+        background: transparent; /* Mais disfarçado */
+        border: 1px solid #eee;
+        border-radius: 50px; /* Estilo Pílula */
+        margin-bottom: 0;
+        color: #666;
+        white-space: nowrap; /* Texto não quebra */
+        flex-shrink: 0; /* Garante que o item não encolha */
     }
 
     .navbar a:hover, .navbar .active, .navbar .active:focus {
         background: #00C7B7;
         color: #fff;
+        border-color: #00C7B7;
     }
 }
 
