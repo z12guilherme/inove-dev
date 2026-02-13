@@ -1,0 +1,58 @@
+<!-- Teste a seção "Como Trabalhamos" -->
+
+Para verificar se a seção está funcionando:
+
+1. Abra o Developer Tools (F12)
+2. Console
+3. Cole e execute:
+
+```javascript
+const processSection = document.getElementById('process');
+console.log('Seção process encontrada:', processSection);
+console.log('Display:', getComputedStyle(processSection).display);
+console.log('Visibility:', getComputedStyle(processSection).visibility);
+console.log('Opacity:', getComputedStyle(processSection).opacity);
+console.log('Height:', getComputedStyle(processSection).height);
+```
+
+Se retornar:
+- display: block ✅
+- visibility: visible ✅
+- opacity: 1 ✅
+- height: (valor numérico em pixels) ✅
+
+ENTÃO ESTÁ FUNCIONANDO!
+
+---
+
+Para ver a seção na página:
+
+1. DevTools Console
+2. Execute:
+
+```javascript
+// Ir para a seção
+document.getElementById('process').scrollIntoView({ behavior: 'smooth' });
+```
+
+A página deve fazer scroll até a seção "Como Trabalhamos"
+
+
+
+---
+
+Se AINDA não aparecer, pode ser:
+
+1. **Cache do navegador** - Limpe o cache (Ctrl+Shift+Delete)
+2. **CSS não carregada** - Procure por erros em DevTools > Network
+3. **JavaScript interferindo** - Procure por console errors em DevTools > Console
+4. **Zoom incorreto** - Verifique se zoom do navegador está em 100% (Ctrl+0)
+
+---
+
+Qualquer dúvida, execute no console:
+
+```javascript
+// Mostrar toda estrutura da seção
+console.log(document.getElementById('process').innerHTML);
+```

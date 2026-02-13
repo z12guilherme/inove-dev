@@ -677,7 +677,17 @@ section {
     }
 }
 
-/* Back to Top */
+/* Process Section - Desktop */
+.process .row {
+    display: flex !important;
+    flex-wrap: wrap !important;
+    width: 100%;
+}
+
+.process .row > [class*="col"] {
+    display: block !important;
+    flex: 0 0 auto;
+}
 .back-to-top {
     position: fixed;
     visibility: hidden;
@@ -708,9 +718,17 @@ section {
 }
 
 /* Process Section */
+.process {
+    display: block !important;
+    visibility: visible !important;
+    padding: 60px 0 !important;
+    background-color: #f9f9fa !important;
+}
+
 .process .process-step {
     margin-bottom: 30px;
     position: relative;
+    display: block !important;
 }
 
 .process .step-icon {
@@ -718,7 +736,7 @@ section {
     height: 80px;
     background: #fff;
     border-radius: 50%;
-    display: flex;
+    display: flex !important;
     align-items: center;
     justify-content: center;
     margin: 0 auto 20px auto;
@@ -739,6 +757,11 @@ section {
     margin-bottom: 10px;
     font-size: 18px;
     color: #2c4964;
+}
+
+.process p {
+    color: #5e5e5e;
+    margin-bottom: 15px;
 }
 
 /* Floating WhatsApp Button */

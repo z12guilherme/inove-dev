@@ -1,0 +1,492 @@
+/* ============================================
+   OTIMIZAÇÕES DE ESTILO ADICIONAL
+   Para complementar animations.css
+   ============================================ */
+
+/* Melhorias nos Botões */
+.btn {
+    transition: all 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.btn:hover {
+    transform: translateY(-2px);
+}
+
+.btn-primary, .btn-success, .btn-info, .btn-warning, .btn-danger {
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.btn-primary:hover, .btn-success:hover, .btn-info:hover, .btn-warning:hover, .btn-danger:hover {
+    box-shadow: 0 8px 25px rgba(0, 199, 183, 0.3);
+}
+
+/* Ripple Effect para Botões */
+.btn::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.3);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+}
+
+.btn:active::before {
+    animation: ripple 0.6s ease-out;
+}
+
+@keyframes ripple {
+    to {
+        width: 300px;
+        height: 300px;
+        opacity: 0;
+    }
+}
+
+/* Melhorias nos Cards */
+.card {
+    transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+    border: none;
+    border-radius: 12px;
+    overflow: hidden;
+}
+
+.card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+}
+
+/* Melhorias nos Ícones */
+.icon-box {
+    transition: all 0.3s ease;
+}
+
+.icon-box .icon {
+    transition: all 0.3s ease;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #00C7B7 0%, #009f92 100%);
+    margin-bottom: 15px;
+    color: #fff;
+    font-size: 28px;
+}
+
+.icon-box:hover .icon {
+    transform: scale(1.2) rotate(-10deg);
+    box-shadow: 0 10px 25px rgba(0, 199, 183, 0.4);
+}
+
+/* Melhorias nas Listas */
+ul li {
+    transition: all 0.2s ease;
+}
+
+ul li:hover {
+    padding-left: 8px;
+}
+
+/* Melhorias nos Links */
+a {
+    transition: all 0.3s ease;
+    position: relative;
+}
+
+a:not(.btn):not(.nav-link)::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background: #00C7B7;
+    transition: width 0.3s ease;
+}
+
+a:not(.btn):not(.nav-link):hover::after {
+    width: 100%;
+}
+
+/* Melhorias nas Imagens */
+img {
+    transition: all 0.3s ease;
+}
+
+.hover-scale img:hover {
+    transform: scale(1.05);
+}
+
+/* Melhorias nas Seções */
+section {
+    position: relative;
+    overflow: hidden;
+}
+
+/* Background Patterns */
+section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    opacity: 0.05;
+    pointer-events: none;
+}
+
+/* Melhorias de Formulários */
+input, textarea, select {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+input:focus, textarea:focus, select:focus {
+    box-shadow: 0 0 0 3px rgba(0, 199, 183, 0.1);
+    border-color: #00C7B7;
+    transform: translateY(-2px);
+}
+
+/* Melhorias em Badges */
+.badge {
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.badge:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 15px rgba(0, 0, 0, 0.15);
+}
+
+/* Melhorias em Tabelas */
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+tbody tr {
+    transition: all 0.3s ease;
+}
+
+tbody tr:hover {
+    background-color: rgba(0, 199, 183, 0.05);
+    box-shadow: inset 0 0 10px rgba(0, 199, 183, 0.1);
+}
+
+/* Melhorias em Modal */
+.modal-content {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+
+.modal-header {
+    border: none;
+    background: linear-gradient(135deg, #0D1B2A 0%, #1a2940 100%);
+    color: #fff;
+}
+
+.modal-body {
+    padding: 2rem;
+}
+
+/* Melhorias em Navbar */
+.navbar {
+    transition: all 0.3s ease;
+}
+
+.navbar-brand {
+    transition: all 0.3s ease;
+}
+
+.navbar-brand:hover {
+    color: #00C7B7;
+    text-shadow: 0 0 10px rgba(0, 199, 183, 0.5);
+}
+
+/* Melhorias em Progress Bar */
+.progress {
+    height: 8px;
+    border-radius: 10px;
+    overflow: hidden;
+    background: rgba(0, 199, 183, 0.1);
+}
+
+.progress-bar {
+    background: linear-gradient(90deg, #00C7B7 0%, #00d4c4 100%);
+    border-radius: 10px;
+}
+
+/* Melhorias em Navs e Tabs */
+.nav-tabs {
+    border: none;
+}
+
+.nav-tabs .nav-link {
+    color: #444;
+    border: none;
+    border-bottom: 3px solid transparent;
+    transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+    color: #00C7B7;
+    border-bottom-color: #00C7B7;
+}
+
+.nav-tabs .nav-link.active {
+    color: #00C7B7;
+    border-bottom-color: #00C7B7;
+    background-color: rgba(0, 199, 183, 0.05);
+}
+
+/* Melhorias em Accordion */
+.accordion-button {
+    transition: all 0.3s ease;
+    border-radius: 8px;
+}
+
+.accordion-button:not(.collapsed) {
+    background-color: rgba(0, 199, 183, 0.1);
+    color: #00C7B7;
+    box-shadow: inset 0 -1px 0 rgba(0, 199, 183, 0.1);
+}
+
+.accordion-button:focus {
+    border-color: #00C7B7;
+    box-shadow: 0 0 0 0.25rem rgba(0, 199, 183, 0.25);
+}
+
+/* Melhorias em Alert */
+.alert {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    animation: slideInUp 0.5s ease-in-out;
+}
+
+/* Melhorias em Dropdown */
+.dropdown-menu {
+    border-radius: 8px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+    animation: fadeInDown 0.3s ease-in-out;
+}
+
+.dropdown-item {
+    transition: all 0.2s ease;
+}
+
+.dropdown-item:hover {
+    background-color: rgba(0, 199, 183, 0.1);
+    color: #00C7B7;
+    padding-left: 1.5rem;
+}
+
+/* Melhorias em Spinners */
+.spinner-border {
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* Melhorias em Breadcrumbs */
+.breadcrumb {
+    background-color: transparent;
+    gap: 0.5rem;
+}
+
+.breadcrumb-item {
+    transition: all 0.3s ease;
+}
+
+.breadcrumb-item a:hover {
+    color: #00C7B7;
+    text-decoration: underline;
+}
+
+/* Melhorias em Popovers e Tooltips */
+.tooltip-inner {
+    background-color: #0D1B2A;
+    border-radius: 6px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+}
+
+.popover {
+    border-radius: 12px;
+    border: none;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+}
+
+.popover-header {
+    background: linear-gradient(135deg, #0D1B2A 0%, #1a2940 100%);
+    color: #fff;
+    border: none;
+}
+
+/* Melhorias em Imagens com Border */
+img {
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Melhorias em Headings */
+h1, h2, h3, h4, h5, h6 {
+    transition: all 0.3s ease;
+}
+
+h1:hover, h2:hover, h3:hover, h4:hover, h5:hover, h6:hover {
+    color: #00C7B7;
+    text-shadow: 0 0 10px rgba(0, 199, 183, 0.3);
+}
+
+/* Efeito de Paralax suave */
+@media (prefers-reduced-motion: no-preference) {
+    .parallax-light {
+        background-attachment: fixed;
+    }
+}
+
+/* Sombra flutuante para elementos */
+.floating {
+    animation: float 3s ease-in-out infinite;
+}
+
+@keyframes float {
+    0%, 100% {
+        transform: translateY(0px);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+/* Efeito de digitação para inputs */
+input::placeholder {
+    animation: placeholderTyping 4s infinite;
+}
+
+@keyframes placeholderTyping {
+    0%, 100% {
+        opacity: 0.5;
+    }
+    50% {
+        opacity: 1;
+    }
+}
+
+/* Decoração de Divisor */
+.divider {
+    position: relative;
+    text-align: center;
+    margin: 2rem 0;
+}
+
+.divider::before,
+.divider::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    width: 40%;
+    height: 1px;
+    background: linear-gradient(to right, transparent, #00C7B7, transparent);
+}
+
+.divider::before {
+    left: 0;
+}
+
+.divider::after {
+    right: 0;
+}
+
+/* Efeito de Brilho em Superfícies */
+.shine-effect {
+    position: relative;
+    overflow: hidden;
+}
+
+.shine-effect::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, transparent 30%, rgba(255, 255, 255, 0.1) 50%, transparent 70%);
+    animation: shine 3s infinite;
+    pointer-events: none;
+}
+
+@keyframes shine {
+    0% {
+        transform: translateX(-100%) translateY(-100%);
+    }
+    100% {
+        transform: translateX(100%) translateY(100%);
+    }
+}
+
+/* ============================================
+   CORREÇÃO SEÇÃO PROCESSO (COMO TRABALHAMOS)
+   ============================================ */
+#process {
+    display: block !important;
+    padding: 60px 0;
+    background-color: #f8f9fa; /* Garante fundo cinza claro */
+    position: relative;
+    z-index: 5;
+}
+
+.process-step {
+    padding: 20px;
+    margin-bottom: 30px;
+    transition: all 0.3s ease;
+    /* FORÇA VISIBILIDADE: Ignora animações travadas */
+    opacity: 1 !important;
+    transform: none !important;
+    visibility: visible !important;
+}
+
+.process-step .step-icon {
+    width: 80px;
+    height: 80px;
+    margin: 0 auto 20px auto;
+    background: #fff;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 32px;
+    color: #00C7B7;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+
+.process-step:hover .step-icon {
+    background: #00C7B7;
+    color: #fff;
+    transform: translateY(-5px);
+}
+
+/* Garante cor do texto para não ficar invisível */
+#process h4 {
+    color: #222;
+    font-weight: 700;
+    margin-top: 15px;
+}
+
+#process p {
+    color: #555;
+}
