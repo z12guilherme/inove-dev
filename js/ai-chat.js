@@ -33,8 +33,17 @@ async function handleUserResponse() {
     sendBtn.disabled = true;
 
     if (step === 0) {
-        userData.name = text; // Na verdade pegamos tudo junto no primeiro prompt para simplificar
+        userData.name = text; 
         userData.details = text;
+        
+        // Sincronizar com Tawk.to para o agente saber quem é o visitante
+        if (window.Tawk_API) {
+            window.Tawk_API.setAttributes({
+                'name': text.split(' ')[0], // Tenta pegar o primeiro nome
+                'full_name': text,
+                'ai_interaction': 'Iniciou conversa com Gemini'
+            });
+        }
         
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
         
@@ -533,7 +542,7 @@ async function generateSiteStructure(userInput) {
             errorMsg = "Erro 405: Ambiente local sem backend. Use 'netlify dev' para testar com a IA.";
         }
 
-        addMessage(`${errorMsg} Tente novamente com mais detalhes.`, 'bot');
+        addMessage(`${errorMsg} <br><br> <button onclick="window.callHumanAgent('Erro na IA: ${userInput}')" class="btn btn-primary btn-sm mt-2">Falar com Suporte Humano</button>`, 'bot');
         input.disabled = false;
         sendBtn.disabled = false;
     }
