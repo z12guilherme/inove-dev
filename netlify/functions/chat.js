@@ -24,8 +24,8 @@ exports.handler = async (event) => {
 
         // Pega as chaves do ambiente
         let MISTRAL_API_KEY = process.env.MISTRAL_API_KEY ? process.env.MISTRAL_API_KEY.trim() : null;
-        // Fallback: Se não achar no env, usa a chave de testes local
-        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "AIzaSyCSR5sHu-aR2KUpSVDLQAt6ubXj7olADtA";
+        // Fallback: Pegando exclusivamente do arquivo .env ou do painel da Netlify
+        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : null;
 
         // Define o provedor padrão como Gemini (mais rápido e estável para JSON)
         const provider = body.provider || 'gemini';
@@ -123,9 +123,17 @@ exports.handler = async (event) => {
                 });
 
                 const data = await response.json();
+
+                // Se a API retornar erro (400, 401, 403, 500), mostra o detalhe no terminal
+                if (!response.ok) {
+                    console.error("❌ Erro retornado pela API do Gemini:", JSON.stringify(data, null, 2));
+                    throw new Error(`Erro Gemini (${response.status}): ${data.error?.message || 'Falha na requisição'}`);
+                }
+
                 const text = data.candidates?.[0]?.content?.parts?.[0]?.text;
 
                 if (!text) {
+                    console.error("⚠️ Resposta inesperada do Gemini (Bloqueio de Segurança?):", JSON.stringify(data, null, 2));
                     throw new Error("Gemini não retornou texto. Verifique filtros de segurança ou formato.");
                 }
 

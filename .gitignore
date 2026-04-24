@@ -1,6 +1,22 @@
-node_modules
+# Dependências do Node
+node_modules/
+npm-debug.log
+
+# Variáveis de Ambiente (MUITO IMPORTANTE: Protege suas chaves de API)
 .env
+.env.*
+
+# Arquivos temporários e de cache da Netlify
+.netlify/
+
+# Arquivos de Sistema Operacional (Mac/Windows)
 .DS_Store
-netlify/functions/node_modules
-# Local Netlify folder
-.netlify
+Thumbs.db
+
+# Configurações de Editores de Código
+.vscode/
+.idea/
+
+# Diretórios de build (se vier a usar no futuro)
+dist/
+build/
