@@ -105,17 +105,35 @@ if (btnEnviarMensagem) {
     });
 }
 
-// Mobile Navigation Toggle
-const mobileNavToggle = document.querySelector('.mobile-nav-toggle');
-const navbar = document.querySelector('#navbar');
+// Offcanvas Smooth Scroll Fix
+const offcanvasLinks = document.querySelectorAll('#offcanvasMenu .scrollto');
+offcanvasLinks.forEach(link => {
+    link.addEventListener('click', function(e) {
+        const targetId = this.getAttribute('href');
+        if (targetId.startsWith('#')) {
+            e.preventDefault();
+            const targetElement = document.querySelector(targetId);
+            
+            // Close offcanvas
+            const offcanvasElement = document.getElementById('offcanvasMenu');
+            const offcanvasInstance = bootstrap.Offcanvas.getInstance(offcanvasElement);
+            if (offcanvasInstance) offcanvasInstance.hide();
 
-if (mobileNavToggle) {
-    mobileNavToggle.addEventListener('click', function(e) {
-        navbar.classList.toggle('navbar-mobile');
-        this.classList.toggle('bi-list');
-        this.classList.toggle('bi-x');
+            // Scroll to target
+            setTimeout(() => {
+                if (targetElement) {
+                    const headerOffset = 80;
+                    const elementPosition = targetElement.getBoundingClientRect().top;
+                    const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+                    window.scrollTo({
+                        top: offsetPosition,
+                        behavior: "smooth"
+                    });
+                }
+            }, 300);
+        }
     });
-}
+});
 
 // --- SCROLL ANIMATIONS & PROGRESS BAR LOGIC ---
 const observerOptions = {

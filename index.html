@@ -109,8 +109,8 @@
         "name": "Pernambuco"
       },
       "sameAs": [
-        "https://www.instagram.com/inovedev",
-        "https://github.com/inovedev"
+        "https://www.instagram.com/inovedev_",
+        "https://github.com/z12guilherme"
       ],
       "priceRange": "$$",
       "openingHoursSpecification": {
@@ -179,23 +179,60 @@
                             style="max-height: 40px;"></a></h1>
             </div>
 
-            <nav id="navbar" class="navbar">
-                <ul>
-                    <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                    <li><a class="nav-link scrollto" href="#saas-platform-highlight"
-                            style="color: #00C7B7; font-weight: bold;">Inove SaaS</a></li>
-                    <li><a class="nav-link scrollto" href="#commerce-template-highlight"
-                            style="color: #00C7B7; font-weight: bold;">Inove Commerce</a></li>
-                    <li><a class="nav-link scrollto" href="#gestaorh-highlight"
-                            style="color: #00C7B7; font-weight: bold;">GestãoRH</a></li>
-                    <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
-                    <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
-                </ul>
-                <i class="bi bi-list mobile-nav-toggle" role="button" aria-label="Abrir Menu de Navegação"
-                    tabindex="0"></i>
-            </nav>
+            <button class="btn text-white fs-2 p-0 border-0 shadow-none" type="button" data-bs-toggle="offcanvas"
+                data-bs-target="#offcanvasMenu" aria-controls="offcanvasMenu">
+                <i class="bi bi-list"></i>
+            </button>
         </div>
     </header>
+
+    <!-- Offcanvas Menu (Hambúrguer) -->
+    <div class="offcanvas offcanvas-end text-bg-dark" tabindex="-1" id="offcanvasMenu"
+        aria-labelledby="offcanvasMenuLabel"
+        style="background-color: rgba(13, 27, 42, 0.95) !important; backdrop-filter: blur(15px); width: 350px;">
+        <div class="offcanvas-header border-bottom border-secondary p-4">
+            <h5 class="offcanvas-title" id="offcanvasMenuLabel">
+                <img src="assets/logo.png" alt="InoveDev" class="img-fluid" style="max-height: 35px;">
+            </h5>
+            <button type="button" class="btn-close btn-close-white" data-bs-dismiss="offcanvas"
+                aria-label="Close"></button>
+        </div>
+        <div class="offcanvas-body d-flex flex-column p-4">
+            <ul class="navbar-nav flex-grow-1 fs-5 gap-3">
+                <li class="nav-item"><a class="nav-link text-white scrollto" href="#hero"><i
+                            class="bi bi-house-door me-2"></i> Home</a></li>
+                <li class="nav-item"><a class="nav-link scrollto" href="#saas-platform-highlight"
+                        style="color: #00C7B7; font-weight: bold;"><i
+                            class="bi bi-clouds-fill me-2"></i> Inove SaaS</a></li>
+                <li class="nav-item"><a class="nav-link scrollto" href="#commerce-template-highlight"
+                        style="color: #f59e0b; font-weight: bold;"><i
+                            class="bi bi-cart-check me-2"></i> Inove Commerce</a></li>
+                <li class="nav-item"><a class="nav-link scrollto" href="#gestaorh-highlight"
+                        style="color: #00C7B7; font-weight: bold;"><i
+                            class="bi bi-people-fill me-2"></i> GestãoRH</a></li>
+                <li class="nav-item mt-2 mb-2"><a
+                        class="nav-link text-warning fw-bold d-inline-flex align-items-center bg-dark p-2 rounded"
+                        href="studio.html"
+                        style="border: 1px solid rgba(255,255,255,0.1);"><i class="bi bi-stars me-2"></i> Inove Dev
+                        Studio <i class="bi bi-arrow-right ms-2 fs-6"></i></a></li>
+                <li class="nav-item"><a class="nav-link text-white scrollto" href="#about"><i class="bi bi-info-circle me-2"></i> Sobre a Inove</a></li>
+                <li class="nav-item"><a class="nav-link text-white scrollto" href="#contact"><i class="bi bi-envelope-paper me-2"></i> Contato</a></li>
+            </ul>
+
+            <div class="mt-auto">
+                <hr class="border-secondary mb-4">
+                <p class="text-white-50 small mb-3">Conecte-se conosco</p>
+                <div class="d-flex gap-4">
+                    <a href="https://www.instagram.com/inovedev_" target="_blank"
+                        class="text-white fs-3 transition-transform hover-scale"><i class="bi bi-instagram"></i></a>
+                    <a href="https://github.com/z12guilherme" target="_blank"
+                        class="text-white fs-3 transition-transform hover-scale"><i class="bi bi-github"></i></a>
+                    <a href="https://wa.me/5581989035561" target="_blank"
+                        class="text-white fs-3 transition-transform hover-scale"><i class="bi bi-whatsapp"></i></a>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Hero Section -->
     <section id="hero"
@@ -227,7 +264,10 @@
 
             <div class="hc-hero-actions d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
                 <a href="#saas-platform-highlight" class="hc-btn hc-btn-primary scrollto">
-                    Conhecer Produtos <i class="bi bi-arrow-right ms-2"></i>
+                    Conhecer Produtos <i class="bi bi-arrow-down ms-2"></i>
+                </a>
+                <a href="studio.html" class="hc-btn text-warning border border-warning" style="background: rgba(255,193,7,0.1);">
+                    <i class="bi bi-stars me-2"></i> Inove Dev Studio
                 </a>
                 <a href="#contact" class="hc-btn hc-btn-outline scrollto">
                     Falar com Especialista
