@@ -182,16 +182,13 @@
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
-                    <li><a class="nav-link" href="https://saas.inovedev.com.br" target="_blank"
-                            style="color: #00C7B7; font-weight: bold;">SaaS <span
-                                class="badge bg-warning text-dark ms-1" style="font-size: 0.6em;">NOVO</span></a></li>
-                    <li><a class="nav-link" href="#about">Sobre</a></li>
-                    <li><a class="nav-link scrollto" href="#services">Serviços</a></li>
-                    <li><a class="nav-link scrollto" href="#process">Processo</a></li>
-                    <li><a class="nav-link scrollto" href="#portfolio">Portfólio</a></li>
-                    <li><a class="nav-link scrollto" href="#templates">Modelos</a></li>
-                    <li><a class="nav-link" href="encurtador.html">Encurtador</a></li>
-                    <li><a class="nav-link active" href="blog.html">Blog</a></li>
+                    <li><a class="nav-link scrollto" href="#commerce-template-highlight"
+                            style="color: #00C7B7; font-weight: bold;">Inove Commerce</a></li>
+                    <li><a class="nav-link scrollto" href="#saas-platform-highlight"
+                            style="color: #00C7B7; font-weight: bold;">Inove SaaS</a></li>
+                    <li><a class="nav-link scrollto" href="#gestaorh-highlight"
+                            style="color: #00C7B7; font-weight: bold;">GestãoRH</a></li>
+                    <li><a class="nav-link scrollto" href="#about">Sobre</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contato</a></li>
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle" role="button" aria-label="Abrir Menu de Navegação"
@@ -201,82 +198,102 @@
     </header>
 
     <!-- Hero Section -->
-    <section id="hero">
-        <div id="hero-canvas"></div>
-        <div class="container text-center position-relative" data-aos="zoom-in" data-aos-duration="1500">
-            <img src="assets/logo.png" alt="Inove Dev" class="hero-logo mb-7">
-            <h2 class="hero-subtitle">Seu sistema inovador no mercado</h2>
+    <section id="hero"
+        class="hc-hero overflow-hidden position-relative d-flex align-items-center justify-content-center">
+        <div id="hero-canvas" class="position-absolute top-0 start-0 w-100 h-100"></div>
 
-            <div class="mt-7">
-                <a href="#about" class="btn-scroll-down scrollto"><i class="bi bi-chevron-down"></i></a>
+        <!-- Glowing background orbs -->
+        <div class="hc-orb orb-1"></div>
+        <div class="hc-orb orb-2"></div>
+        <div class="hc-orb orb-3"></div>
+
+        <!-- Animated Grid overlay -->
+        <div class="hc-grid-overlay"></div>
+
+        <div class="container text-center position-relative z-index-2" data-aos="fade-up" data-aos-duration="1500">
+            <div class="hero-badge mb-4 mx-auto">
+                <span class="badge-pulse"></span> INOVE DEV
+            </div>
+
+            <h1 class="hc-hero-title">
+                Acelerando a sua <br>
+                <span class="hc-highlight">Evolução Digital</span>
+            </h1>
+
+            <p class="hc-hero-desc mx-auto mt-4 mb-5">
+                Desenvolvemos produtos digitais de alta performance e sistemas inteligentes para escalar o seu negócio e
+                modernizar sua operação.
+            </p>
+
+            <div class="hc-hero-actions d-flex flex-column flex-sm-row gap-3 justify-content-center align-items-center">
+                <a href="#saas-highlight" class="hc-btn hc-btn-primary scrollto">
+                    Conhecer Produtos <i class="bi bi-arrow-right ms-2"></i>
+                </a>
+                <a href="#contact" class="hc-btn hc-btn-outline scrollto">
+                    Falar com Especialista
+                </a>
+            </div>
+        </div>
+
+        <div class="hc-scroll-indicator scrollto" onclick="window.location.href='#saas-highlight'">
+            <div class="mouse">
+                <div class="wheel"></div>
             </div>
         </div>
     </section>
 
-    <main id="main">
+                <main id="main">
 
-        <!-- SaaS Highlight Section (Novo Produto Principal) -->
-        <section id="saas-highlight" class="section-bg" style="background: #ffffff; padding: 80px 0; overflow: hidden;">
+        <!-- Produto 1: Inove Commerce Template (Text Left, Image Right) -->
+        <section id="commerce-template-highlight" class="section-bg" style="background-color: #ffffff; padding: 80px 0; overflow: hidden;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6" data-aos="fade-right">
-                        <span class="badge bg-primary mb-3 px-3 py-2 rounded-pill fw-bold"><i class="bi bi-stars"></i>
-                            PRODUTO PRINCIPAL</span>
-                        <h2 class="fw-bold display-5 mb-3 text-dark">Inove Commerce: Sua Loja Virtual Pronta</h2>
+                        <span class="badge mb-3 px-3 py-2 rounded-pill fw-bold" style="background-color: #f59e0b; color: #fff;"><i class="bi bi-cart-check"></i> E-COMMERCE PREMIUM</span>
+                        <h2 class="fw-bold display-5 mb-3 text-dark">Inove Commerce</h2>
                         <p class="lead mb-4 text-secondary">
-                            A solução completa para você vender online sem complicações. Tenha sua própria loja com
-                            design profissional, pagamentos integrados e gestão fácil de pedidos.
-                        <div><strong>Comece a vender hoje mesmo!</strong></div>
+                            Template de E-commerce robusto, escalável e de alta conversão. Inspirado nos maiores varejistas como <strong>Mercado Livre</strong> e <strong>Americanas</strong>.
                         </p>
                         <div class="row mb-4">
                             <div class="col-md-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <i class="bi bi-credit-card-2-front fs-3 text-success me-3"></i>
+                                    <i class="bi bi-truck fs-3 text-primary me-3"></i>
                                     <div>
-                                        <h6 class="mb-0 fw-bold text-dark">Pagamento Integrado</h6>
-                                        <small class="text-muted">Receba via PIX e Cartão com segurança</small>
+                                        <h6 class="mb-0 fw-bold text-dark">Logística Inteligente</h6>
+                                        <small class="text-muted">Cálculo dinâmico via Correios e Loggi</small>
                                     </div>
                                 </div>
                             </div>
                             <div class="col-md-6 mb-3">
                                 <div class="d-flex align-items-center">
-                                    <i class="bi bi-speedometer2 fs-3 text-info me-3"></i>
+                                    <i class="bi bi-credit-card fs-3 text-success me-3"></i>
                                     <div>
-                                        <h6 class="mb-0 fw-bold text-dark">Alta Performance</h6>
-                                        <small class="text-muted">Site rápido e sempre online</small>
+                                        <h6 class="mb-0 fw-bold text-dark">Checkout Automatizado</h6>
+                                        <small class="text-muted">Integração com PIX e Cartões</small>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <ul class="list-unstyled mb-4 text-secondary">
-                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> Painel administrativo
-                                fácil de usar</li>
-                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> Funciona
-                                perfeitamente no celular</li>
-                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> Sem taxas abusivas
-                                sobre suas vendas</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i> <strong>Painel Administrativo:</strong> Gestão independente de produtos, cupons e pedidos.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i> <strong>UX Premium:</strong> Design responsivo com micro-interações de alta conversão.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-warning me-2"></i> <strong>Tecnologia de Ponta:</strong> Next.js 15, SSR, Tailwind CSS e Estado Global.</li>
                         </ul>
                         <div class="d-flex gap-3 flex-wrap">
-                            <a href="https://saas.inovedev.com.br" target="_blank"
-                                class="btn btn-primary btn-lg rounded-pill px-4 shadow-lg border-0"
-                                style="background-color: #00C7B7;">
-                                <i class="bi bi-rocket-takeoff me-2"></i> Criar Minha Loja
-                            </a>
-                            <a href="#contact" class="btn btn-outline-primary btn-lg rounded-pill px-4">
-                                Falar com Especialista
+                            <a href="#contact" class="btn btn-outline-dark btn-lg rounded-pill px-4">
+                                Solicitar Orçamento
                             </a>
                         </div>
                     </div>
                     <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
                         <div class="position-relative p-2 bg-white rounded-4 border shadow-lg">
-                            <img src="assets/saas.jpg" alt="Dashboard Inove Commerce" class="img-fluid rounded-3">
-                            <div
-                                class="position-absolute bottom-0 end-0 m-4 p-3 bg-dark bg-opacity-75 backdrop-blur rounded-3 border border-secondary">
+                            <img src="assets/eccomerce.JPG" alt="Inove Commerce Template" class="img-fluid rounded-3" onerror="this.src='https://placehold.co/600x400/f59e0b/FFF?text=Inove+Commerce'">
+                            <div class="position-absolute bottom-0 start-0 m-4 p-3 bg-dark bg-opacity-80 backdrop-blur rounded-3 border border-secondary">
                                 <div class="d-flex align-items-center gap-3">
-                                    <i class="bi bi-shield-check text-success fs-2"></i>
+                                    <i class="bi bi-lightning-charge-fill text-warning fs-2"></i>
                                     <div class="text-start">
-                                        <div class="fw-bold text-white">Compra Segura</div>
-                                        <div class="small text-white-50">Dados protegidos</div>
+                                        <div class="fw-bold text-white">Alta Conversão</div>
+                                        <div class="small text-white-50">SEO e Performance SSR</div>
                                     </div>
                                 </div>
                             </div>
@@ -286,34 +303,235 @@
             </div>
         </section>
 
-        <!-- Custom System Section (Estratégia: Alternativa Premium) -->
-        <section id="custom-system" class="section-bg" style="background-color: #f8f9fa; padding: 80px 0;">
+        <!-- Produto 2: Inove SaaS Platform (Text Right, Image Left) -->
+        <section id="saas-platform-highlight" class="section-bg" style="background: #f8f9fa; padding: 80px 0; overflow: hidden;">
             <div class="container">
                 <div class="row align-items-center">
                     <div class="col-lg-6 order-lg-2" data-aos="fade-left">
-                        <span class="badge bg-dark mb-3 px-3 py-2 rounded-pill fw-bold"><i class="bi bi-cpu"></i> ALTA
-                            COMPLEXIDADE</span>
-                        <h2 class="fw-bold display-5 mb-3 text-dark">Sistemas e E-commerces 100% Personalizados</h2>
+                        <span class="badge mb-3 px-3 py-2 rounded-pill fw-bold" style="background-color: #00C7B7; color: #050a12;"><i class="bi bi-clouds-fill"></i> PLATAFORMA SAAS</span>
+                        <h2 class="fw-bold display-5 mb-3 text-dark">Precisa de uma loja exclusiva para você?</h2>
+                        <h3 class="h4 mb-3 text-primary">Nós também temos a solução!</h3>
                         <p class="lead mb-4 text-secondary">
-                            Seu negócio tem regras únicas? O SaaS não é suficiente? Desenvolvemos e-commerces e
-                            softwares sob medida
-                            que se adaptam exatamente aos seus processos, e não o contrário.
+                            Conheça o <strong>Inove SaaS</strong>. Uma plataforma completa onde você assina e já sai vendendo. Ambiente seguro, escalável e com subdomínio próprio pronto para a sua marca.
                         </p>
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-hdd-network fs-3 text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">Subdomínios Dinâmicos</h6>
+                                        <small class="text-muted">Sua loja: minhamarca.inovedev</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-palette fs-3 text-success me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">Construtor Visual</h6>
+                                        <small class="text-muted">Personalize com a sua cara</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <ul class="list-unstyled mb-4 text-secondary">
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Funcionalidades
-                                exclusivas para sua operação</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Integração com
-                                qualquer API ou sistema legado</li>
-                            <li class="mb-2"><i class="bi bi-check-circle-fill text-success me-2"></i> Propriedade total
-                                do código fonte</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Multi-tenant Real:</strong> Seus dados totalmente isolados e seguros no banco.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Checkout Integrado:</strong> Pagamentos ágeis via Mercado Pago e WhatsApp.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Alta Performance:</strong> Arquitetura Edge Serverless no Supabase.</li>
                         </ul>
-                        <a href="#contact" class="btn btn-dark btn-lg rounded-pill px-4 shadow-lg border-0">
-                            <i class="bi bi-code-square me-2"></i> Orçar Projeto Exclusivo
-                        </a>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="https://saas.inovedev.com.br" target="_blank"
+                                class="btn btn-primary btn-lg rounded-pill px-4 shadow-lg border-0"
+                                style="background-color: #00C7B7; color: #050a12; font-weight: bold;">
+                                <i class="bi bi-rocket-takeoff me-2"></i> Crie sua Loja Agora
+                            </a>
+                        </div>
                     </div>
                     <div class="col-lg-6 order-lg-1 mt-5 mt-lg-0" data-aos="fade-right">
-                        <img src="assets/corp.jpg" alt="Desenvolvimento de Software Sob Medida"
-                            class="img-fluid rounded-4 shadow-lg">
+                        <div class="position-relative p-2 bg-white rounded-4 border shadow-lg">
+                            <img src="assets/saas.jpg" alt="Dashboard Inove SaaS" class="img-fluid rounded-3" onerror="this.src='https://placehold.co/600x400/00C7B7/FFF?text=Inove+SaaS'">
+                            <div class="position-absolute bottom-0 end-0 m-4 p-3 bg-dark bg-opacity-80 backdrop-blur rounded-3 border border-secondary">
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-database-fill-gear text-info fs-2"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold text-white">Pronto para Usar</div>
+                                        <div class="small text-white-50">Assine e comece a vender</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produto 3: GestãoRH Highlight Section (Text Left, Image Right) -->
+        <section id="gestaorh-highlight" class="section-bg" style="background: #ffffff; padding: 80px 0;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6" data-aos="fade-right">
+                        <span class="badge mb-3 px-3 py-2 rounded-pill fw-bold"
+                            style="background-color: #00C7B7; color: white;"><i class="bi bi-people-fill"></i> SISTEMA
+                            CORPORATIVO</span>
+                        <h2 class="fw-bold display-5 mb-3 text-dark">GestãoRH: Seu DP no Piloto Automático</h2>
+                        <p class="lead mb-4 text-secondary">
+                            Uma plataforma completa (All-in-One) que une Ponto Eletrônico, Admissão Digital,
+                            Recrutamento e uma Inteligência Artificial exclusiva para modernizar a jornada do
+                            colaborador.
+                        </p>
+                        <ul class="list-unstyled mb-4 text-secondary">
+                            <li class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-robot fs-4 text-primary me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="mb-1 fw-bold text-dark">Assistente Virtual com IA</h6>
+                                        <small class="text-muted">Deixe a IA executar tarefas no banco de dados com
+                                            comandos de texto.</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-geo-alt-fill fs-4 text-success me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="mb-1 fw-bold text-dark">Ponto Eletrônico com Geo</h6>
+                                        <small class="text-muted">Registro de ponto com captura de localização exata por
+                                            GPS e PWA Offline.</small>
+                                    </div>
+                                </div>
+                            </li>
+                            <li class="mb-3">
+                                <div class="d-flex align-items-start">
+                                    <i class="bi bi-file-earmark-lock-fill fs-4 text-info me-3 mt-1"></i>
+                                    <div>
+                                        <h6 class="mb-1 fw-bold text-dark">Holerite e Dossiê Digital</h6>
+                                        <small class="text-muted">Assinatura digital com validade jurídica e
+                                            armazenamento em nuvem (LGPD).</small>
+                                    </div>
+                                </div>
+                            </li>
+                        </ul>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="https://gestaorecursoshumanos.vercel.app/" target="_blank"
+                                class="btn btn-dark btn-lg rounded-pill px-4 shadow-lg border-0"
+                                style="background-color: #0D1B2A;">
+                                <i class="bi bi-box-arrow-up-right me-2"></i> Acessar GestãoRH
+                            </a>
+                            <a href="#contact" class="btn btn-outline-dark btn-lg rounded-pill px-4">
+                                Falar com Especialista
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 mt-5 mt-lg-0" data-aos="fade-left">
+                        <div class="position-relative p-2 bg-white rounded-4 border shadow-lg">
+                            <img src="assets/gestaorh.jpg" alt="Dashboard Gestão RH" class="img-fluid rounded-3"
+                                onerror="this.src='https://placehold.co/600x400/0D1B2A/FFF?text=Gestão+RH'">
+                            <div
+                                class="position-absolute bottom-0 end-0 m-4 p-3 bg-white bg-opacity-90 backdrop-blur rounded-3 border border-light shadow-sm">
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-shield-check text-success fs-2"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold text-dark">100% Seguro</div>
+                                        <div class="small text-muted">Adequado à LGPD</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Produto 4: Gestão Atípicos Section (Text Right, Image Left) -->
+        <section id="gestao-atipicos-highlight" class="section-bg"
+            style="background-color: #f8f9fa; padding: 80px 0; overflow: hidden;">
+            <div class="container">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 order-lg-2" data-aos="fade-left">
+                        <span class="badge mb-3 px-3 py-2 rounded-pill fw-bold"
+                            style="background-color: #7c3aed; color: white;"><i class="bi bi-shield-lock"></i> SEGURANÇA
+                            E PRIVACIDADE</span>
+                        <h2 class="fw-bold display-5 mb-3 text-dark">Gestão Atípicos</h2>
+                        <p class="lead mb-4 text-secondary">
+                            Plataforma completa para gestão e acompanhamento de estudantes atípicos. Foco total na
+                            <strong>LGPD</strong>, conectando cuidadores, famílias e gestores em um ambiente
+                            colaborativo e seguro.
+                        </p>
+                        <div class="row mb-4">
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-clipboard2-pulse fs-3 text-primary me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">Laudos e Histórico</h6>
+                                        <small class="text-muted">Visualização segura de documentos</small>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <div class="d-flex align-items-center">
+                                    <i class="bi bi-phone-fill fs-3 text-success me-3"></i>
+                                    <div>
+                                        <h6 class="mb-0 fw-bold text-dark">Mobile e Offline</h6>
+                                        <small class="text-muted">PWA e Aplicativo Nativo</small>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <ul class="list-unstyled mb-4 text-secondary">
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Dashboards
+                                    Personalizados:</strong> Acessos para Gestor, Responsável e Cuidador.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Conformidade
+                                    LGPD:</strong> Privacy by Design com controle estrito de acessos.</li>
+                            <li class="mb-2"><i class="bi bi-check2-circle text-primary me-2"></i> <strong>Alta
+                                    Disponibilidade:</strong> Arquitetura robusta com Supabase.</li>
+                        </ul>
+                        <div class="d-flex gap-3 flex-wrap">
+                            <a href="https://gestao-atipicos.vercel.app" target="_blank"
+                                class="btn btn-primary btn-lg rounded-pill px-4 shadow-lg border-0"
+                                style="background-color: #7c3aed;">
+                                <i class="bi bi-box-arrow-up-right me-2"></i> Ver Sistema em Ação
+                            </a>
+                        </div>
+                    </div>
+                    <div class="col-lg-6 order-lg-1 mt-5 mt-lg-0" data-aos="fade-right">
+                        <div class="position-relative p-2 bg-white rounded-4 border shadow-lg">
+                            <img src="assets/atipicos.PNG" alt="Dashboard Gestão Atípicos" class="img-fluid rounded-3"
+                                onerror="this.src='https://placehold.co/600x400/7c3aed/FFF?text=Gestão+Atípicos'">
+                            <div
+                                class="position-absolute bottom-0 start-0 m-4 p-3 bg-dark bg-opacity-80 backdrop-blur rounded-3 border border-secondary">
+                                <div class="d-flex align-items-center gap-3">
+                                    <i class="bi bi-shield-check text-success fs-2"></i>
+                                    <div class="text-start">
+                                        <div class="fw-bold text-white">100% Protegido</div>
+                                        <div class="small text-white-50">Dados Sensíveis Criptografados</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Custom Software CTA -->
+        <section id="custom-software-cta" style="background: linear-gradient(135deg, #0d1b2a 0%, #050a12 100%); padding: 100px 0; position: relative; overflow: hidden;">
+            <!-- Elementos decorativos -->
+            <div class="position-absolute top-0 end-0 opacity-25" style="width: 350px; height: 350px; background: radial-gradient(circle, #00C7B7 0%, transparent 70%); filter: blur(60px); transform: translate(30%, -30%);"></div>
+            <div class="position-absolute bottom-0 start-0 opacity-25" style="width: 300px; height: 300px; background: radial-gradient(circle, #007BFF 0%, transparent 70%); filter: blur(50px); transform: translate(-30%, 30%);"></div>
+            
+            <div class="container position-relative z-index-2 text-center" data-aos="zoom-in" data-aos-duration="1000">
+                <div class="row justify-content-center">
+                    <div class="col-lg-8">
+                        <span class="badge mb-3 px-4 py-2 rounded-pill fw-bold border border-secondary text-white" style="background: rgba(255,255,255,0.05); backdrop-filter: blur(5px);"><i class="bi bi-code-slash"></i> SOFTWARE SOB MEDIDA</span>
+                        <h2 class="display-5 fw-bold text-white mb-4">Precisa de um sistema exclusivo para a <span style="color: #00C7B7;">sua empresa?</span></h2>
+                        <p class="lead text-white-50 mb-5">
+                            Se os produtos de prateleira não resolvem o seu problema, nós resolvemos. Nossa equipe de engenharia desenvolve soluções do zero, 100% personalizadas para otimizar os processos do seu negócio.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 flex-wrap">
+                            <a href="#contact" class="btn btn-lg rounded-pill px-5 shadow-lg fw-bold d-inline-flex align-items-center justify-content-center scrollto" style="background-color: #00C7B7; color: #050a12; border: none; transition: transform 0.3s;" onmouseover="this.style.transform='translateY(-3px)'" onmouseout="this.style.transform='translateY(0)'">
+                                <i class="bi bi-rocket-takeoff-fill me-2"></i> Solicitar Projeto Sob Medida
+                            </a>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -380,525 +598,6 @@
                                 aria-label="LinkedIn"><i class="bi bi-linkedin"></i></a>
                             <a href="https://github.com/z12guilherme/" title="GitHub" aria-label="GitHub"><i
                                     class="bi bi-github"></i></a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Services Section -->
-        <section id="services" class="services">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Serviços</h2>
-                    <p>Soluções completas para o seu negócio digital</p>
-                </div>
-
-                <div class="row">
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="icon-box hover-lift">
-                            <div class="icon"><i class="bi bi-code-slash"></i></div>
-                            <h4 class="title"><a href="">Criação de Sites</a></h4>
-                            <p class="description">Sites responsivos e modernos para qualquer tipo de negócio.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="icon-box hover-lift">
-                            <div class="icon"><i class="bi bi-cart4"></i></div>
-                            <h4 class="title"><a href="">E-commerce</a></h4>
-                            <p class="description">Lojas virtuais completas com integração de pagamentos.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="icon-box hover-lift">
-                            <div class="icon"><i class="bi bi-laptop"></i></div>
-                            <h4 class="title"><a href="">Sistemas Web</a></h4>
-                            <p class="description">Soluções sob medida como ERPs, Gestão Escolar, Sistemas de Chamados e
-                                Dashboards.</p>
-                        </div>
-                    </div>
-
-                    <div class="col-md-6 col-lg-3 d-flex align-items-stretch mb-5 mb-lg-0">
-                        <div class="icon-box hover-lift">
-                            <div class="icon"><i class="bi bi-tools"></i></div>
-                            <h4 class="title"><a href="">Suporte</a></h4>
-                            <p class="description">Suporte técnico contínuo e atualizações regulares.</p>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Process Section (Diferencial) -->
-        <section id="process" class="process section-bg">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Como Trabalhamos</h2>
-                    <p>Do conceito à realidade em 4 passos simples</p>
-                </div>
-
-                <div class="row text-center">
-                    <div class="col-md-3 col-6 process-step hover-scale">
-                        <div class="step-icon"><i class="bi bi-chat-dots"></i></div>
-                        <h4>1. Briefing</h4>
-                        <p>Entendemos seus objetivos e necessidades.</p>
-                    </div>
-                    <div class="col-md-3 col-6 process-step hover-scale">
-                        <div class="step-icon"><i class="bi bi-pencil-square"></i></div>
-                        <h4>2. Design</h4>
-                        <p>Criamos o visual e a experiência do usuário.</p>
-                    </div>
-                    <div class="col-md-3 col-6 process-step hover-scale">
-                        <div class="step-icon"><i class="bi bi-code-slash"></i></div>
-                        <h4>3. Código</h4>
-                        <p>Desenvolvimento com tecnologias modernas.</p>
-                    </div>
-                    <div class="col-md-3 col-6 process-step hover-scale">
-                        <div class="step-icon"><i class="bi bi-rocket-takeoff"></i></div>
-                        <h4>4. Entrega</h4>
-                        <p>Testes finais, publicação e suporte.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Portfolio Section -->
-        <section id="portfolio" class="portfolio">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Portfólio</h2>
-                    <p>Confira nossos projetos recentes</p>
-                </div>
-
-                <div class="row portfolio-container">
-                    <!-- Projeto 1 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <img src="assets/logo.jpg" class="img-fluid" alt="Empório Paraibano" loading="lazy"
-                                style="object-fit: contain; background-color: #fff; padding: 15px;">
-                            <div class="portfolio-info">
-                                <h4>Empório Paraibano</h4>
-                                <p>E-commerce</p>
-                                <div class="portfolio-links">
-                                    <a href="https://emporioparaibano.netlify.app" target="_blank"
-                                        title="Ver Detalhes"><i class="bi bi-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Projeto 2 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <img src="assets/gestao_atipicos.png" class="img-fluid" alt="Gestão Atípicos"
-                                loading="lazy">
-                            <div class="portfolio-info">
-                                <h4>Gestão Atípicos</h4>
-                                <p>Sistema Web para Gestão e Acompanhamento de Atipicos</p>
-                                <div class="portfolio-links">
-                                    <a href="https://gestao-atipicos.vercel.app/" target="_blank"
-                                        title="Ver Detalhes"><i class="bi bi-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Projeto 3 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <img src="assets/gestaorh.jpg" class="img-fluid" alt="Gestão RH" loading="lazy">
-                            <div class="portfolio-info">
-                                <h4>Sistema de RH</h4>
-                                <p>Sistema Corporativo para Gestão Completa de RH</p>
-                                <div class="portfolio-links">
-                                    <a href="https://gestaorecursoshumanos.vercel.app/" target="_blank"
-                                        title="Ver Detalhes"><i class="bi bi-link"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Projeto 4 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <!-- Placeholder: Substitua 'assets/bruno-fotografia.jpg' pela imagem real -->
-                            <img src="assets/print.PNG" class="img-fluid" alt="Plataforma Fotografia" loading="lazy"
-                                onerror="this.src='https://placehold.co/600x400/0D1B2A/FFF?text=Fotografia+Pro'">
-                            <div class="portfolio-info">
-                                <h4>Sistema Completo para Fotografia</h4>
-                                <p>Galeria Privada & Área do Cliente<br><small>React • Supabase • UI/UX</small></p>
-                                <div class="portfolio-links">
-                                    <a href="https://www.bnfotos.com.br/" target="_blank" title="Acessar site"><i
-                                            class="bi bi-globe"></i></a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Projeto 5 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <img src="assets/chamadosti.jpg" class="img-fluid" alt="Sistema de chamados de T.I"
-                                loading="lazy"
-                                onerror="this.src='https://placehold.co/600x400/0D1B2A/FFF?text=Fotografia+Pro'">
-                            <div class="portfolio-info">
-                                <h4>Sistema para chamados e demanda de T.I</h4>
-                                <p>Login do técnico e chamado aberto para funcionários<br><small>JS • Firebase •
-                                        UI/UX</small></p>
-                                <div class="portfolio-links">
-                                    <a href="https://rededmi-chamados-ti.netlify.app/" target="_blank"
-                                        title="Acessar site"><i class="bi bi-globe"></i></a>
-
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <!-- Projeto 6 -->
-                    <div class="col-lg-4 col-md-6 portfolio-item">
-                        <div class="portfolio-wrap hover-lift">
-                            <img src="assets/eccomerce.png" class="img-fluid" alt="Inove Commerce Personalizado"
-                                loading="lazy" style="object-fit: cover;">
-                            <div class="portfolio-info">
-                                <h4>Inove Commerce</h4>
-                                <p>E-commerce 100% funcional<br><small>Next.js • TailwindCSS</small></p>
-                                <div class="portfolio-links">
-                                    <a href="https://github.com/z12guilherme/inove-dev-template_eccomerce"
-                                        target="_blank" title="Acessar Repositório"><i class="bi bi-github"></i></a>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Templates Section (Novo) -->
-        <section id="templates" class="section-bg" style="padding: 60px 0;">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Modelos de Sites</h2>
-                    <p>Escolha um design base para acelerar seu projeto</p>
-                    <p>Observação: você pode escolher outros modelos ou ser feito um exclusivamente para sua
-                        necessidade.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <!-- Template Card 1 -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="assets/corp.jpg" class="card-img-top" alt="Modelo Institucional"
-                                    style="height: 200px; object-fit: cover;" loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Corporativo & Institucional</h4>
-                                <p class="card-text text-muted mb-4">Design moderno e limpo, ideal para empresas,
-                                    consultorias e escritórios que buscam credibilidade.</p>
-                                <a href="templates/institucional.html" target="_blank"
-                                    class="btn btn-primary px-4 py-2"><i class="bi bi-eye me-2"></i>Ver Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Template Card 2 (Médico) -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up"
-                        data-aos-delay="100">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="https://images.unsplash.com/photo-1638202993928-7267aad84c31?auto=format&fit=crop&w=600&q=80"
-                                    class="card-img-top" alt="Template Médico" style="height: 200px; object-fit: cover;"
-                                    loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Saúde & Bem-estar</h4>
-                                <p class="card-text text-muted mb-4">Layout clean e confiável. Perfeito para médicos,
-                                    dentistas, clínicas e terapeutas.</p>
-                                <a href="templates/medico.html" target="_blank"
-                                    class="btn btn-info text-white px-4 py-2"><i class="bi bi-heart-pulse me-2"></i>Ver
-                                    Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Template Card 3 (E-commerce) -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up"
-                        data-aos-delay="200">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="https://images.unsplash.com/photo-1483985988355-763728e1935b?auto=format&fit=crop&w=600&q=80"
-                                    class="card-img-top" alt="Template E-commerce"
-                                    style="height: 200px; object-fit: cover;" loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Loja Virtual</h4>
-                                <p class="card-text text-muted mb-4">Venda seus produtos online com estilo. Vitrine
-                                    moderna, carrinho e checkout simplificado.</p>
-                                <a href="templates/ecommerce.html" target="_blank" class="btn btn-dark px-4 py-2"><i
-                                        class="bi bi-bag me-2"></i>Ver Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="section-title mt-5">
-                    <h2>Modelos de Sistemas</h2>
-                    <p>Soluções robustas para gestão e automação do seu negócio</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <!-- Template Card 4 (ERP Light) -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch" data-aos="fade-up" data-aos-delay="300">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=600&q=80"
-                                    class="card-img-top" alt="Template ERP" style="height: 200px; object-fit: cover;"
-                                    loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Sistema de Gestão (ERP)</h4>
-                                <p class="card-text text-muted mb-4">Controle de clientes, financeiro e relatórios.
-                                    Dashboard com métricas e níveis de acesso.</p>
-                                <a href="templates/erp/index.html" target="_blank" class="btn btn-primary px-4 py-2"><i
-                                        class="bi bi-bar-chart-line me-2"></i>Ver Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Template Card 5 (Help Desk) -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-md-0" data-aos="fade-up"
-                        data-aos-delay="400">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="https://images.unsplash.com/photo-1531403009284-440f080d1e12?auto=format&fit=crop&w=600&q=80"
-                                    class="card-img-top" alt="Template Help Desk"
-                                    style="height: 200px; object-fit: cover;" loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Help Desk & Suporte</h4>
-                                <p class="card-text text-muted mb-4">Gestão de chamados com SLA e histórico. Painel
-                                    exclusivo para clientes e suporte.</p>
-                                <a href="templates/helpdesk/index.html" target="_blank"
-                                    class="btn btn-success px-4 py-2"><i class="bi bi-headset me-2"></i>Ver
-                                    Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-
-                    <!-- Template Card 6 (Gestão de Projetos) -->
-                    <div class="col-lg-4 col-md-6 d-flex align-items-stretch mt-4 mt-lg-0" data-aos="fade-up"
-                        data-aos-delay="500">
-                        <div class="card border-0 shadow-sm w-100">
-                            <div class="card-header p-0 border-0">
-                                <img src="assets/projetos.jpg" class="card-img-top" alt="Template Kanban"
-                                    style="height: 200px; object-fit: cover;" loading="lazy">
-                            </div>
-                            <div class="card-body text-center">
-                                <h4 class="card-title fw-bold mt-3">Gestão de Projetos</h4>
-                                <p class="card-text text-muted mb-4">Quadro Kanban interativo para gestão de tarefas e
-                                    equipes. Estilo Trello/Jira.</p>
-                                <a href="templates/kanban/index.html" target="_blank"
-                                    class="btn btn-info text-white px-4 py-2"><i class="bi bi-kanban me-2"></i>Ver
-                                    Demonstração</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- AI Builder Section (Gemini Powered) -->
-        <section id="ai-builder" class="ai-builder section-bg">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Inove AI Studio <span class="badge bg-primary"
-                            style="font-size: 0.5em; vertical-align: middle;">BETA</span></h2>
-                    <p>Descreva sua ideia e nossa Inteligência Artificial criará um protótipo funcional em segundos.</p>
-                </div>
-
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="ai-interface shadow-lg">
-                            <div class="ai-header">
-                                <i class="bi bi-stars me-2"></i> Assistente Inove Dev
-                                <span class="badge bg-success ms-auto">Online</span>
-                                <button id="aiClearBtn" class="btn btn-sm btn-outline-light ms-2"
-                                    title="Reiniciar Conversa"><i class="bi bi-arrow-clockwise"></i></button>
-                            </div>
-                            <div class="ai-chat-window" id="aiChatWindow">
-                                <div class="ai-message bot">
-                                    Olá! Sou a IA da Inove. Posso criar um site completo para você agora mesmo.<br>
-                                    <strong>Qual é o nome do seu negócio e o que você faz?</strong><br>
-                                    <small class="text-muted">(Ex: "Advocacia Silva, escritório criminalista" ou
-                                        "Pizzaria do João, delivery de pizza")</small>
-                                </div>
-                            </div>
-                            <!-- Sugestões de Prompt -->
-                            <div class="ai-suggestions p-2 border-top bg-light d-flex gap-2 overflow-x-auto"
-                                style="white-space: nowrap; overflow-x: auto;">
-                                <small class="text-muted align-self-center fw-bold ms-2">Tente:</small>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Crie uma landing page para uma Cafeteria Artesanal chamada 'Aroma & Grão'. Estilo rústico, tons de marrom e creme. Foco em cafés especiais e ambiente acolhedor.">☕
-                                    Cafeteria Rústica</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Site para Personal Trainer 'MetaFit'. Estilo agressivo e moderno, cores neon (verde/preto). Foco em alta performance e emagrecimento.">💪
-                                    Personal Trainer</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Escritório de Arquitetura 'Traço Puro'. Design minimalista, muito branco e cinza. Foco em projetos de luxo e fotos grandes.">🏛️
-                                    Arquitetura Minimalista</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Crie um Sistema ERP para uma Loja de Eletrônicos chamada 'TechStore'. Preciso de um dashboard com gráficos de vendas mensais, tabela de pedidos recentes e KPIs de faturamento. Cor principal azul tecnológico.">📊
-                                    Sistema ERP</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Sistema de Gestão Escolar 'EducaMais'. Dashboard para diretores com métricas de alunos, frequência e financeiro. Cores azul e amarelo.">🎓
-                                    Gestão Escolar</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Sistema para Clínica Médica 'SaúdeTotal'. Painel de agendamentos, prontuário eletrônico e histórico de pacientes. Estilo clean e cores claras (verde água/branco).">🏥
-                                    Clínica Médica</button>
-                                <button class="btn btn-outline-secondary btn-sm rounded-pill suggestion-btn"
-                                    data-prompt="Painel Administrativo para App de Delivery 'FastFood'. Acompanhamento de pedidos em tempo real, mapa de entregadores e relatórios de vendas. Tema escuro (Dark Mode).">🚚
-                                    Dashboard Delivery</button>
-                            </div>
-                            <div class="ai-input-area">
-                                <input type="text" id="aiInput" class="form-control"
-                                    placeholder="Digite sua resposta...">
-                                <button id="aiSendBtn" class="btn btn-primary"><i class="bi bi-send"></i></button>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Video Section -->
-        <section id="video" class="video-section section-bg">
-            <div class="container text-center">
-                <div class="section-title">
-                    <h2>Por que escolher a Inove Dev?</h2>
-                </div>
-                <div class="ratio ratio-16x9 mx-auto" style="max-width: 800px;">
-                    <iframe src="https://www.youtube.com/embed/alxrSEuRKjU" title="YouTube video player"
-                        allowfullscreen></iframe>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonials Section -->
-        <section id="testimonials" class="testimonials" style="padding: 40px 0;">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Depoimentos</h2>
-                    <div class="mt-2">
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <i class="bi bi-star-fill text-warning"></i>
-                        <span class="ms-2 fw-bold">5.0 no Google</span>
-                        <div class="small text-muted mt-1">Baseado em avaliações reais</div>
-                        <div class="mt-3">
-                            <a href="https://g.page/r/CbmJ3eanRbevEAE/review" target="_blank"
-                                class="btn btn-outline-dark btn-sm rounded-pill"><i class="bi bi-google me-1"></i>
-                                Avaliar no Google</a>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="testimonials-slider swiper" data-aos="fade-up" data-aos-delay="100">
-                    <div class="swiper-wrapper">
-                        <!-- Depoimento 1 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-item text-center p-4 border rounded shadow-sm h-100">
-                                <img src="assets/logo.jpg" class="testimonial-img mb-3 rounded"
-                                    alt="Logo Empório Paraibano" loading="lazy"
-                                    style="width: 80px; height: 80px; object-fit: contain;">
-                                <h5 class="mb-1">Daniele Oliveira</h5>
-                                <span class="text-muted small d-block mb-3">CEO Empório Paraibano</span>
-                                <p class="small fst-italic mb-0">
-                                    <i class="bi bi-quote quote-icon-left text-primary opacity-50"></i>
-                                    Excelente trabalho! O site ficou incrível e aumentou nossas vendas. Profissionalismo
-                                    e entrega no prazo.
-                                    <i class="bi bi-quote quote-icon-right text-primary opacity-50"></i>
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Depoimento 2 -->
-                        <div class="swiper-slide">
-                            <div class="testimonial-item text-center p-4 border rounded shadow-sm h-100">
-                                <img src="assets/logobruno.png" class="testimonial-img mb-3 rounded"
-                                    alt="Logo Bruno Nascimento" loading="lazy"
-                                    style="width: 80px; height: 80px; object-fit: contain;">
-                                <h5 class="mb-1">Bruno Nascimento</h5>
-                                <span class="text-muted small d-block mb-3">Fotógrafo</span>
-                                <p class="small fst-italic mb-0">
-                                    <i class="bi bi-quote quote-icon-left text-primary opacity-50"></i>
-                                    A plataforma de seleção de fotos agilizou muito meu fluxo de trabalho. Recomendo
-                                    demais!
-                                    <i class="bi bi-quote quote-icon-right text-primary opacity-50"></i>
-                                </p>
-                            </div>
-                        </div>
-                        <!-- Depoimento 3 (Fictício para compor o slider) -->
-                    </div>
-                    <div class="swiper-pagination mt-4"></div>
-                </div>
-            </div>
-        </section>
-
-        <!-- FAQ Section (Novo) -->
-        <section id="faq" class="faq section-bg">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Perguntas Frequentes</h2>
-                    <p>Tire suas dúvidas antes de fechar negócio</p>
-                </div>
-
-                <div class="accordion" id="faqAccordion">
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingOne">
-                            <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-                                Quanto custa para fazer um site?
-                            </button>
-                        </h2>
-                        <div id="collapseOne" class="accordion-collapse collapse show" aria-labelledby="headingOne"
-                            data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                O valor varia conforme a complexidade (Institucional, Loja Virtual, Sistema). Nossos
-                                projetos começam com valores acessíveis e parcelamos no cartão. <strong>Solicite um
-                                    orçamento sem compromisso!</strong>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingTwo">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-                                Quanto tempo demora para ficar pronto?
-                            </button>
-                        </h2>
-                        <div id="collapseTwo" class="accordion-collapse collapse" aria-labelledby="headingTwo"
-                            data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Sites institucionais levam em média <strong>7 a 15 dias</strong>. Lojas virtuais e
-                                sistemas podem levar de 20 a 40 dias, dependendo das funcionalidades.
-                            </div>
-                        </div>
-                    </div>
-                    <div class="accordion-item">
-                        <h2 class="accordion-header" id="headingThree">
-                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                data-bs-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-                                O site funciona no celular?
-                            </button>
-                        </h2>
-                        <div id="collapseThree" class="accordion-collapse collapse" aria-labelledby="headingThree"
-                            data-bs-parent="#faqAccordion">
-                            <div class="accordion-body">
-                                Sim! Todos os nossos projetos são <strong>100% responsivos</strong>, ou seja, se adaptam
-                                perfeitamente a celulares, tablets e computadores.
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -983,86 +682,6 @@
                             <div class="text-center"><button type="submit" id="btnEnviar" class="btn btn-primary">Enviar
                                     Mensagem</button></div>
                         </form>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Game Section (Mantido mas estilizado) -->
-        <section id="game-section" class="game-section">
-            <div class="container text-center">
-                <div class="section-title">
-                    <h2>Desafio da Memória</h2>
-                    <p>Encontre os pares das tecnologias que utilizamos!</p>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="game-controls mb-3">
-                            <div class="row">
-                                <div class="col-md-4">
-                                    <label for="difficulty" class="form-label">Dificuldade:</label>
-                                    <select id="difficulty" class="form-select">
-                                        <option value="easy">Fácil (4x2)</option>
-                                        <option value="medium" selected>Médio (4x4)</option>
-                                        <option value="hard">Difícil (6x4)</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="game-stats">
-                                        <span class="badge bg-primary fs-6 me-2">Movimentos: <span
-                                                id="moves">0</span></span>
-                                        <span class="badge bg-success fs-6 me-2">Pontuação: <span
-                                                id="score">0</span></span>
-                                        <span class="badge bg-warning fs-6">Tempo: <span id="timer">00:00</span></span>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <button id="restartButton"
-                                        class="btn btn-sm btn-outline-dark me-2">Reiniciar</button>
-                                    <button id="leaderboardButton" class="btn btn-sm btn-outline-info">Ranking</button>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="memory-game" id="memoryGame">
-                            <!-- Cartas geradas via JavaScript -->
-                        </div>
-                        <div id="leaderboard" class="leaderboard mt-4" style="display: none;">
-                            <h4>Ranking</h4>
-                            <ol id="leaderboardList"></ol>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- CTF Section (Security Challenge) -->
-        <section id="ctf-challenge" class="ctf-section">
-            <div class="container">
-                <div class="section-title">
-                    <h2>Desafio Security (CTF)</h2>
-                    <p>Você consegue quebrar a criptografia e acessar o diretório oculto?</p>
-                </div>
-                <div class="row justify-content-center">
-                    <div class="col-lg-8">
-                        <div class="terminal-window">
-                            <div class="terminal-header">
-                                <div class="buttons"><span class="red"></span><span class="yellow"></span><span
-                                        class="green"></span></div>
-                                <span class="title">root@inovedev:~</span>
-                            </div>
-                            <div class="terminal-body">
-                                <p class="output">> INICIANDO PROTOCOLO DE SEGURANÇA...</p>
-                                <p class="output">> VARREDURA DE SISTEMA...</p>
-                                <p class="output">> PORTA 443: SEGURA</p>
-                                <p class="output">> ARQUIVO OCULTO ENCONTRADO: <span
-                                        class="highlight">/admin.html</span></p>
-                                <p class="output info">> ACESSO RESTRITO. NAVEGUE PARA O ARQUIVO PARA CONTINUAR.</p>
-                                <div class="input-line">
-                                    <span class="prompt">root@inovedev:~$</span>
-                                    <span class="cursor">_</span>
-                                </div>
-                            </div>
-                        </div>
                     </div>
                 </div>
             </div>
