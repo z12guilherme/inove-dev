@@ -17,7 +17,7 @@
         body {
             background-color: #050a12;
             color: #fff;
-            height: 100vh;
+            height: 100dvh; /* dvh garante que o mobile não corte com o teclado */
             display: flex;
             flex-direction: column;
             overflow: hidden;
@@ -152,9 +152,10 @@
             display: flex;
             gap: 10px;
             overflow-x: auto;
-            padding-bottom: 5px;
+            padding-bottom: 10px;
             margin-top: 15px;
             scrollbar-width: none;
+            -webkit-overflow-scrolling: touch;
         }
         .suggestions-wrapper::-webkit-scrollbar {
             display: none;
@@ -164,12 +165,13 @@
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.1);
             color: #ccc;
-            padding: 8px 18px;
-            border-radius: 20px;
-            font-size: 0.9rem;
+            padding: 10px 20px;
+            border-radius: 25px;
+            font-size: 0.95rem;
             white-space: nowrap;
             cursor: pointer;
             transition: all 0.2s;
+            flex-shrink: 0;
         }
         .suggestion-btn:hover {
             background: rgba(0, 199, 183, 0.1);

@@ -1,9 +1,21 @@
 // Usamos exports.handler (CommonJS) para garantir compatibilidade com o ambiente padrão do Netlify
 exports.handler = async (event) => {
+    // Adicionando headers CORS para permitir chamadas do frontend
+    const headers = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Allow-Methods': 'POST, OPTIONS'
+    };
+
     try {
+        // Aceita requisições preflight do CORS
+        if (event.httpMethod === 'OPTIONS') {
+            return { statusCode: 200, headers, body: '' };
+        }
+
         // Apenas aceita POST
         if (event.httpMethod !== 'POST') {
-            return { statusCode: 405, body: 'Method Not Allowed' };
+            return { statusCode: 405, headers, body: JSON.stringify({ error: { message: 'Method Not Allowed' } }) };
         }
 
         if (!event.body) throw new Error("Corpo da requisição vazio.");
@@ -12,15 +24,15 @@ exports.handler = async (event) => {
 
         // Pega as chaves do ambiente
         let MISTRAL_API_KEY = process.env.MISTRAL_API_KEY ? process.env.MISTRAL_API_KEY.trim() : null;
-        // Fallback: Se não achar no env, usa a chave fornecida diretamente (Correção para erro 401 local)
-        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : null;
+        // Fallback: Se não achar no env, usa a chave de testes local
+        let GEMINI_API_KEY = process.env.GEMINI_API_KEY ? process.env.GEMINI_API_KEY.trim() : "AIzaSyCSR5sHu-aR2KUpSVDLQAt6ubXj7olADtA";
 
         // Define o provedor padrão como Gemini (mais rápido e estável para JSON)
         const provider = body.provider || 'gemini';
 
         if (provider === 'mistral') {
             if (!MISTRAL_API_KEY) {
-                return { statusCode: 401, body: JSON.stringify({ error: { message: "Chave Mistral não configurada." } }) };
+                return { statusCode: 401, headers, body: JSON.stringify({ error: { message: "Chave Mistral não configurada." } }) };
             }
 
             const systemInst = body.messages.find(m => m.role === 'system')?.content || '';
@@ -59,6 +71,7 @@ exports.handler = async (event) => {
                 const data = await response.json();
                 return {
                     statusCode: 200,
+                    headers,
                     body: JSON.stringify({
                         choices: data.choices,
                         model_used: "mistral-small-latest"
@@ -69,13 +82,14 @@ exports.handler = async (event) => {
                 console.error("Erro na API Mistral:", error);
                 return {
                     statusCode: 500,
+                    headers,
                     body: JSON.stringify({ error: { message: error.message } })
                 };
             }
-        } 
+        }
         else if (provider === 'gemini') {
             if (!GEMINI_API_KEY) {
-                return { statusCode: 401, body: JSON.stringify({ error: { message: "Chave Gemini não configurada." } }) };
+                return { statusCode: 401, headers, body: JSON.stringify({ error: { message: "Chave Gemini não configurada." } }) };
             }
 
             try {
@@ -117,6 +131,7 @@ exports.handler = async (event) => {
 
                 return {
                     statusCode: 200,
+                    headers,
                     body: JSON.stringify({
                         choices: [{ message: { content: text } }],
                         model_used: "gemini-2.5-flash"
@@ -124,11 +139,12 @@ exports.handler = async (event) => {
                 };
             } catch (error) {
                 console.error("Erro na API Gemini:", error);
-                return { statusCode: 500, body: JSON.stringify({ error: { message: error.message } }) };
+                return { statusCode: 500, headers, body: JSON.stringify({ error: { message: error.message } }) };
             }
         } else {
             return {
                 statusCode: 400,
+                headers,
                 body: JSON.stringify({ error: { message: "Provedor não suportado." } })
             };
         }
@@ -136,6 +152,7 @@ exports.handler = async (event) => {
         console.error("Erro na Netlify Function:", error);
         return {
             statusCode: 500,
+            headers,
             body: JSON.stringify({ error: { message: error.message } })
         };
     }

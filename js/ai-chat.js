@@ -33,9 +33,9 @@ async function handleUserResponse() {
     sendBtn.disabled = true;
 
     if (step === 0) {
-        userData.name = text; 
+        userData.name = text;
         userData.details = text;
-        
+
         // Sincronizar com Tawk.to para o agente saber quem é o visitante
         if (window.Tawk_API) {
             window.Tawk_API.setAttributes({
@@ -44,9 +44,9 @@ async function handleUserResponse() {
                 'ai_interaction': 'Iniciou conversa com Gemini'
             });
         }
-        
+
         addMessage("Iniciando processamento... <span class='typing-indicator'></span>", 'bot');
-        
+
         try {
             // Chama a função de geração (agora usando Netlify Functions/Gemini)
             await generateSiteStructure(userData.details);
@@ -61,74 +61,78 @@ async function handleUserResponse() {
 
 async function generateSiteStructure(userInput) {
     const systemPrompt = `
-    Atue como um Desenvolvedor Frontend Sênior e Designer UI/UX Criativo.
-    Sua missão não é apenas preencher um template, mas TRANSFORMAR um esqueleto HTML em um site único e visualmente impressionante.
+    Atue como um Arquiteto de Software de Elite, Especialista em UI/UX Sênior e Copywriter de Alta Conversão.
+    Sua missão é TRANSFORMAR um template base em uma experiência web "High-End", imersiva e altamente persuasiva.
     
-    VOCÊ TEM TOTAL LIBERDADE CRIATIVA PARA MODIFICAR O VISUAL VIA CSS.
+    VOCÊ TEM PODER ABSOLUTO PARA REDESENHAR A INTERFACE USANDO A PROPRIEDADE 'customCss'.
     
-    1. ESCOLHA INTELIGENTE DE ESTRUTURA (templateSource):
-    Não escolha pelo nome da pasta, escolha pela ESTRUTURA DO LAYOUT que melhor atende o pedido:
+    1. ARQUITETURA DO LAYOUT (templateSource):
+    Escolha cirurgicamente a estrutura base de acordo com a jornada do usuário:
+    - "pizza": Para produtos físicos, vitrines, catálogos, cardápios ou serviços baseados em grid.
+    - "medico": Para prestadores de serviço, clínicas, agendamentos, times de especialistas.
+    - "nuptial": Para eventos, lançamentos, linhas do tempo e narrativas visuais longas.
+    - "iportfolio": Para branding pessoal, freelancers, infoprodutores e consultores.
+    - "strategy": Para negócios B2B, SaaS, startups corporativas (Foco em Autoridade).
+    - "ecommerce": APENAS para lojas complexas com múltiplos SKUs e carrinho.
     
-    - "pizza": Use se precisar de CARDÁPIOS, LISTAS DE PREÇOS ou GRIDS DE PRODUTOS COM FOTO (Serve para: Restaurantes, Lojas Simples, Catálogos, Barbearias com serviços).
-    - "medico": Use se precisar de AGENDAMENTO, DEPARTAMENTOS ou LISTA DE ESPECIALISTAS (Serve para: Clínicas, Consultorias, Escritórios, Academias).
-    - "nuptial": Use se precisar de CONTAGEM REGRESSIVA, TIMELINE ou GALERIA DE EVENTOS (Serve para: Eventos, Lançamentos, Festas).
-    - "iportfolio": Use se for FOCADO NA PESSOA ou FREELANCER (Serve para: Portfólios, Bios, Influencers).
-    - "strategy": Use para CORPORATIVO PADRÃO (Hero grande + Serviços + Sobre + Time).
-    - "ecommerce": Use APENAS se for venda direta de múltiplos produtos com carrinho.
+    2. REDESIGN RADICAL E ANIMAÇÕES (customCss - CRÍTICO E OBRIGATÓRIO):
+    Você NÃO deve apenas mudar cores. Você DEVE injetar CSS avançado para criar uma experiência Premium.
+    - USE VARIÁVEIS CSS E ANIMAÇÕES. 
+    - Aplique Glassmorphism (backdrop-filter: blur(15px)) em cards e headers.
+    - Adicione micro-interações (hover effects com transform: translateY(-5px) e box-shadow).
+    - Exemplo de injeção:
+      ":root { --border-radius: 16px; } .hero { background: radial-gradient(circle at top right, var(--primary), #000); } .card { border-radius: var(--border-radius); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.1); transition: all 0.3s ease; } .card:hover { transform: translateY(-10px) scale(1.02); box-shadow: 0 20px 40px rgba(0,0,0,0.4); }"
     
-    2. TRANSFORMAÇÃO VISUAL (CustomCSS - OBRIGATÓRIO):
-    Você deve escrever CSS real no campo 'customCss' para que o site não pareça um template pronto.
-    - Se for "Moderno/Tech": Use Glassmorphism (fundos translúcidos), gradientes neon, fontes sans-serif geométricas.
-    - Se for "Elegante/Luxo": Use fontes Serif (Playfair Display), cores douradas/pretas, muito whitespace.
-    - Se for "Criativo/Infantil": Use bordas arredondadas (border-radius: 20px), cores vibrantes, sombras lúdicas.
+    3. COPYWRITING PERSUASIVO (Gatilhos Mentais):
+    - NÃO use "Bem-vindo ao nosso site". 
+    - USE Headlines (títulos) focados na DOR do cliente ou na TRANSFORMAÇÃO (Ex: "Escale suas vendas em 30 dias sem aumentar o orçamento").
+    - Subtítulos devem explicar o "Como" e criar autoridade.
+    - CTAs (Botões) devem ser acionáveis (Ex: "Agendar Minha Consultoria", em vez de "Contato").
     
-    Exemplo de CustomCSS para injetar:
-    ".hero { background: linear-gradient(135deg, var(--primary) 0%, #000 100%); } .btn-get-started { border-radius: 50px; box-shadow: 0 10px 20px rgba(0,0,0,0.2); } .icon-box { transition: transform 0.3s; border: 1px solid rgba(255,255,255,0.1); }"
-
-    3. IMAGENS E CONTEXTO:
-    - Gere 'imageKeywords' muito específicas em inglês para buscar imagens reais (ex: "luxury interior design living room" em vez de "house").
-    - Escreva textos (Copywriting) que vendam, não textos genéricos.
+    4. IMAGENS PREMIUM:
+    - O campo 'imageKeywords' será usado na API do Unsplash. Ele DEVE SER EM INGLÊS.
+    - Adicione termos como "cinematic lighting", "high end", "professional", "minimalist" (ex: "luxury real estate modern interior cinematic lighting").
     
-    ESTRUTURA DE RESPOSTA (JSON):
+    ESTRUTURA DE RESPOSTA (JSON ESTRITO):
     {
         "projectType": "landing" | "system",
         "templateSource": "strategy" | "pizza" | "medico" | "nuptial" | "ecommerce" | "iportfolio",
-        "brandName": "Nome da Marca",
-        "niche": "Nicho Específico",
-        "themeStyle": "modern | minimalist | bold | luxury | retro | cyber",
+        "brandName": "Nome Estratégico da Marca",
+        "niche": "Nicho Analisado Profundamente",
+        "themeStyle": "modern | minimalist | bold | luxury | cyber | organic",
         "colors": {
-            "primary": "#HEX",
-            "secondary": "#HEX",
-            "accent": "#HEX",
-            "background": "#HEX",
-            "text": "#HEX",
-            "card_bg": "#HEX"
+            "primary": "#HEX (Cor de destaque e botões principais)",
+            "secondary": "#HEX (Cor de apoio e gradientes)",
+            "accent": "#HEX (Para detalhes e alertas)",
+            "background": "#HEX (Fundo geral - prefira tons escuros muito profundos ou claros muito limpos)",
+            "text": "#HEX (Alto contraste com background)",
+            "card_bg": "#HEX (Cor dos cards, ex: rgba(255,255,255,0.05) para dark mode)"
         },
         "fonts": { 
-            "heading": "Nome da Fonte Google (ex: Playfair Display)", 
-            "body": "Nome da Fonte Google (ex: Lato)" 
+            "heading": "Nome da Fonte Google (ex: 'Outfit' ou 'Playfair Display')", 
+            "body": "Nome da Fonte Google (ex: 'Inter' ou 'Roboto')" 
         },
-        "hero": { "title": "Headline Impactante", "subtitle": "Subtítulo Persuasivo", "cta": "Call to Action" },
-        "about": { "title": "Título Sobre", "text": "História da empresa...", "stats": [{"number": "10+", "label": "Anos"}] },
+        "hero": { "title": "Headline Matadora (Máx 7 palavras)", "subtitle": "Subtítulo Persuasivo (Máx 20 palavras)", "cta": "Call to Action de Alto Valor" },
+        "about": { "title": "Quem Somos (Focado em Autoridade)", "text": "Copywriting contando a história e provando valor...", "stats": [{"number": "X+", "label": "Métrica de Prova Social"}] },
         "services": [
-            {"title": "Nome do Serviço", "desc": "Descrição curta e vendedora", "icon": "bi-star"}
+            {"title": "Nome do Serviço/Produto", "desc": "Benefício principal para o cliente", "icon": "bi-star (use ícones relevantes do bootstrap)"}
         ],
         "portfolio": [
-            {"title": "Nome do Projeto", "category": "Categoria", "desc": "Breve descrição"}
+            {"title": "Case de Sucesso", "category": "Resultado Obtido", "desc": "Breve explicação do problema resolvido"}
         ],
-        "contact": { "address": "Endereço Fictício", "email": "Email", "phone": "Telefone", "cta_text": "CTA" },
+        "contact": { "address": "Endereço Premium", "email": "contato@marca.com", "phone": "+55 11 99999-9999", "cta_text": "Falar com Especialista" },
         "ui": {
-            "nav_home": "Início", "nav_about": "Sobre", "nav_services": "Serviços", "nav_portfolio": "Portfólio", "nav_contact": "Contato",
-            "btn_read_more": "Saiba Mais", "btn_submit": "Enviar Mensagem"
+            "nav_home": "Início", "nav_about": "A Empresa", "nav_services": "Soluções", "nav_portfolio": "Cases", "nav_contact": "Agendar",
+            "btn_read_more": "Descobrir Mais", "btn_submit": "Solicitar Proposta"
         },
-        "imageKeywords": "keywords in english for image search (ex: coffee shop interior cozy)",
-        "customCss": "CSS VÁLIDO PARA PERSONALIZAR O SITE (Não use markdown aqui, apenas string CSS)"
+        "imageKeywords": "keywords in english for image search (ex: modern tech office futuristic aesthetic)",
+        "customCss": "CÓDIGO CSS SUPER AVANÇADO E VÁLIDO PARA INJETAR NA PÁGINA (Sem crases ou blocos markdown. APENAS a string pura do CSS. Faça animações, use variáveis e mude radicalmente o template)"
     }
-
-    REGRAS FINAIS:
-    1. Retorne APENAS o JSON cru.
-    2. O conteúdo deve ser em PORTUGUÊS DO BRASIL.
-    3. SEJA OUSADO NO DESIGN. Use o customCss para mudar a cara do template.
+    
+    REGRAS DE OURO:
+    1. O resultado FINAL é um JSON CRU (Sem \`\`\`json ou qualquer formatação externa).
+    2. TEXTOS EM PORTUGUÊS DO BRASIL.
+    3. SURPREENDA O USUÁRIO COM UM DESIGN E COPYWRITING DE NÍVEL INTERNACIONAL.
     `;
 
     // Simulação de Progresso para UX
@@ -162,7 +166,7 @@ async function generateSiteStructure(userInput) {
                     ]
                 })
             });
-            
+
             if (response.ok) {
                 const data = await response.json();
                 // Suporte para resposta direta ou formato OpenAI
@@ -180,21 +184,21 @@ async function generateSiteStructure(userInput) {
             }
         } catch (e) {
             console.warn("⚠️ Proxy falhou, tentando conexão direta com Gemini...", e);
-            
+
             // TENTATIVA 2: Conexão Direta (Fallback para Localhost)
             try {
-                // Chave de emergência para funcionamento local
-                const GEMINI_DIRECT_KEY = ""; // REMOVIDO: Use variáveis de ambiente no Netlify
-                
+                // Chave de emergência mantida vazia por segurança (usaremos o Proxy)
+                const GEMINI_DIRECT_KEY = "";
+
                 if (!GEMINI_DIRECT_KEY) throw new Error("Chave de API direta não configurada. Verifique o backend.");
 
                 const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_DIRECT_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({
-                        contents: [{ 
-                            role: "user", 
-                            parts: [{ text: userInput + "\n\n(Gere o JSON completo agora.)" }] 
+                        contents: [{
+                            role: "user",
+                            parts: [{ text: userInput + "\n\n(Gere o JSON completo agora.)" }]
                         }],
                         systemInstruction: {
                             parts: [{ text: systemPrompt }]
@@ -222,13 +226,13 @@ async function generateSiteStructure(userInput) {
     // 3. TENTATIVA: Fallback de Emergência (Nunca entregar erro)
     if (!text) {
         console.error("❌ Todas as IAs falharam. Gerando template de emergência.");
-        
+
         // Detecção básica de intenção para o fallback (Melhoria UX)
         let fallbackTemplate = "strategy";
         let fallbackNiche = "Corporativo";
         let fallbackBrand = "Nova Era Soluções";
         let fallbackColors = { primary: "#0d6efd", secondary: "#6c757d", accent: "#0dcaf0", background: "#ffffff", text: "#212529", card_bg: "#f8f9fa" };
-        
+
         const lowerInput = (userInput || "").toLowerCase();
 
         // 1. Tenta extrair o nome da empresa do prompt (Entre aspas ou após "chamada")
@@ -314,18 +318,18 @@ async function generateSiteStructure(userInput) {
             themeStyle: "modern",
             colors: fallbackColors,
             fonts: { heading: "Montserrat", body: "Open Sans" },
-            hero: { 
-                title: "Transformando Ideias em Realidade", 
-                subtitle: "Soluções inovadoras e estratégias personalizadas para levar o seu projeto ao próximo nível de excelência.", 
-                cta: "Conheça Nossos Serviços" 
+            hero: {
+                title: "Transformando Ideias em Realidade",
+                subtitle: "Soluções inovadoras e estratégias personalizadas para levar o seu projeto ao próximo nível de excelência.",
+                cta: "Conheça Nossos Serviços"
             },
-            about: { 
-                title: "Nossa História", 
-                text: "Somos uma equipe apaixonada por entregar resultados. Com anos de experiência no mercado, combinamos criatividade e tecnologia para oferecer o melhor para nossos clientes. Nossa missão é superar expectativas e construir parcerias duradouras.", 
-                stats: [{number: "10+", label: "Anos de Experiência"}, {number: "500+", label: "Projetos Entregues"}] 
+            about: {
+                title: "Nossa História",
+                text: "Somos uma equipe apaixonada por entregar resultados. Com anos de experiência no mercado, combinamos criatividade e tecnologia para oferecer o melhor para nossos clientes. Nossa missão é superar expectativas e construir parcerias duradouras.",
+                stats: [{ number: "10+", label: "Anos de Experiência" }, { number: "500+", label: "Projetos Entregues" }]
             },
             services: [
-                { title: "Consultoria Especializada", desc: "Análise detalhada e planejamento estratégico para o seu crescimento.", icon: "bi-graph-up-arrow" }, 
+                { title: "Consultoria Especializada", desc: "Análise detalhada e planejamento estratégico para o seu crescimento.", icon: "bi-graph-up-arrow" },
                 { title: "Desenvolvimento Sob Medida", desc: "Soluções tecnológicas adaptadas exatamente às suas necessidades.", icon: "bi-laptop" },
                 { title: "Suporte Premium", desc: "Atendimento ágil e eficiente para garantir sua tranquilidade.", icon: "bi-headset" }
             ],
@@ -342,11 +346,11 @@ async function generateSiteStructure(userInput) {
                 { name: "Carlos Mendes", role: "CEO da TechCorp", text: "A equipe demonstrou um profissionalismo incrível. O resultado final superou todas as nossas expectativas." },
                 { name: "Mariana Costa", role: "Diretora de Marketing", text: "Excelente atendimento e entrega no prazo. Recomendo fortemente para quem busca qualidade." }
             ],
-            contact: { 
-                address: "Av. Empresarial, 1000 - Torre Sul, São Paulo - SP", 
-                email: "contato@" + fallbackBrand.toLowerCase().replace(/[^a-z0-9]/g, '') + ".com.br", 
-                phone: "(11) 99999-0000", 
-                cta_text: "Solicite um Orçamento" 
+            contact: {
+                address: "Av. Empresarial, 1000 - Torre Sul, São Paulo - SP",
+                email: "contato@" + fallbackBrand.toLowerCase().replace(/[^a-z0-9]/g, '') + ".com.br",
+                phone: "(11) 99999-0000",
+                cta_text: "Solicite um Orçamento"
             },
             ui: {
                 nav_home: "Início", nav_about: "Sobre", nav_services: "Serviços", nav_portfolio: "Portfólio", nav_contact: "Contato",
@@ -363,13 +367,13 @@ async function generateSiteStructure(userInput) {
         text = text.replace(/```json/gi, '').replace(/```/g, '').trim();
         const start = text.indexOf('{');
         const end = text.lastIndexOf('}');
-        
+
         if (start === -1 || end === -1) {
             throw new Error(`A resposta da IA não contém um JSON válido. Recebido: ${text.substring(0, 50)}...`);
         }
-        
+
         text = text.substring(start, end + 1);
-        
+
         let siteData;
         try {
             // Correção automática para JSON mal formatado (vírgulas extras)
@@ -379,7 +383,7 @@ async function generateSiteStructure(userInput) {
             // Fallback de cores para garantir contraste se a IA falhar
             if (!siteData.colors) {
                 siteData.colors = {
-                    "primary": "#0d6efd", "secondary": "#6c757d", "accent": "#0dcaf0", 
+                    "primary": "#0d6efd", "secondary": "#6c757d", "accent": "#0dcaf0",
                     "background": "#ffffff", "text": "#212529", "card_bg": "#f8f9fa"
                 };
             }
@@ -416,22 +420,22 @@ async function generateSiteStructure(userInput) {
             const fixImage = (description, type = 'landscape') => {
                 let prompt = description;
                 const nicheKey = (siteData.niche || "").toLowerCase();
-                
+
                 // 1. Validação e Fallback
                 if (!prompt || typeof prompt !== 'string' || prompt.length < 3) {
                     prompt = `${siteData.niche || "business"} ${siteData.themeStyle || "modern"}`;
                 }
-                
+
                 // 2. Detecção Agressiva de URLs (Se a IA mandar link, ignoramos e usamos o nicho)
                 // Regex ajustado para evitar falsos positivos, mas pegar links reais
                 if (prompt.match(/(https?:\/\/|www\.|unsplash\.com|source\.unsplash|\.com|\.net|\.org)/i)) {
                     prompt = `${siteData.niche || "modern business"} ${siteData.themeStyle || "professional"}`;
                 }
-                
+
                 // 3. Limpeza Inteligente
                 // Remove caracteres de código mas mantém acentos e pontuação básica
                 let cleanPrompt = prompt.replace(/[<>{}[\]\\\/]/g, '').trim();
-                
+
                 // 4. VERIFICAÇÃO DE TEMPLATE (Prioridade Máxima)
                 // Se o nicho do usuário bater com nosso banco de imagens, usamos a foto real (Unsplash)
                 // Isso evita o "robô" ou imagens estranhas da IA em nichos comuns.
@@ -451,7 +455,7 @@ async function generateSiteStructure(userInput) {
 
             // Garantir que todas as imagens essenciais existam
             if (!siteData.images) siteData.images = {};
-            
+
             // 1. Processar TODAS as imagens que vieram no JSON (não apenas as required)
             Object.keys(siteData.images).forEach(key => {
                 siteData.images[key] = fixImage(siteData.images[key]);
@@ -472,16 +476,16 @@ async function generateSiteStructure(userInput) {
                 let fixedText = text.replace(/,(\s*[}\]])/g, '$1');
                 // 2. Tenta corrigir chaves sem aspas (ex: key: "value" -> "key": "value")
                 fixedText = fixedText.replace(/([{,]\s*)([a-zA-Z0-9_]+)(\s*:)/g, '$1"$2"$3');
-                
+
                 siteData = JSON.parse(fixedText);
             } catch (e2) {
                 console.error("Falha na correção automática do JSON:", e2);
                 throw e; // Lança o erro original para o catch principal tratar
             }
         }
-        
+
         const timestamp = new Date().getTime(); // Cria um código único para evitar cache
-        
+
         if (siteData.projectType === 'system') {
             // Lógica para SISTEMAS
             localStorage.setItem('aiSystemData', JSON.stringify(siteData));
@@ -499,11 +503,11 @@ async function generateSiteStructure(userInput) {
             // Salva com ID único para permitir múltiplos projetos e edição direta no template
             const storageKey = `ai_site_${timestamp}`;
             localStorage.setItem(storageKey, JSON.stringify(siteData));
-            
+
             // Define o caminho real do template
             const templatePath = `templates/${siteData.templateSource || 'strategy'}/index.html`;
             const viewUrl = `${templatePath}?id=${timestamp}`;
-            
+
             addMessage(`
                 <strong>Site Gerado!</strong> 🚀<br>
                 Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
@@ -526,7 +530,7 @@ async function generateSiteStructure(userInput) {
         clearInterval(progressInterval);
         console.error("Erro detalhado:", e);
         let errorMsg = "Desculpe, não consegui gerar o site agora.";
-        
+
         // Diagnóstico de erro para o usuário
         if (e.toString().includes('403') || e.toString().includes('API key')) {
             errorMsg = "Erro de Autenticação: Verifique se a API Key está configurada corretamente no Netlify.";
@@ -549,10 +553,10 @@ async function generateSiteStructure(userInput) {
 }
 
 sendBtn.addEventListener('click', handleUserResponse);
-input.addEventListener('keypress', (e) => { if(e.key === 'Enter') handleUserResponse() });
+input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserResponse() });
 
 // Botão Limpar
-if(clearBtn) {
+if (clearBtn) {
     clearBtn.addEventListener('click', () => {
         chatWindow.innerHTML = `
             <div class="ai-message bot">

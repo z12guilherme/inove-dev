@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // 1. Tenta recuperar ID da URL
     const urlParams = new URLSearchParams(window.location.search);
     const siteId = urlParams.get('id');
-    
+
     let data = null;
     let storageKey = 'aiWebsiteData_v3'; // Chave padrão
 
@@ -161,7 +161,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Suporte a Bootstrap 5 e Variáveis Comuns
             document.documentElement.style.setProperty('--bs-primary', val);
             document.documentElement.style.setProperty('--bs-link-color', val);
-            
+
             data.colors.primary = val;
             saveToLocal();
         });
@@ -171,7 +171,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // Suporte a Bootstrap 5
             document.documentElement.style.setProperty('--bs-body-bg', val);
             document.body.style.backgroundColor = val;
-            
+
             data.colors.background = val;
             saveToLocal();
         });
@@ -181,13 +181,13 @@ document.addEventListener('DOMContentLoaded', () => {
             // Suporte a Bootstrap 5
             document.documentElement.style.setProperty('--bs-body-color', val);
             document.body.style.color = val;
-            
+
             data.colors.text = val;
             saveToLocal();
         });
 
         // Botão Finalizar (WhatsApp)
-        document.getElementById('btnFinalize').addEventListener('click', async function() {
+        document.getElementById('btnFinalize').addEventListener('click', async function () {
             const btn = this;
             const originalText = btn.innerHTML;
             btn.innerHTML = '...';
@@ -198,7 +198,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const encodedState = btoa(String.fromCharCode(...bytes));
             // Usa a própria URL do template para o link compartilhado
             const baseUrl = window.location.href.split('?')[0].split('#')[0];
-            let shareLink = `${baseUrl}#s=${encodedState}`; 
+            let shareLink = `${baseUrl}#s=${encodedState}`;
 
             try {
                 const response = await fetch('/.netlify/functions/shorten', {
@@ -213,7 +213,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             window.open(`https://wa.me/5581989035561?text=Olha meu site: ${encodeURIComponent(shareLink)}`, '_blank');
-            
+
             btn.innerHTML = originalText;
             btn.disabled = false;
         });
@@ -257,7 +257,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Tenta encontrar um bloco editável (pai ou o próprio elemento)
             const target = e.target.closest('[data-list-key], [data-path]');
-            
+
             // Remove seleção anterior
             if (selectedBlock && selectedBlock !== target) {
                 selectedBlock.classList.remove('studio-selected');
@@ -269,7 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 selectedBlock = target;
                 selectedBlock.classList.add('studio-selected');
                 updateMenuPos();
-                
+
                 // Habilita botões baseados no tipo
                 const isList = selectedBlock.hasAttribute('data-list-key');
                 document.getElementById('ctxUp').style.display = isList ? 'flex' : 'none';
@@ -300,14 +300,14 @@ document.addEventListener('DOMContentLoaded', () => {
             const listKey = selectedBlock.dataset.listKey;
             const index = parseInt(selectedBlock.dataset.listIndex);
             const list = data[listKey];
-            
+
             if (direction === -1 && index > 0) {
                 // Swap Array
-                [list[index], list[index-1]] = [list[index-1], list[index]];
+                [list[index], list[index - 1]] = [list[index - 1], list[index]];
                 saveToLocal();
                 location.reload(); // Recarrega para renderizar na ordem certa (solução simples)
             } else if (direction === 1 && index < list.length - 1) {
-                [list[index], list[index+1]] = [list[index+1], list[index]];
+                [list[index], list[index + 1]] = [list[index + 1], list[index]];
                 saveToLocal();
                 location.reload();
             }
@@ -315,7 +315,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         document.getElementById('ctxUp').addEventListener('click', () => moveItem(-1));
         document.getElementById('ctxDown').addEventListener('click', () => moveItem(1));
-        
+
         document.getElementById('ctxDelete').addEventListener('click', () => {
             if (!selectedBlock || !selectedBlock.dataset.listKey) return;
             if (confirm('Tem certeza que deseja excluir este item?')) {
@@ -338,32 +338,32 @@ document.addEventListener('DOMContentLoaded', () => {
     const mappings = [
         // Marca e Títulos
         { selector: '.logo h1, .navbar-brand, title, #fh5co-logo a, .sitename, .sidebar-brand, .couple-name', value: data.brandName, path: 'brandName' },
-        { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1, header.masthead h1, .hero-title', value: data.hero?.title, path: 'hero.title' },
-        { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2, header.masthead p, .hero-subtitle', value: data.hero?.subtitle, path: 'hero.subtitle' },
-        { selector: '#hero .btn-get-started, .hero .btn-primary, header.masthead .btn-xl, .hero-btn', value: data.hero?.cta, path: 'hero.cta' },
-        
+        { selector: '#hero h1, .hero h1, .banner h1, .fh5co-hero h1, header.masthead h1, .hero-title, .slider-text h1, .display-tc h1, .display-tc h2', value: data.hero?.title, path: 'hero.title' },
+        { selector: '#hero h2, #hero p, .hero p, .fh5co-hero h2, header.masthead p, .hero-subtitle, .slider-text p:not(.breadcrumbs), .display-tc p', value: data.hero?.subtitle, path: 'hero.subtitle' },
+        { selector: '#hero .btn-get-started, .hero .btn-primary, header.masthead .btn-xl, .hero-btn, .slider-text .btn, .display-tc .btn', value: data.hero?.cta, path: 'hero.cta' },
+
         // Sobre
-        { selector: '#about h3, .about h3, #about h2, .about-title', value: data.about?.title, path: 'about.title' },
-        { selector: '#about p, .about p', value: data.about?.text, path: 'about.text' },
-        
+        { selector: '#about h3, .about h3, #about h2, .about-title, .ftco-about .heading-section h2', value: data.about?.title, path: 'about.title' },
+        { selector: '#about p, .about p, .ftco-about p', value: data.about?.text, path: 'about.text' },
+
         // Contato
         { selector: '.info-box .email p, #contact .email', value: data.contact?.email, path: 'contact.email' },
         { selector: '.info-box .phone p, #contact .phone', value: data.contact?.phone, path: 'contact.phone' },
         { selector: '.info-box .address p, #contact .address', value: data.contact?.address, path: 'contact.address' },
-        
+
         // Cores (CSS Variables - Funciona se o template usar :root)
         { cssVar: '--primary', value: data.colors?.primary },
         { cssVar: '--secondary', value: data.colors?.secondary },
         { cssVar: '--accent', value: data.colors?.accent },
 
         // Títulos de Seção (Tradução/Personalização)
-        { selector: '#services .section-title h2, #services h2, .services-title', value: data.sectionTitles?.services || "Nossos Serviços", path: 'sectionTitles.services' },
+        { selector: '#services .section-title h2, #services h2, .services-title, .ftco-services .heading-section h2', value: data.sectionTitles?.services || "Nossos Serviços", path: 'sectionTitles.services' },
         { selector: '#portfolio .section-title h2, #portfolio h2, .portfolio-title', value: data.sectionTitles?.portfolio || "Portfólio", path: 'sectionTitles.portfolio' },
-        { selector: '#about .section-title h2', value: "Sobre Nós" },
+        { selector: '#about .section-title h2, .ftco-about .heading-section h2', value: data.about?.title || "Sobre Nós" },
         { selector: '#contact .section-title h2, #contact h2', value: data.sectionTitles?.contact || "Fale Conosco", path: 'sectionTitles.contact' },
-        { selector: '#menu .section-title h2, #menu h2', value: "Nosso Menu" }, // Restaurante
+        { selector: '#menu .section-title h2, #menu h2, .ftco-menu .heading-section h2', value: "Nosso Menu" }, // Restaurante
         { selector: '#departments .section-title h2', value: "Departamentos" }, // Medico
-        
+
         // Traduções Específicas de Templates (SnapFolio, Strategy, LeadPage)
         { selector: '.service-heading div:first-child', value: "Soluções de" },
         { selector: '.service-heading div:last-child span', value: "Alta Performance" },
@@ -372,7 +372,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { selector: '.section-title div > span:first-child', value: "Confira Nossos" }, // Strategy Template "Check Our"
         { selector: '.description-title', value: "Serviços" }, // Strategy Template "Services"
         { selector: '.subtitle', value: "Destaques" }, // LeadPage "Features" subtitle
-        
+
         // Navegação (Tradução dos Menus)
         { selector: 'nav a[href="#hero"], nav a[href="#home"], nav a[href="index.html"]', value: data.ui?.nav_home || "Início" },
         { selector: 'nav a[href="#about"]', value: data.ui?.nav_about || "Sobre" },
@@ -381,7 +381,7 @@ document.addEventListener('DOMContentLoaded', () => {
         { selector: 'nav a[href="#contact"]', value: data.ui?.nav_contact || "Contato" },
         { selector: 'nav a[href="#team"]', value: "Equipe" },
         { selector: 'nav a[href="#blog"]', value: "Blog" },
-        
+
         // Botões Comuns
         { selector: '.btn-getstarted, .btn-get-started', value: data.hero?.cta || "Começar Agora" },
         { selector: '.read-more, .readmore', value: data.ui?.btn_read_more || "Saiba Mais" },
@@ -406,7 +406,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     el.setAttribute(map.attribute, map.value);
                     return;
                 }
-                
+
                 // Lógica especial para menus com ícones (preserva o ícone <i class="...">)
                 if (el.tagName === 'A' && el.querySelector('i')) {
                     for (let node of el.childNodes) {
@@ -415,11 +415,11 @@ document.addEventListener('DOMContentLoaded', () => {
                             break;
                         }
                     }
-                } 
+                }
                 // Lógica padrão para textos simples
                 else if (el.children.length === 0 || el.tagName.startsWith('H') || el.tagName === 'P' || el.tagName === 'SPAN' || el.tagName === 'DIV' || el.tagName === 'BUTTON') {
                     el.innerText = map.value;
-                    
+
                     // Habilita edição se tiver um caminho mapeado
                     if (map.path) {
                         el.setAttribute('contenteditable', 'true');
@@ -436,34 +436,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 3. Substituição de Imagens (Hero e Sobre)
     if (data.images) {
-        const heroBg = document.querySelector('#hero, .hero, header.masthead');
+        const heroBg = document.querySelector('#hero, .hero, header.masthead, .slider-item, .fh5co-cover, .ceremony-bg');
         if (heroBg && data.images.hero) {
             // Tenta aplicar como background-image
             heroBg.style.backgroundImage = `url('${data.images.hero}')`;
         }
-        
-        const aboutImg = document.querySelector('#about img, .about-img');
+
+        const aboutImg = document.querySelector('#about img, .about-img, .ftco-about .img, .img-about');
         if (aboutImg && data.images.about) {
-            aboutImg.src = data.images.about;
+            if (aboutImg.tagName === 'IMG') {
+                aboutImg.src = data.images.about;
+            } else {
+                aboutImg.style.backgroundImage = `url('${data.images.about}')`;
+            }
         }
+    }
+
+    // 3.1 Injetar Custom CSS gerado pela IA (MUITO IMPORTANTE PARA O REDESIGN)
+    if (data.customCss) {
+        const customStyle = document.createElement('style');
+        customStyle.id = 'ai-custom-css';
+        customStyle.textContent = data.customCss;
+        document.head.appendChild(customStyle);
     }
 
     // 4. Preencher Listas (Serviços, Menu, Departamentos) - Modo Melhorado
     if (data.services && data.services.length > 0) {
         // Seleciona cards de serviço em vários templates (Strategy, Medico, Pizza, etc)
-        const serviceCards = document.querySelectorAll('.service-item, .service-card, .icon-box, .service-box, #services .col-lg-3, .department-item, .menu-item, .feature-box');
-        
+        const serviceCards = document.querySelectorAll('.service-item, .service-card, .icon-box, .service-box, #services .col-lg-3, .department-item, .menu-item, .feature-box, .services, .pricing-entry, .menu-wrap');
+
         serviceCards.forEach((card, index) => {
             if (index >= data.services.length) return;
 
             // Marca o bloco para edição (Wix Style)
             card.setAttribute('data-list-key', 'services');
             card.setAttribute('data-list-index', index);
-            
+
             const service = data.services[index];
-            
+
             // Título
-            const titleEl = card.querySelector('h3, h4, .title, .service-title, .h4, .menu-content a');
+            const titleEl = card.querySelector('h3, h4, .title, .service-title, .h4, .menu-content a, .heading');
             if (titleEl) {
                 const link = titleEl.querySelector('a');
                 if (link) link.innerText = service.title;
@@ -473,9 +485,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     titleEl.dataset.path = `services.${index}.title`;
                 }
             }
-            
+
             // Descrição
-            const descEl = card.querySelector('p, .description, .service-description, .text-muted, .ingredients');
+            const descEl = card.querySelector('p, .description, .service-description, .text-muted, .ingredients, .media-body p, .desc p');
             if (descEl) {
                 descEl.innerText = service.desc;
                 descEl.setAttribute('contenteditable', 'true');
@@ -486,16 +498,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 4.1 Preencher Portfólio / Galeria / Produtos
     if (data.portfolio && data.portfolio.length > 0) {
-        const portfolioItems = document.querySelectorAll('.portfolio-item, .portfolio-wrap, .portfolio-card, .portfolio-box, .gallery-item, .product-item');
+        const portfolioItems = document.querySelectorAll('.portfolio-item, .portfolio-wrap, .portfolio-card, .portfolio-box, .gallery-item, .product-item, .block-20, .blog-entry');
         portfolioItems.forEach((item, index) => {
             if (index >= data.portfolio.length) return;
-            
+
             item.setAttribute('data-list-key', 'portfolio');
             item.setAttribute('data-list-index', index);
 
             const project = data.portfolio[index];
-            const titleEl = item.querySelector('h3, h4, .portfolio-title, .project-name');
-            const catEl = item.querySelector('p, span, .portfolio-category, .project-category');
+            const titleEl = item.querySelector('h3, h4, .portfolio-title, .project-name, .heading a');
+            const catEl = item.querySelector('p, span, .portfolio-category, .project-category, .meta a');
 
             if (titleEl) {
                 titleEl.innerText = project.title;
@@ -533,7 +545,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Verifica se tem texto direto
             const hasText = Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.nodeValue.trim().length > 0);
-            
+
             if (hasText && !el.isContentEditable) {
                 el.setAttribute('contenteditable', 'true');
                 el.style.cursor = 'text';
@@ -567,17 +579,18 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // 5. Varredura Final de Tradução (Fallback para textos soltos)
     const commonTranslations = {
-        "Home": data.ui?.nav_home || "Início", 
-        "About": data.ui?.nav_about || "Sobre", 
+        "Home": data.ui?.nav_home || "Início",
+        "About": data.ui?.nav_about || "Sobre",
         "About Us": data.ui?.nav_about || "Sobre Nós",
-        "Services": data.ui?.nav_services || "Serviços", 
-        "Portfolio": data.ui?.nav_portfolio || "Portfólio", 
+        "Services": data.ui?.nav_services || "Serviços",
+        "Portfolio": data.ui?.nav_portfolio || "Portfólio",
         "Contact": data.ui?.nav_contact || "Contato",
+        "Menu": "Cardápio",
         "Team": "Equipe", "Pricing": "Preços", "Blog": "Blog",
-        "Read More": data.ui?.btn_read_more || "Leia Mais", 
-        "Learn More": data.ui?.btn_read_more || "Saiba Mais", 
+        "Read More": data.ui?.btn_read_more || "Leia Mais",
+        "Learn More": data.ui?.btn_read_more || "Saiba Mais",
         "Get Started": data.hero?.cta || "Começar",
-        "Send Message": data.ui?.btn_submit || "Enviar Mensagem", 
+        "Send Message": data.ui?.btn_submit || "Enviar Mensagem",
         "Subject": "Assunto", "Message": "Mensagem",
         "Your Name": "Seu Nome", "Your Email": "Seu Email", "Call Us": "Ligue para nós",
         "Email Us": "Envie um email", "Location": "Localização", "Open Hours": "Horário",
@@ -592,6 +605,12 @@ document.addEventListener('DOMContentLoaded', () => {
         "Search": "Buscar", "Search...": "Buscar...",
         "Loading": "Carregando", "Sent Message": "Mensagem Enviada"
     };
+
+    // Adiciona traduções dinâmicas da IA se existirem
+    if (data.ui) {
+        if (data.ui.nav_home) commonTranslations["Home"] = data.ui.nav_home;
+        if (data.ui.nav_services) commonTranslations["Menu"] = data.ui.nav_services;
+    }
 
     const walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, null, false);
     let node;
@@ -619,7 +638,7 @@ document.addEventListener('DOMContentLoaded', () => {
     images.forEach((img, index) => {
         // Evita substituir logo ou ícones muito pequenos
         if (img.closest('.logo') || img.classList.contains('logo') || img.width < 50 || img.height < 50) return;
-        
+
         // Se já foi substituída (contém unsplash ou pollinations), pula
         if (img.src.includes('unsplash.com') || img.src.includes('pollinations.ai')) return;
 
