@@ -8,6 +8,38 @@ console.log(
     "font-size: 16px;"
 );
 
+// Script de Theme Toggle (Dark/Light Mode)
+const themeToggle = document.getElementById('theme-toggle');
+if (themeToggle) {
+    const icon = themeToggle.querySelector('i');
+    
+    // Verifica tema salvo ou preferência do sistema
+    const currentTheme = localStorage.getItem('theme') || 'light';
+    document.documentElement.setAttribute('data-bs-theme', currentTheme);
+    updateThemeIcon(currentTheme);
+
+    themeToggle.addEventListener('click', () => {
+        let theme = document.documentElement.getAttribute('data-bs-theme');
+        let newTheme = theme === 'dark' ? 'light' : 'dark';
+        
+        document.documentElement.setAttribute('data-bs-theme', newTheme);
+        localStorage.setItem('theme', newTheme);
+        updateThemeIcon(newTheme);
+    });
+
+    function updateThemeIcon(theme) {
+        if (theme === 'dark') {
+            icon.classList.replace('bi-moon-stars', 'bi-sun-fill');
+            if(!icon.classList.contains('bi-sun-fill')) icon.classList.add('bi-sun-fill'); // fallback
+            themeToggle.title = 'Modo Claro';
+        } else {
+            icon.classList.replace('bi-sun-fill', 'bi-moon-stars');
+            if(!icon.classList.contains('bi-moon-stars')) icon.classList.add('bi-moon-stars'); // fallback
+            themeToggle.title = 'Modo Escuro';
+        }
+    }
+}
+
 // Script para envio de mensagem via WhatsApp
 const form = document.getElementById('contactForm');
 const btnEnviar = document.getElementById('btnEnviar');
