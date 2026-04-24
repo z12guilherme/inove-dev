@@ -52,20 +52,20 @@ document.addEventListener('DOMContentLoaded', () => {
             root.innerHTML = data.customHtml;
             console.log("🤖 Inove AI: HTML customizado injetado com sucesso.");
         }
-        
+
         // Aplica fontes personalizadas se a IA escolheu
         if (data.fonts) {
             const headingFont = data.fonts.heading ? data.fonts.heading.replace(/ /g, '+') : 'Outfit';
             const bodyFont = data.fonts.body ? data.fonts.body.replace(/ /g, '+') : 'Inter';
             const fontLink = document.getElementById('ai-fonts');
             if (fontLink) {
-                fontLink.href = \`https://fonts.googleapis.com/css2?family=\${bodyFont}:wght@300;400;500;600;700&family=\${headingFont}:wght@300;400;500;600;700;800&display=swap\`;
+                fontLink.href = `https://fonts.googleapis.com/css2?family=${bodyFont}:wght@300;400;500;600;700&family=${headingFont}:wght@300;400;500;600;700;800&display=swap`;
             }
-            document.documentElement.style.setProperty('--bs-font-sans-serif', \`'\${data.fonts.body}', sans-serif\`);
-            document.documentElement.style.setProperty('--bs-body-font-family', \`'\${data.fonts.body}', sans-serif\`);
-            
+            document.documentElement.style.setProperty('--bs-font-sans-serif', `'${data.fonts.body}', sans-serif`);
+            document.documentElement.style.setProperty('--bs-body-font-family', `'${data.fonts.body}', sans-serif`);
+
             const style = document.createElement('style');
-            style.textContent = \`h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: '\${data.fonts.heading}', sans-serif !important; } body { font-family: '\${data.fonts.body}', sans-serif !important; }\`;
+            style.textContent = `h1, h2, h3, h4, h5, h6, .navbar-brand { font-family: '${data.fonts.heading}', sans-serif !important; } body { font-family: '${data.fonts.body}', sans-serif !important; }`;
             document.head.appendChild(style);
         }
     }

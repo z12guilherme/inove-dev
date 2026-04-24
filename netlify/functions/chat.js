@@ -1,3 +1,19 @@
+// Função utilitária para lidar com picos de demanda (Erros 503 e 429) via tentativas automáticas
+const fetchWithRetry = async (url, options, retries = 2) => {
+    for (let i = 0; i <= retries; i++) {
+        const response = await fetch(url, options);
+        // Se a requisição foi um sucesso, ou o erro NÃO é de sobrecarga, retorna imediatamente
+        if (response.ok || ![429, 503].includes(response.status)) {
+            return response;
+        }
+        if (i === retries) return response; // Esgotou as tentativas
+
+        const waitTime = Math.pow(2, i) * 1000; // Espera 1s, depois 2s...
+        console.warn(`⚠️ API sobrecarregada (Erro ${response.status}). Tentativa ${i + 1} de ${retries}. Aguardando ${waitTime / 1000}s...`);
+        await new Promise(res => setTimeout(res, waitTime));
+    }
+};
+
 // Usamos exports.handler (CommonJS) para garantir compatibilidade com o ambiente padrão do Netlify
 exports.handler = async (event) => {
     // Adicionando headers CORS para permitir chamadas do frontend
@@ -44,7 +60,7 @@ exports.handler = async (event) => {
                     throw new Error("Fetch API não encontrada. Atualize seu Node.js para v18+ ou instale 'node-fetch'.");
                 }
 
-                const response = await fetch('https://api.mistral.ai/v1/chat/completions', {
+                const response = await fetchWithRetry('https://api.mistral.ai/v1/chat/completions', {
                     method: 'POST',
                     headers: {
                         'Authorization': `Bearer ${MISTRAL_API_KEY}`,
@@ -116,7 +132,7 @@ exports.handler = async (event) => {
                     };
                 }
 
-                const response = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
+                const response = await fetchWithRetry(`https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent?key=${GEMINI_API_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify(geminiBody)
