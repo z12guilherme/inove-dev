@@ -674,9 +674,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Injetar Badge discreto para confirmar que a IA está ativa neste template
     if (!document.querySelector('.ai-badge')) {
-        const badge = document.createElement('div');
+        const badge = document.createElement('a');
+        badge.href = 'https://www.inovedev.com.br?utm_source=ai_badge&utm_medium=viral';
+        badge.target = '_blank';
         badge.className = 'ai-badge';
-        badge.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #0D1B2A; color: #fff; padding: 8px 15px; border-radius: 50px; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.75rem; font-family: sans-serif; pointer-events: none; opacity: 0.8;';
+        badge.style.cssText = 'position: fixed; bottom: 20px; right: 20px; background: #0D1B2A; color: #fff; padding: 8px 15px; border-radius: 50px; z-index: 9999; box-shadow: 0 5px 15px rgba(0,0,0,0.3); font-size: 0.75rem; font-family: sans-serif; opacity: 0.85; text-decoration: none; transition: all 0.3s ease;';
+        badge.onmouseover = () => { badge.style.opacity = '1'; badge.style.transform = 'translateY(-3px)'; };
+        badge.onmouseout = () => { badge.style.opacity = '0.85'; badge.style.transform = 'translateY(0)'; };
         badge.innerHTML = '✨ Powered by Inove AI';
         document.body.appendChild(badge);
     }

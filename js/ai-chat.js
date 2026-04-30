@@ -5,6 +5,8 @@ const clearBtn = document.getElementById('aiClearBtn');
 
 let step = 0;
 let userData = { name: "", details: "" };
+let generatedSiteUrl = "";
+let generatedSiteData = null;
 
 function addMessage(text, sender) {
     const div = document.createElement('div');
@@ -56,6 +58,31 @@ async function handleUserResponse() {
             input.disabled = false;
             sendBtn.disabled = false;
         }
+    } else if (step === 1) {
+        // Passo 1: Capturar o contato do cliente
+        const contactInfo = text;
+        userData.contact = contactInfo;
+
+        // Sincronizar lead qualificado com Tawk.to
+        if (window.Tawk_API) {
+            window.Tawk_API.setAttributes({
+                'email': text.includes('@') ? text : '',
+                'phone': !text.includes('@') ? text : '',
+                'ai_interaction': 'Lead Capturado via AI Studio'
+            });
+        }
+
+        addMessage(`Excelente! Aqui está o acesso ao seu projeto exclusivo:<br>
+            <div class="text-center mt-3">
+                <a href="${generatedSiteUrl}" target="_blank" class="btn btn-success btn-sm">
+                    <i class="bi bi-magic"></i> Acessar Meu Site
+                </a>
+            </div>`, 'bot');
+
+        step = 2;
+        input.disabled = false;
+        sendBtn.disabled = false;
+        input.placeholder = "Para gerar outro, recarregue a página...";
     }
 }
 
@@ -481,24 +508,29 @@ async function generateSiteStructure(userInput) {
 
             // Define o caminho real do template
             const templatePath = `templates/${siteData.templateSource || 'strategy'}/index.html`;
-            const viewUrl = `${templatePath}?id=${timestamp}`;
+            generatedSiteUrl = `${templatePath}?id=${timestamp}`;
+            generatedSiteData = siteData;
 
             addMessage(`
-                <strong>Site Gerado!</strong> 🚀<br>
-                Criei um projeto exclusivo para <strong>${siteData.brandName}</strong>.<br>
-                <ul>
-                    <li>Paleta: <span style="color:${siteData.colors.primary}">■</span> ${siteData.colors.primary} e <span style="color:${siteData.colors.secondary}">■</span> ${siteData.colors.secondary}</li>
-                    <li>Foco: ${siteData.niche}</li>
-                </ul>
-                <div class="alert alert-warning p-2 mt-2" style="font-size: 0.85em;">
-                    <i class="bi bi-exclamation-triangle"></i> <strong>Nota:</strong> As imagens são geradas por IA em tempo real e podem apresentar variações ou não corresponder exatamente ao contexto.
-                </div>
-                <div class="text-center mt-3">
-                    <a href="${viewUrl}" target="_blank" class="btn btn-success btn-sm">
-                        <i class="bi bi-magic"></i> Ver Site Gerado
-                    </a>
-                </div>
+                <strong>Site Gerado com Sucesso!</strong> 🚀<br>
+                Criei um projeto exclusivo e de alta conversão para <strong>${siteData.brandName}</strong>.<br><br>
+                Para liberar o seu link de acesso exclusivo e proteger seu projeto, <strong>qual é o seu melhor e-mail ou WhatsApp?</strong>
             `, 'bot');
+
+            step = 1;
+            input.disabled = false;
+            sendBtn.disabled = false;
+            input.placeholder = "Seu e-mail ou WhatsApp...";
+            input.focus();
+
+            // Dispara evento de conversão para o Marketing (Google Analytics / Meta Pixel)
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'generate_ai_site', { 'event_category': 'lead', 'niche': siteData.niche });
+            }
+            if (typeof fbq !== 'undefined') {
+                fbq('trackCustom', 'GenerateAISite', { niche: siteData.niche });
+            }
+
         }
 
     } catch (e) {
@@ -542,6 +574,7 @@ if (clearBtn) {
         input.disabled = false;
         sendBtn.disabled = false;
         input.value = '';
+        input.placeholder = "Ex: Clínica de estética...";
         step = 0;
     });
 }
