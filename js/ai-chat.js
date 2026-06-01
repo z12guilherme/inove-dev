@@ -559,8 +559,10 @@ async function generateSiteStructure(userInput) {
     }
 }
 
-sendBtn.addEventListener('click', handleUserResponse);
-input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserResponse() });
+if (sendBtn) sendBtn.addEventListener('click', handleUserResponse);
+if (input) {
+    input.addEventListener('keypress', (e) => { if (e.key === 'Enter') handleUserResponse() });
+}
 
 // Botão Limpar
 if (clearBtn) {

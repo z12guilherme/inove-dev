@@ -253,7 +253,7 @@
     <!-- Hero Section -->
     <section id="hero"
         class="hc-hero overflow-hidden position-relative d-flex align-items-center justify-content-center">
-        <div id="hero-canvas" class="position-absolute top-0 start-0 w-100 h-100"></div>
+        <canvas id="canvas" class="position-absolute top-0 start-0 w-100 h-100"></canvas>
 
         <!-- Glowing background orbs -->
         <div class="hc-orb orb-1"></div>
@@ -895,12 +895,9 @@
     <!-- Swiper JS -->
     <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js"></script>
 
-    <!-- Three.js (3D Engine) -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r134/three.min.js"></script>
-
     <!-- Scripts (Caminhos ajustados) -->
     <script src="js/script.js"></script>
-    <script src="js/hero-3d.js"></script>
+    <script type="module" src="js/hero-3d.js"></script>
 
     <!-- Gemini AI Integration -->
     <script type="module" src="js/ai-chat.js"></script>
