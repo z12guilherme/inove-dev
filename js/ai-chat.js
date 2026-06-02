@@ -194,7 +194,7 @@ async function generateSiteStructure(userInput) {
 
                 if (!GEMINI_DIRECT_KEY) throw new Error("Chave de API direta não configurada. Verifique o backend.");
 
-                const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_DIRECT_KEY}`, {
+                const directResponse = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_DIRECT_KEY}`, {
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({

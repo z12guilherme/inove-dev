@@ -6,7 +6,7 @@ exports.handler = async (event) => {
 
     try {
         const body = JSON.parse(event.body);
-        
+
         // Verifica se é uma mensagem de texto válida
         if (!body.message || !body.message.text) {
             return { statusCode: 200, body: 'OK' };
@@ -23,7 +23,7 @@ exports.handler = async (event) => {
         // --- LÓGICA DO CHATBOT ---
         if (text === '/start' || text.includes('oi') || text.includes('ola')) {
             resposta = `👋 Olá, *${nome}*!\n\nSou o assistente virtual da *Inove Dev*. Como posso te ajudar hoje?\n\nEscolha uma opção:\n1️⃣ /servicos - Nossas Soluções\n2️⃣ /contato - Falar com Humano\n3️⃣ /sobre - Quem somos`;
-        } 
+        }
         else if (text.includes('1') || text.includes('servico') || text.includes('solucoes')) {
             resposta = `🚀 *Nossas Soluções:*\n\n💻 *Sites & Landing Pages:* Alta conversão e design único.\n🛒 *E-commerce:* Venda online com segurança.\n📱 *Sistemas Web:* Painéis administrativos e automação.\n\nDigite /contato para um orçamento!`;
         }
@@ -45,22 +45,22 @@ exports.handler = async (event) => {
                     });
 
                     // 2. Pergunta para o Gemini
-                    const aiReq = await fetch(`https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
+                    const aiReq = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-1.5-flash:generateContent?key=${GEMINI_KEY}`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({
                             contents: [{
-                                parts: [{ 
+                                parts: [{
                                     text: `Você é o assistente virtual sênior da Inove Dev. Seu objetivo é ajudar desenvolvedores e clientes.
                                     Responda de forma técnica, precisa e amigável. Se pedirem código, forneça exemplos formatados.
-                                    Contexto da mensagem: ${body.message.text}` 
+                                    Contexto da mensagem: ${body.message.text}`
                                 }]
                             }]
                         })
                     });
 
                     const aiData = await aiReq.json();
-                    
+
                     // 3. Pega a resposta da IA
                     if (aiData.candidates && aiData.candidates[0]?.content?.parts[0]?.text) {
                         resposta = aiData.candidates[0].content.parts[0].text;
