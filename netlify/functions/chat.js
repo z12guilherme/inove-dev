@@ -113,7 +113,7 @@ exports.handler = async (event) => {
                 const systemMsg = body.messages.find(m => m.role === 'system')?.content;
                 const userMsg = body.messages.filter(m => m.role !== 'system').map(m => {
                     return {
-                        role: m.role === 'assistant' ? 'model' : 'user',
+                        role: m.role === 'assistant' ? 'model' : 'user', // Map 'assistant' to 'model' for Gemini
                         parts: [{ text: m.content }]
                     };
                 });
@@ -121,13 +121,14 @@ exports.handler = async (event) => {
                 const geminiBody = {
                     contents: userMsg,
                     generationConfig: {
-                        temperature: 0.7,
-                        responseMimeType: "application/json" // Força resposta JSON estruturada (Ótimo para o Studio)
+                        temperature: 0.7
+                        // responseMimeType is not supported in this context for v1 API
+                        // JSON output is handled by the system prompt instruction
                     }
                 };
 
                 if (systemMsg) {
-                    geminiBody.systemInstruction = {
+                    geminiBody.systemInstruction = { // systemInstruction is a top-level field for Gemini API
                         parts: [{ text: systemMsg }]
                     };
                 }

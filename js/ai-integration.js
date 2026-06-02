@@ -113,7 +113,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 z-index: 99999; display: flex; justify-content: space-between; align-items: center;
                 font-family: sans-serif; font-size: 12px; border-bottom: 2px solid var(--primary, #0d6efd); height: 45px;
             }
-            body { padding-top: 45px !important; }
+            body.studio-editing { padding-top: 45px !important; }
             [contenteditable="true"]:hover { outline: 2px dashed var(--primary, #0d6efd); cursor: text; }
             [contenteditable="true"]:focus { outline: 2px solid var(--primary, #0d6efd); background: rgba(13, 110, 253, 0.05); }
             .color-control { display: flex; align-items: center; gap: 5px; background: rgba(255,255,255,0.05); padding: 2px 8px; border-radius: 4px; border: 1px solid rgba(255,255,255,0.1); }
@@ -139,12 +139,17 @@ document.addEventListener('DOMContentLoaded', () => {
             
             .studio-selected { outline: 2px solid var(--primary, #0d6efd) !important; position: relative; z-index: 9990; cursor: pointer; }
             .studio-hover { outline: 2px dashed rgba(13, 110, 253, 0.4) !important; cursor: pointer; }
+
+            /* Correção de Conflito: Empurra Headers fixos para baixo da toolbar */
+            body.studio-editing header.fixed-top, 
+            body.studio-editing .navbar.fixed-top,
+            body.studio-editing .header.fixed-top { top: 45px !important; }
         `;
         document.head.appendChild(style);
 
         // 2. HTML
         const toolbar = document.createElement('div');
-        toolbar.className = 'studio-toolbar';
+        toolbar.className = 'studio-toolbar no-edit';
         toolbar.innerHTML = `
             <div style="display:flex; align-items:center;">
                 <strong style="margin-right:10px;">Inove AI Studio</strong>
@@ -167,6 +172,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <button id="btnFinalize" class="studio-btn finalize">FINALIZAR</button>
             </div>
         `;
+        document.body.classList.add('studio-editing');
         document.body.prepend(toolbar);
 
         // 2.1 Context Menu HTML
@@ -563,12 +569,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const enableGlobalEditing = () => {
         const allElements = document.body.querySelectorAll('*');
         allElements.forEach(el => {
-            // Ignora elementos da interface do Studio
-            if (el.closest('.studio-toolbar') || el.closest('.studio-context-menu') || el.closest('.ai-badge')) return;
-            // Ignora tags não visuais
-            if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'SVG', 'PATH', 'BR', 'HR'].includes(el.tagName)) return;
+            // Ignora elementos da interface do Studio e elementos funcionais
+            if (el.closest('.studio-toolbar') || el.closest('.studio-context-menu') || el.closest('.ai-badge') || el.classList.contains('no-edit')) return;
 
-            // Verifica se tem texto direto
+            // Ignora tags não visuais
+            if (['SCRIPT', 'STYLE', 'NOSCRIPT', 'IFRAME', 'SVG', 'PATH', 'BR', 'HR', 'I', 'CANVAS'].includes(el.tagName)) return;
+
+            // Verifica se tem texto direto e não é um link de navegação complexo
             const hasText = Array.from(el.childNodes).some(n => n.nodeType === Node.TEXT_NODE && n.nodeValue.trim().length > 0);
 
             if (hasText && !el.isContentEditable) {

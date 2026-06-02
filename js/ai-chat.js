@@ -206,7 +206,7 @@ async function generateSiteStructure(userInput) {
                             parts: [{ text: systemPrompt }]
                         },
                         generationConfig: {
-                            responseMimeType: "application/json"
+                            // responseMimeType is not supported in this context for v1 API
                         }
                     })
                 });

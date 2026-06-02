@@ -29,7 +29,6 @@ exports.handler = async (event) => {
                     parts: [{ text: systemMsg }]
                 },
                 generationConfig: {
-                    responseMimeType: "application/json",
                     temperature: 0.7
                 }
             })
